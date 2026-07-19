@@ -10,14 +10,29 @@
   display: block;
 }
 
+.back-btn {
+  background: transparent;
+  border: none;
+  color: #FAF8F6;
+  font-size: clamp(22px, 3.5vw, 28px);
+  cursor: pointer;
+  padding: 8px 12px;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+}
+
 /* ============================================= */
-/* БЛОК: КАРТЫ РЕГИОНОВ - ДВЕ В РЯД           */
+/* БЛОК: КАРТЫ РЕГИОНОВ - ПРЯМОУГОЛЬНЫЕ        */
 /* ============================================= */
 
 .country-cards {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: clamp(8px, 1.5vw, 14px);
+  gap: clamp(10px, 1.5vw, 16px);
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
@@ -25,7 +40,7 @@
 
 .country-card {
   width: 100%;
-  aspect-ratio: 4/3;
+  aspect-ratio: 16/10;
   position: relative;
   overflow: hidden;
   border: none;
@@ -34,6 +49,7 @@
   cursor: pointer;
   background: #111;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  /* Убираем анимации */
 }
 
 .country-card img {
@@ -65,27 +81,27 @@
   left: clamp(10px, 1.5vw, 16px);
   z-index: 5;
   color: #FAF8F6;
-  font-size: clamp(16px, 2.5vw, 24px);
+  font-size: clamp(16px, 2.5vw, 22px);
   font-weight: 700;
   letter-spacing: -0.3px;
 }
 
 .country-badge {
   position: absolute;
-  top: clamp(6px, 1vh, 12px);
-  right: clamp(6px, 1vw, 12px);
+  top: clamp(6px, 1vh, 10px);
+  right: clamp(6px, 1vw, 10px);
   z-index: 5;
   display: flex;
   align-items: center;
-  gap: 5px;
-  height: clamp(18px, 2.5vh, 24px);
-  padding: 0 clamp(6px, 1vw, 10px);
+  gap: 4px;
+  height: clamp(16px, 2vh, 22px);
+  padding: 0 clamp(5px, 0.8vw, 8px);
   border-radius: 999px;
   background: rgba(30, 30, 30, 0.5);
   backdrop-filter: blur(18px);
   border: 1px solid rgba(255, 255, 255, 0.06);
   color: white;
-  font-size: clamp(7px, 1vw, 10px);
+  font-size: clamp(6px, 0.8vw, 9px);
   font-weight: 600;
 }
 
@@ -98,20 +114,20 @@
 
 .country-region {
   position: absolute;
-  left: clamp(10px, 1.5vw, 16px);
-  bottom: clamp(8px, 1.5vh, 14px);
+  left: clamp(10px, 1.5vw, 14px);
+  bottom: clamp(6px, 1.2vh, 12px);
   z-index: 5;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   color: #d8d8d8;
-  font-size: clamp(10px, 1.2vw, 13px);
+  font-size: clamp(9px, 1.1vw, 12px);
   font-weight: 500;
 }
 
 .region-dot {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: #2fd37a;
 }
@@ -148,14 +164,12 @@
   text-align: center;
 }
 
-/* УДАЛИТЬ СТАРЫЙ .show-all-btn ИЗ .gift-header */
-
-/* ===== НОВЫЙ БЛОК: КНОПКА "ПОКАЗАТЬ ВСЕ" ===== */
+/* ===== НОВЫЙ БЛОК: КНОПКА "ПОКАЗАТЬ ВСЕ" ПО ЦЕНТРУ ===== */
 .gift-show-all-wrapper {
   display: flex;
   justify-content: center;
   width: 100%;
-  margin-top: clamp(12px, 2vh, 18px);
+  margin-top: clamp(16px, 2.5vh, 24px);
 }
 
 .show-all-btn {
@@ -172,6 +186,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Убираем position: absolute */
 }
 .gift-subtitle {
   color: rgba(255, 255, 255, 0.5);
@@ -582,6 +597,15 @@
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
+.services-list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 2vw, 18px);  /* ← СЮДА ДОБАВЛЯЕМ ОТСТУП */
+  width: 100%;
+  max-width: 900px;
+}
+
+
 .service-info {
   position: absolute;
   top: 50%;
@@ -595,7 +619,7 @@
   font-size: clamp(16px, 2.2vw, 20px);
   font-weight: 700;
   letter-spacing: -0.3px;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .service-logo-wrapper {
@@ -615,7 +639,7 @@
   width: 90%;
   height: 90%;
   object-fit: contain;
-  opacity: 0.25;
+  opacity: 0.33;
 }
 
 /* ============================================= */
