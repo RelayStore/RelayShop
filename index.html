@@ -3,13 +3,34 @@
 
 <head>
   <!-- ============================================= -->
+  <!-- БЛОК: TELEGRAM SDK                           -->
+  <!-- ============================================= -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  
+  <!-- ============================================= -->
   <!-- БЛОК: META                                    -->
   <!-- ============================================= -->
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta
+    name="viewport"
+    content="width=device-width,
+             initial-scale=1,
+             viewport-fit=cover">
   <title>Relay Mini App</title>
-  <link rel="stylesheet" href="css/base.css">
+  
+  <!-- ============================================= -->
+  <!-- БЛОК: CSS (НОВАЯ АРХИТЕКТУРА)                -->
+  <!-- ============================================= -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/telegram.css">
   <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/services.css">
+  <link rel="stylesheet" href="css/steam.css">
+  <link rel="stylesheet" href="css/subscriptions.css">
+  <link rel="stylesheet" href="css/screens.css">
+  <link rel="stylesheet" href="css/utilities.css">
   <link rel="stylesheet" href="css/animations.css">
 </head>
 
@@ -43,10 +64,10 @@
       </header>
 
       <!-- ===== MAIN CONTENT ===== -->
-      <main>
+      <main class="flex flex-col gap-6">
 
         <!-- ===== PLAYSTATION SECTION ===== -->
-        <div class="ps-section">
+        <section class="section">
           <div class="ps-header">
             <img src="assets/icons/psn.png" alt="PlayStation" class="ps-icon">
             <h1 class="ps-title">PlayStation Store</h1>
@@ -80,15 +101,15 @@
               </div>
             </button>
           </div>
-        </div>
+        </section>
 
         <!-- ===== GIFT CARDS SECTION ===== -->
-        <div class="gift-section">
-          <div class="gift-header">
-            <h2 class="gift-title">💳 Карты пополнений</h2>
-            <button class="show-all-btn" data-screen="screen-services">Показать все →</button>
+        <section class="section">
+          <div class="section-header">
+            <h2 class="section-title">💳 Карты пополнений</h2>
+            <button class="btn btn-back show-all-btn" data-screen="screen-services">→</button>
           </div>
-          <p class="gift-subtitle">Пополнение любимых зарубежных сервисов</p>
+          <p class="section-subtitle">Пополнение любимых зарубежных сервисов</p>
           <div class="gift-icons">
             <div class="gift-icon-wrapper" data-service="apple">
               <button class="gift-icon-btn">
@@ -121,9 +142,10 @@
               <span class="gift-icon-label">Steam</span>
             </div>
           </div>
-        </div>
+        </section>
+
         <!-- ===== STEAM DIRECT SECTION ===== -->
-        <div class="steam-direct-section">
+        <section class="section">
           <div class="steam-direct-header">
             <img src="assets/icons/steam.png" alt="Steam" class="steam-direct-icon">
             <h2 class="steam-direct-title">Пополнить Steam</h2>
@@ -131,33 +153,27 @@
           <p class="steam-direct-subtitle">Прямое пополнение Steam Кошелька!</p>
 
           <div class="steam-direct-card" id="steam-direct-btn">
-            <!-- Оверлей как у карточек регионов -->
             <div class="steam-direct-overlay"></div>
-
-            <!-- Логотип Steam (зеркально, прижат к левому краю) -->
             <div class="steam-direct-logo-wrapper">
               <img src="assets/icons/steam_logo.png" alt="Steam" class="steam-direct-logo">
             </div>
-
-            <!-- Контент по центру -->
             <div class="steam-direct-card-content">
               <span class="steam-direct-card-title">Steam Wallet</span>
               <span class="steam-direct-card-commission">Минимальная комиссия!</span>
             </div>
-
-            <!-- Бейдж как у карточек регионов -->
             <div class="steam-direct-badge">
               <span class="badge-dot"></span>
               ЛУЧШЕЕ ПРЕДЛОЖЕНИЕ🔥
             </div>
           </div>
-        </div>
+        </section>
+
         <!-- ===== SUBSCRIPTIONS SECTION ===== -->
-        <div class="subscription-section">
-          <div class="subscription-header">
-            <h2 class="subscription-title">🔓 Подписки на сервисы</h2>
+        <section class="section">
+          <div class="section-header">
+            <h2 class="section-title">🔓 Подписки на сервисы</h2>
           </div>
-          <p class="subscription-subtitle">Подписки на зарубежные сервисы</p>
+          <p class="section-subtitle">Подписки на зарубежные сервисы</p>
           <div class="subscription-icons">
             <div class="subscription-icon-wrapper" data-service="discord" data-screen="screen-subscriptions">
               <button class="subscription-icon-btn">
@@ -178,28 +194,27 @@
               <span class="subscription-icon-label">Spotify</span>
             </div>
           </div>
-        </div>
+        </section>
 
         <!-- ===== PROMO SECTION ===== -->
-        <div class="promo-section">
+        <section class="section">
           <div class="promo-header">
             <img src="assets/icons/telegram.png" alt="Telegram" class="promo-icon">
             <h2 class="promo-title">Промокоды, новости, новинки</h2>
           </div>
-          <a href="tg://resolve?domain=shoprelay" style="display:block; text-decoration:none; width:100%;">
-          <div class="promo-card">
-            <img src="assets/images/poster.png" alt="Постер" class="promo-bg">
-            <div class="promo-overlay"></div>
-            <div class="promo-content">
-              <h3 class="promo-main-text">Наше сообщество</h3>
-              <p class="promo-sub-text">скидки, новости, уникальные предложения</p>
+          <a href="tg://resolve?domain=shoprelay">
+            <div class="promo-card">
+              <img src="assets/images/poster.png" alt="Постер" class="promo-bg">
+              <div class="promo-overlay"></div>
+              <div class="promo-content">
+                <h3 class="promo-main-text">Наше сообщество</h3>
+                <p class="promo-sub-text">скидки, новости, уникальные предложения</p>
+              </div>
             </div>
-          </div>
           </a>
-        </div>
+        </section>
 
       </main>
-
     </div>
 
     <!-- ============================================= -->
@@ -207,16 +222,13 @@
     <!-- ============================================= -->
     <div id="screen-services" class="screen">
 
-      <!-- ===== ЗАГОЛОВОК С КНОПКОЙ НАЗАД ===== -->
       <div class="services-header">
-        <button class="back-btn" data-screen="screen-main">←</button>
+        <button class="btn btn-back" data-screen="screen-main">←</button>
         <h1 class="services-title">Выбери сервис</h1>
         <div class="services-placeholder"></div>
       </div>
 
-      <!-- ===== СПИСОК СЕРВИСОВ ===== -->
       <div class="services-list">
-
         <!-- Apple -->
         <div class="service-card" data-service="apple" style="background: linear-gradient(135deg, #8e8e93, #636366);">
           <div class="service-info">
@@ -288,9 +300,7 @@
             <img src="assets/icons/google_logo.png" alt="Google Play" class="service-logo">
           </div>
         </div>
-
       </div>
-
     </div>
 
     <!-- ============================================= -->
@@ -298,9 +308,8 @@
     <!-- ============================================= -->
     <div id="screen-service-details" class="screen">
 
-      <!-- ===== ПЛАШКА СЕРВИСА ===== -->
       <div class="service-detail-card">
-        <button class="back-btn" data-screen="screen-services">←</button>
+        <button class="btn btn-back" data-screen="screen-services">←</button>
         <div class="service-detail-content">
           <img src="assets/icons/playstation.png" alt="PlayStation" class="service-detail-icon"
             id="service-detail-icon">
@@ -311,35 +320,31 @@
         </div>
       </div>
 
-      <!-- ===== БЛОК: РЕГИОН ===== -->
       <div class="selection-block">
         <div class="block-label">🔴 Регион:</div>
         <div class="scroll-wrapper">
-          <div class="scroll-container" id="region-scroll">
+          <div class="scroll-horizontal" id="region-scroll">
             <!-- Кнопки регионов будут добавлены через JS -->
           </div>
         </div>
         <div class="scroll-indicator" id="region-indicator"></div>
       </div>
 
-      <!-- ===== БЛОК: НОМИНАЛ ===== -->
       <div class="selection-block">
         <div class="block-label">💰 Номинал:</div>
         <div class="scroll-wrapper">
-          <div class="scroll-container" id="nominal-scroll">
+          <div class="scroll-horizontal" id="nominal-scroll">
             <!-- Кнопки номиналов будут добавлены через JS -->
           </div>
         </div>
         <div class="scroll-indicator" id="nominal-indicator"></div>
       </div>
 
-      <!-- ===== БЛОК: ИТОГО И ОПЛАТА ===== -->
       <div class="total-block">
         <div class="total-price" id="total-price">Итого: 0 руб</div>
         <button class="pay-btn" id="pay-btn">Оплатить</button>
       </div>
 
-      <!-- ===== БЛОК: ИНСТРУКЦИЯ ===== -->
       <div class="instruction-block">
         <div class="instruction-title">📖 Инструкция по активации</div>
         <div class="instruction-text" id="instruction-text">
@@ -347,26 +352,22 @@
           разделе.
         </div>
       </div>
-
     </div>
+
     <!-- ============================================= -->
     <!-- ЭКРАН: STEAM ПОПОЛНЕНИЕ                       -->
     <!-- ============================================= -->
     <div id="screen-steam" class="screen">
 
-      <!-- ===== КАРТОЧКА STEAM ===== -->
       <div class="steam-card">
-
-        <!-- ===== HEADER ===== -->
         <div class="steam-header">
-          <button class="back-btn" data-screen="screen-main">←</button>
+          <button class="btn btn-back" data-screen="screen-main">←</button>
           <div class="steam-header-content">
             <h1 class="steam-title">Пополнение Steam</h1>
             <p class="steam-subtitle">Прямое зачисление на кошелёк Steam</p>
           </div>
         </div>
 
-        <!-- ===== БЛОК: ВЫБОР ВАЛЮТЫ ===== -->
         <div class="steam-block">
           <div class="steam-block-label">ВАЛЮТА КОШЕЛЬКА</div>
           <div class="steam-currency-row" id="currency-row">
@@ -374,7 +375,6 @@
           </div>
         </div>
 
-        <!-- ===== БЛОК: ЛОГИН STEAM ===== -->
         <div class="steam-block">
           <div class="steam-login-header">
             <div class="steam-block-label">ЛОГИН STEAM</div>
@@ -389,28 +389,24 @@
           <input type="text" class="steam-input" id="steam-login-input" placeholder="account_name" autocomplete="off">
         </div>
 
-        <!-- ===== БЛОК: СУММА ПОПОЛНЕНИЯ ===== -->
         <div class="steam-block">
           <div class="steam-block-label">СУММА ПОПОЛНЕНИЯ</div>
           <div class="steam-amount-field">
             <span class="steam-currency-symbol" id="currency-symbol">₽</span>
             <input type="text" class="steam-amount-input" id="steam-amount-input" placeholder="0" inputmode="numeric">
           </div>
-          <!-- ===== ДИАПАЗОН ЛИМИТОВ ===== -->
           <div class="steam-range-hint" id="steam-range-hint">
             Диапазон: <span id="range-min">50</span>–<span id="range-max">30000</span> <span
               id="range-currency">RUB</span>
           </div>
         </div>
 
-        <!-- ===== БЛОК: БЫСТРЫЕ СУММЫ ===== -->
         <div class="steam-block">
           <div class="steam-quick-amounts" id="quick-amounts">
             <!-- Кнопки быстрых сумм создаются через JS -->
           </div>
         </div>
 
-        <!-- ===== БЛОК: ИНФОРМАЦИЯ О ПОПОЛНЕНИИ ===== -->
         <div class="steam-block">
           <div class="steam-info-row">
             <span class="steam-info-label">Логин Steam</span>
@@ -422,25 +418,22 @@
           </div>
         </div>
 
-        <!-- ===== КНОПКА ===== -->
         <button class="steam-submit-btn" id="steam-submit-btn" disabled>
           <span id="submit-text">Укажите логин Steam</span>
           <span id="submit-limits" class="submit-limits"></span>
         </button>
-
       </div>
-
     </div>
+
     <!-- ============================================= -->
     <!-- ЭКРАН: ПОДПИСКИ (ОТДЕЛЬНЫЙ)                  -->
     <!-- ============================================= -->
     <div id="screen-subscriptions" class="screen">
 
-      <!-- ===== ВЕРХНЯЯ ПАНЕЛЬ: 3 ИКОНКИ ===== -->
       <div class="sub-header">
-        <button class="back-btn" data-screen="screen-main">←</button>
+        <button class="btn btn-back" data-screen="screen-main">←</button>
         <div class="sub-header-icons" id="sub-header-icons">
-          <div class="sub-header-icon-wrapper" data-service="discord">
+          <div class="sub-header-icon-wrapper active" data-service="discord">
             <img src="assets/icons/discord.png" alt="Discord" class="sub-header-icon">
             <span class="sub-header-label">Discord</span>
           </div>
@@ -456,17 +449,19 @@
         <div class="sub-header-placeholder"></div>
       </div>
 
-      <!-- ===== КОНТЕНТ ===== -->
       <div id="sub-content">
         <!-- Сюда будет рендериться контент через JS -->
       </div>
-
     </div>
-    <!-- ============================================= -->
-    <!-- БЛОК: SCRIPTS                               -->
-    <!-- ============================================= -->
-    <script src="js/api.js"></script>
-    <script type="module" src="js/main.js"></script>
+
+  </div>
+
+  <!-- ============================================= -->
+  <!-- БЛОК: SCRIPTS                               -->
+  <!-- ============================================= -->
+  <script src="js/api.js"></script>
+  <script src="js/telegram.js"></script>
+  <script type="module" src="js/main.js"></script>
 </body>
 
 </html>

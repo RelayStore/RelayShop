@@ -1,0 +1,33 @@
+/* ============================================= */
+/* БЛОК: ИНТЕГРАЦИЯ С TELEGRAM                  */
+/* ============================================= */
+
+/* ===== SAFE AREA ===== */
+#app {
+  padding-top: env(safe-area-inset-top, 0);
+  padding-bottom: calc(var(--container-padding) + env(safe-area-inset-bottom, 0));
+  padding-left: max(var(--container-padding), env(safe-area-inset-left, 0));
+  padding-right: max(var(--container-padding), env(safe-area-inset-right, 0));
+}
+
+/* ===== ВЫСОТА VIEWPORT ===== */
+#app {
+  min-height: var(--tg-stable-height, 100dvh);
+}
+
+/* ===== СКРОЛЛ ===== */
+body {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ===== ОТКЛЮЧАЕМ АНИМАЦИИ ДЛЯ СЛАБЫХ УСТРОЙСТВ ===== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
