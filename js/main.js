@@ -31,6 +31,9 @@ import {
     selectSubPlanFromButton
 } from './screens/subscriptions.js';
 
+// Импортируем Telegram (новый файл)
+import './core/telegram.js';
+
 // =============================================
 // ГЛОБАЛЬНЫЙ ДОСТУП ДЛЯ onclick (синхронно)
 // =============================================
@@ -48,9 +51,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. Навигация
     initNavigation();
     
-    // 2. Скроллеры
+    // 2. Скроллеры (поддерживаем оба селектора)
     setTimeout(() => {
         initScrollDrag('.scroll-container');
+        initScrollDrag('.scroll-horizontal');
         initScrollDrag('.steam-quick-amounts');
     }, 100);
     
