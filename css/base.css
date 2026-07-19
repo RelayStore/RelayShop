@@ -8,18 +8,27 @@
   box-sizing: border-box;
 }
 
-html, body {
+html {
   width: 100%;
-  min-height: 100vh;
+  height: 100%;
+  /* CSS-переменные от Telegram (устанавливаются адаптером) */
+  padding: var(--tg-safe-area-inset-top, 0px) 
+           var(--tg-safe-area-inset-right, 0px) 
+           var(--tg-safe-area-inset-bottom, 0px) 
+           var(--tg-safe-area-inset-left, 0px);
 }
 
 body {
+  width: 100%;
+  min-height: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
   background-color: #0b0b0f;
-   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
   color: #ffffff;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  display: block;
+  overflow: hidden;
 }
 
 /* ============================================= */
@@ -28,10 +37,29 @@ body {
 
 #app {
   width: 100%;
+  
+  /* 
+    ❗ РЕШЕНИЕ ПРОБЛЕМЫ С vh ❗
+    Используем CSS-переменную --vh, которую устанавливает адаптер
+    Тройной резерв для разных браузеров:
+    1. 100vh - для старых браузеров (запасной вариант)
+    2. calc(var(--vh, 1vh) * 100) - реальная высота от адаптера (основной)
+    3. -webkit-fill-available - для Safari (дополнительный)
+  */
   min-height: 100vh;
+  min-height: calc(var(--vh, 1vh) * 100);
+  min-height: -webkit-fill-available;
+  
+  height: 100%;
   background: radial-gradient(circle at 30% 10%, #1a1a2e, #0b0b0f 80%);
-  padding: 5vh 4vw 4vh 4vw;
+  
+  /* Используем отступы с учётом Telegram safe areas */
+  padding: 20px 16px 16px 16px;
+  padding-top: calc(20px + var(--tg-content-safe-area-inset-top, 0px));
+  padding-bottom: calc(16px + var(--tg-content-safe-area-inset-bottom, 0px));
+  
   position: relative;
+  overflow-y: auto;
 }
 
 /* ============================================= */
@@ -45,6 +73,7 @@ body {
   width: 100%;
   padding: 0;
   margin-bottom: 6vh;
+  margin-bottom: clamp(20px, 6vh, 48px);
 }
 
 /* ============================================= */
@@ -54,12 +83,12 @@ body {
 .header-left {
   display: flex;
   align-items: center;
-  gap: 1.2vw;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
 .logo-image {
-  height: 10vh;
+  height: clamp(36px, 10vh, 60px);
   width: auto;
   display: block;
   object-fit: contain;
@@ -68,7 +97,7 @@ body {
 
 .logo-divider {
   color: rgba(255, 255, 255, 0.3);
-  font-size: 4vh;
+  font-size: clamp(20px, 4vh, 32px);
   font-weight: 300;
   line-height: 1;
   display: inline-block;
@@ -76,7 +105,7 @@ body {
 
 .logo-text {
   color: #ffffff;
-  font-size: 3.2vh;
+  font-size: clamp(20px, 3.2vh, 32px);
   font-weight: 600;
   letter-spacing: 0.5px;
   display: inline-block;
@@ -103,6 +132,8 @@ body {
   justify-content: center;
   width: auto;
   height: auto;
+  min-width: 44px;
+  min-height: 44px;
   transition: opacity 0.2s ease;
 }
 
@@ -112,8 +143,8 @@ body {
 }
 
 .profile-icon {
-  width: 5vh;
-  height: 5vh;
+  width: clamp(24px, 5vh, 36px);
+  height: clamp(24px, 5vh, 36px);
   color: #f0f0f5;
   stroke: currentColor;
   fill: none;
@@ -133,7 +164,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 8vh;
+  margin-bottom: clamp(24px, 8vh, 64px);
 }
 
 /* ============================================= */
@@ -143,22 +174,22 @@ body {
 .ps-header {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: clamp(8px, 2vw, 16px);
   margin-bottom: 12px;
   justify-content: center;
   width: 100%;
 }
 
 .ps-icon {
-  width: 56px;
-  height: 56px;
+  width: clamp(40px, 6vw, 56px);
+  height: clamp(40px, 6vw, 56px);
   object-fit: contain;
   flex-shrink: 0;
 }
 
 .ps-title {
   color: #FAF8F6;
-  font-size: 52px;
+  font-size: clamp(28px, 6vw, 52px);
   font-weight: 700;
   letter-spacing: -0.5px;
   line-height: 1.2;
@@ -171,9 +202,9 @@ body {
 
 .ps-subtitle {
   color: rgba(255, 255, 255, 0.6);
-  font-size: 20px;
+  font-size: clamp(14px, 2.2vw, 20px);
   font-weight: 300;
-  margin-bottom: 32px;
+  margin-bottom: clamp(20px, 4vw, 32px);
   letter-spacing: 0.3px;
   text-align: center;
   width: 100%;
@@ -185,7 +216,7 @@ body {
 
 .country-cards {
   display: flex;
-  gap: 24px;
+  gap: clamp(12px, 2.5vw, 24px);
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
@@ -193,13 +224,14 @@ body {
 }
 
 .country-card {
-  width: 400px;
-  height: 240px;
+  width: 100%;
+  max-width: 400px;
+  aspect-ratio: 5/3;
   position: relative;
   overflow: hidden;
   border: none;
   outline: none;
-  border-radius: 30px;
+  border-radius: clamp(20px, 3vw, 30px);
   cursor: pointer;
   background: #111;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
@@ -227,7 +259,7 @@ body {
 .overlay {
   position: absolute;
   inset: 3px;
-  border-radius: 28px;
+  border-radius: clamp(18px, 2.8vw, 28px);
   background: linear-gradient(
     to bottom,
     rgba(0, 0, 0, 0.25),
@@ -241,31 +273,31 @@ body {
 
 .country-title {
   position: absolute;
-  top: 18px;
-  left: 22px;
+  top: clamp(12px, 2vh, 18px);
+  left: clamp(14px, 2.5vw, 22px);
   z-index: 5;
   color: #FAF8F6;
-  font-size: 33px;
+  font-size: clamp(20px, 3.5vw, 33px);
   font-weight: 700;
   letter-spacing: -0.3px;
 }
 
 .country-badge {
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: clamp(10px, 1.5vh, 16px);
+  right: clamp(10px, 1.5vw, 16px);
   z-index: 5;
   display: flex;
   align-items: center;
   gap: 7px;
-  height: 28px;
-  padding: 0 12px;
+  height: clamp(24px, 3vh, 28px);
+  padding: 0 clamp(8px, 1vw, 12px);
   border-radius: 999px;
   background: rgba(30, 30, 30, 0.5);
   backdrop-filter: blur(18px);
   border: 1px solid rgba(255, 255, 255, 0.06);
   color: white;
-  font-size: 11px;
+  font-size: clamp(9px, 1.2vw, 11px);
   font-weight: 600;
 }
 
@@ -278,14 +310,14 @@ body {
 
 .country-region {
   position: absolute;
-  left: 20px;
-  bottom: 18px;
+  left: clamp(14px, 2.5vw, 20px);
+  bottom: clamp(12px, 2vh, 18px);
   z-index: 5;
   display: flex;
   align-items: center;
   gap: 8px;
   color: #d8d8d8;
-  font-size: 14px;
+  font-size: clamp(12px, 1.5vw, 14px);
   font-weight: 500;
 }
 
@@ -305,8 +337,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 6vh;
-  padding-top: 4vh;
+  margin-top: clamp(24px, 6vh, 48px);
+  padding-top: clamp(20px, 4vh, 32px);
   border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
@@ -326,7 +358,7 @@ body {
 
 .gift-title {
   color: #FAF8F6;
-  font-size: 38px;
+  font-size: clamp(24px, 4.5vw, 38px);
   font-weight: 700;
   letter-spacing: -0.5px;
   line-height: 1.2;
@@ -337,13 +369,15 @@ body {
   background: transparent;
   border: none;
   color: rgba(255, 255, 255, 0.5);
-  font-size: 16px;
+  font-size: clamp(12px, 1.8vw, 16px);
   font-weight: 400;
   cursor: pointer;
   padding: 8px 16px;
   border-radius: 8px;
   position: absolute;
   right: 0;
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .show-all-btn:hover {
@@ -357,7 +391,7 @@ body {
 
 .gift-subtitle {
   color: rgba(255, 255, 255, 0.5);
-  font-size: 16px;
+  font-size: clamp(13px, 1.8vw, 16px);
   font-weight: 300;
   text-align: center;
   width: 100%;
@@ -373,7 +407,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 24px;
+  gap: clamp(16px, 2.5vw, 24px);
   width: 100%;
   flex-wrap: wrap;
 }
@@ -386,9 +420,9 @@ body {
 }
 
 .gift-icon-btn {
-  width: 88px;
-  height: 88px;
-  border-radius: 20px;
+  width: clamp(64px, 10vw, 88px);
+  height: clamp(64px, 10vw, 88px);
+  border-radius: clamp(16px, 2.5vw, 20px);
   background: rgba(30, 30, 40, 0.6);
   border: 1.5px solid rgba(255, 255, 255, 0.1);
   cursor: pointer;
@@ -397,11 +431,13 @@ body {
   justify-content: center;
   padding: 0;
   backdrop-filter: blur(10px);
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .gift-icon {
-  width: 52px;
-  height: 52px;
+  width: clamp(36px, 6vw, 52px);
+  height: clamp(36px, 6vw, 52px);
   object-fit: contain;
   display: block;
   opacity: 0.9;
@@ -409,7 +445,7 @@ body {
 
 .gift-icon-label {
   color: rgba(255, 255, 255, 0.5);
-  font-size: 13px;
+  font-size: clamp(11px, 1.4vw, 13px);
   font-weight: 400;
   text-align: center;
   letter-spacing: 0.2px;
@@ -424,8 +460,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 6vh;
-  padding-top: 4vh;
+  margin-top: clamp(24px, 6vh, 48px);
+  padding-top: clamp(20px, 4vh, 32px);
   border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
@@ -445,7 +481,7 @@ body {
 
 .subscription-title {
   color: #FAF8F6;
-  font-size: 38px;
+  font-size: clamp(24px, 4.5vw, 38px);
   font-weight: 700;
   letter-spacing: -0.5px;
   line-height: 1.2;
@@ -458,7 +494,7 @@ body {
 
 .subscription-subtitle {
   color: rgba(255, 255, 255, 0.5);
-  font-size: 16px;
+  font-size: clamp(13px, 1.8vw, 16px);
   font-weight: 300;
   text-align: center;
   width: 100%;
@@ -474,7 +510,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 24px;
+  gap: clamp(16px, 2.5vw, 24px);
   width: 100%;
   flex-wrap: wrap;
 }
@@ -487,9 +523,9 @@ body {
 }
 
 .subscription-icon-btn {
-  width: 88px;
-  height: 88px;
-  border-radius: 20px;
+  width: clamp(64px, 10vw, 88px);
+  height: clamp(64px, 10vw, 88px);
+  border-radius: clamp(16px, 2.5vw, 20px);
   background: rgba(30, 30, 40, 0.6);
   border: 1.5px solid rgba(255, 255, 255, 0.1);
   cursor: pointer;
@@ -498,11 +534,13 @@ body {
   justify-content: center;
   padding: 0;
   backdrop-filter: blur(10px);
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .subscription-icon {
-  width: 52px;
-  height: 52px;
+  width: clamp(36px, 6vw, 52px);
+  height: clamp(36px, 6vw, 52px);
   object-fit: contain;
   display: block;
   opacity: 0.9;
@@ -510,7 +548,7 @@ body {
 
 .subscription-icon-label {
   color: rgba(255, 255, 255, 0.5);
-  font-size: 13px;
+  font-size: clamp(11px, 1.4vw, 13px);
   font-weight: 400;
   text-align: center;
   letter-spacing: 0.2px;
@@ -525,8 +563,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 6vh;
-  padding-top: 4vh;
+  margin-top: clamp(24px, 6vh, 48px);
+  padding-top: clamp(20px, 4vh, 32px);
   border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
@@ -537,22 +575,22 @@ body {
 .promo-header {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: clamp(8px, 2vw, 16px);
   margin-bottom: 24px;
   justify-content: center;
   width: 100%;
 }
 
 .promo-icon {
-  width: 48px;
-  height: 48px;
+  width: clamp(36px, 5vw, 48px);
+  height: clamp(36px, 5vw, 48px);
   object-fit: contain;
   flex-shrink: 0;
 }
 
 .promo-title {
   color: #FAF8F6;
-  font-size: 38px;
+  font-size: clamp(20px, 4.5vw, 38px);
   font-weight: 700;
   letter-spacing: -0.5px;
   line-height: 1.2;
@@ -566,14 +604,14 @@ body {
 .promo-card {
   width: 100%;
   max-width: 900px;
-  height: 200px;
+  aspect-ratio: 9/2;
   position: relative;
   overflow: hidden;
-  border-radius: 30px;
+  border-radius: clamp(20px, 3vw, 30px);
   cursor: pointer;
   background: #111;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
-   margin: 0 auto;
+  margin: 0 auto;
 }
 
 .promo-bg {
@@ -587,7 +625,7 @@ body {
 .promo-overlay {
   position: absolute;
   inset: 3px;
-  border-radius: 28px;
+  border-radius: clamp(18px, 2.8vw, 28px);
   background: linear-gradient(
     to bottom,
     rgba(0, 0, 0, 0.30),
@@ -614,7 +652,7 @@ body {
 
 .promo-main-text {
   color: #FAF8F6;
-  font-size: 42px;
+  font-size: clamp(24px, 5vw, 42px);
   font-weight: 700;
   letter-spacing: -0.5px;
   line-height: 1.2;
@@ -624,11 +662,12 @@ body {
 
 .promo-sub-text {
   color: rgba(255, 255, 255, 0.85);
-  font-size: 18px;
+  font-size: clamp(14px, 2vw, 18px);
   font-weight: 400;
   letter-spacing: 0.3px;
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
 }
+
 /* ============================================= */
 /* БЛОК: СТИЛИ ДЛЯ ПЕРЕТАСКИВАНИЯ СКРОЛЛЕРА    */
 /* ============================================= */
@@ -648,6 +687,7 @@ body {
 .scroll-container.dragging .nominal-btn {
     pointer-events: none;
 }
+
 /* ============================================= */
 /* БЛОК: PROMO SECTION FIX                       */
 /* ============================================= */
@@ -657,4 +697,18 @@ body {
   justify-content: center;
   width: 100%;
   text-decoration: none;
+}
+
+/* ============================================= */
+/* БЛОК: МЕДИА-ЗАПРОСЫ ДЛЯ МАЛЕНЬКИХ ЭКРАНОВ   */
+/* ============================================= */
+
+@media (max-width: 480px) {
+  #app {
+    padding: 16px 12px 12px 12px;
+  }
+  
+  .country-card {
+    max-width: 100%;
+  }
 }

@@ -19,8 +19,8 @@
   display: none;
   flex-direction: column;
   align-items: center;
-  margin-top: 2vh;
-  padding: 0 0 4vh 0;
+  margin-top: clamp(4px, 1vh, 10px);
+  padding: 0 0 clamp(8px, 2vh, 16px) 0;
 }
 
 #screen-services.active {
@@ -36,7 +36,7 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin-bottom: 24px;
+  margin-bottom: clamp(8px, 1.5vw, 12px);
   padding: 0 4px;
 }
 
@@ -44,27 +44,28 @@
   background: transparent;
   border: none;
   color: #FAF8F6;
-  font-size: 28px;
+  font-size: clamp(12px, 1.8vw, 14px);
   cursor: pointer;
-  padding: 4px 8px;
-  transition: opacity 0.2s ease;
-}
-
-.back-btn:hover {
-  opacity: 0.7;
+  padding: 4px 6px;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .services-title {
   color: #FAF8F6;
-  font-size: 32px;
+  font-size: clamp(14px, 2vw, 16px);
   font-weight: 700;
   letter-spacing: -0.3px;
   text-align: center;
 }
 
 .services-placeholder {
-  width: 48px;
-  height: 48px;
+  width: clamp(20px, 3vw, 24px);
+  height: clamp(20px, 3vw, 24px);
 }
 
 /* ============================================= */
@@ -74,7 +75,7 @@
 .services-list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: clamp(6px, 1vw, 8px);
   width: 100%;
   max-width: 900px;
 }
@@ -85,23 +86,13 @@
 
 .service-card {
   width: 100%;
-  height: 90px;
-  border-radius: 22px;
+  min-height: clamp(35px, 5vh, 45px);
+  border-radius: clamp(9px, 1.2vw, 11px);
   position: relative;
   overflow: hidden;
   cursor: pointer;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
   border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.service-card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
-}
-
-.service-card:active {
-  transform: scale(0.98);
 }
 
 /* ============================================= */
@@ -111,17 +102,17 @@
 .service-info {
   position: absolute;
   top: 50%;
-  left: 24px;
+  left: clamp(8px, 1.2vw, 12px);
   transform: translateY(-50%);
   z-index: 2;
 }
 
 .service-name {
   color: #FFFFFF;
-  font-size: 28px;
+  font-size: clamp(12px, 1.5vw, 14px);
   font-weight: 700;
   letter-spacing: -0.3px;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
 }
 
 /* ============================================= */
@@ -130,12 +121,12 @@
 
 .service-logo-wrapper {
   position: absolute;
-  right: -60px;
+  right: clamp(-50px, -6vw, -40px);
   top: 50%;
   transform: translateY(-50%) rotate(-25deg);
   z-index: 1;
-  width: 180px;
-  height: 180px;
+  width: clamp(50px, 10vw, 60px);
+  height: clamp(50px, 10vw, 60px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -147,6 +138,7 @@
   object-fit: cover;
   opacity: 0.4;
 }
+
 /* ============================================= */
 /* БЛОК: STEAM DIRECT (ПРЕМИУМ ВЕРСИЯ)          */
 /* ============================================= */
@@ -156,8 +148,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 6vh;
-  padding-top: 4vh;
+  margin-top: clamp(12px, 3vh, 24px);
+  padding-top: clamp(10px, 2vh, 16px);
   border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
@@ -165,22 +157,22 @@
 .steam-direct-header {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: clamp(6px, 1vw, 8px);
   margin-bottom: 8px;
   justify-content: center;
   width: 100%;
 }
 
 .steam-direct-icon {
-  width: 48px;
-  height: 48px;
+  width: clamp(16px, 2.5vw, 18px);
+  height: clamp(16px, 2.5vw, 18px);
   object-fit: contain;
   flex-shrink: 0;
 }
 
 .steam-direct-title {
   color: #FAF8F6;
-  font-size: 38px;
+  font-size: clamp(14px, 2.2vw, 19px);
   font-weight: 700;
   letter-spacing: -0.5px;
   line-height: 1.2;
@@ -190,11 +182,11 @@
 /* ===== ПОДЗАГОЛОВОК ===== */
 .steam-direct-subtitle {
   color: rgba(255, 255, 255, 0.5);
-  font-size: 16px;
+  font-size: clamp(10px, 1.2vw, 13px);
   font-weight: 300;
   text-align: center;
   width: 100%;
-  margin-bottom: 24px;
+  margin-bottom: clamp(8px, 1.5vw, 12px);
   letter-spacing: 0.2px;
 }
 
@@ -205,10 +197,10 @@
 .steam-direct-card {
   width: 100%;
   max-width: 900px;
-  height: 200px;
+  min-height: clamp(80px, 12vh, 120px);
   position: relative;
   overflow: hidden;
-  border-radius: 30px;
+  border-radius: clamp(12px, 1.8vw, 16px);
   cursor: pointer;
   
   /* ГРАДИЕНТ СВЕРХУ ВНИЗ - КОНТРАСТНЫЙ */
@@ -222,14 +214,15 @@
   );
   
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  /* ПРОСТАЯ ОБВОДКА вместо маски (безопасно для Telegram) */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 0 0 1.5px rgba(255, 255, 255, 0.12);
 }
 
 /* ===== ОВЕРЛЕЙ (КАК У ПРОМО-БЛОКА) ===== */
 .steam-direct-overlay {
   position: absolute;
   inset: 3px;
-  border-radius: 28px;
+  border-radius: clamp(10px, 1.6vw, 14px);
   background: linear-gradient(
     to bottom,
     rgba(0, 0, 0, 0.30) 0%,
@@ -241,50 +234,18 @@
   z-index: 1;
 }
 
-/* ===== СВЕТЛАЯ ОБВОДКА (КАК У КАРТОК РЕГИОНОВ) ===== */
-.steam-direct-card::before {
-  content: '';
-  position: absolute;
-  inset: 3px;
-  border-radius: 28px;
-  padding: 1.5px;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.25) 0%,
-    rgba(255, 255, 255, 0.05) 40%,
-    rgba(255, 255, 255, 0.02) 70%,
-    rgba(255, 255, 255, 0.12) 100%
-  );
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-  z-index: 2;
-}
-
-/* ===== ХОВЕР И АКТИВ ===== */
-.steam-direct-card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-}
-
-.steam-direct-card:active {
-  transform: scale(0.98);
-}
-
 /* ============================================= */
 /* БЛОК: ЛОГОТИП (ПРИЖАТ К ЛЕВОМУ КРАЮ)        */
 /* ============================================= */
 
 .steam-direct-logo-wrapper {
   position: absolute;
-  left: -30px;
+  left: clamp(-50px, -6vw, -30px);
   top: 50%;
   transform: translateY(-50%);
   z-index: 3;
-  width: 220px;
-  height: 220px;
+  width: clamp(90px, 15vw, 140px);
+  height: clamp(90px, 15vw, 140px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -295,8 +256,8 @@
   width: 85%;
   height: 85%;
   object-fit: contain;
-  transform: scaleX(-1);
-  opacity: 1; /* ← 100% непрозрачность */
+  transform: scaleX(-1) translateZ(0);
+  opacity: 1;
   filter: drop-shadow(0 0 40px rgba(91, 160, 224, 0.20));
 }
 
@@ -318,23 +279,23 @@
 .steam-direct-card-title {
   display: block;
   color: #FFFFFF;
-  font-size: 44px;
+  font-size: clamp(16px, 2.5vw, 22px);
   font-weight: 800;
-  letter-spacing: 1.5px;
+  letter-spacing: clamp(0.5px, 0.1vw, 1px);
   text-transform: uppercase;
   text-shadow: 
     0 2px 20px rgba(0, 0, 0, 0.4),
     0 0 60px rgba(91, 160, 224, 0.10);
   line-height: 1.1;
-  margin-bottom: 6px;
+  margin-bottom: 2px;
 }
 
 .steam-direct-card-commission {
   display: block;
   color: rgba(255, 255, 255, 0.90);
-  font-size: 20px;
-  font-weight: 600; /* ← стандартная жирность (не тонкая) */
-  letter-spacing: 2px;
+  font-size: clamp(10px, 1.2vw, 14px);
+  font-weight: 600;
+  letter-spacing: clamp(0.5px, 0.1vw, 1px);
   text-shadow: 0 2px 16px rgba(0, 0, 0, 0.3);
 }
 
@@ -344,20 +305,20 @@
 
 .steam-direct-badge {
   position: absolute;
-  bottom: 16px;
-  right: 20px;
+  bottom: clamp(6px, 1vh, 10px);
+  right: clamp(6px, 1vw, 12px);
   z-index: 5;
   display: flex;
   align-items: center;
-  gap: 8px;
-  height: 32px;
-  padding: 0 16px;
+  gap: clamp(3px, 0.5vw, 5px);
+  height: clamp(18px, 2.5vh, 24px);
+  padding: 0 clamp(6px, 1vw, 10px);
   border-radius: 999px;
   background: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(18px);
   border: 1px solid rgba(255, 255, 255, 0.08);
   color: #FFFFFF;
-  font-size: 12px;
+  font-size: clamp(7px, 0.8vw, 9px);
   font-weight: 700;
   letter-spacing: 0.5px;
   text-transform: uppercase;
@@ -365,183 +326,15 @@
 }
 
 .badge-dot {
-  width: 7px;
-  height: 7px;
+  width: clamp(4px, 0.5vw, 5px);
+  height: clamp(4px, 0.5vw, 5px);
   border-radius: 50%;
   background: #ff8d23;
   flex-shrink: 0;
-  animation: pulse-dot 2s ease-in-out infinite;
 }
 
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(0.8); }
-}
-
-/* ============================================= */
-/* БЛОК: АДАПТИВНОСТЬ                           */
-/* ============================================= */
-
-@media (max-width: 768px) {
-  .steam-direct-card {
-    height: 170px;
-  }
-  
-  .steam-direct-overlay {
-    border-radius: 24px;
-  }
-  
-  .steam-direct-card::before {
-    border-radius: 24px;
-  }
-  
-  .steam-direct-logo-wrapper {
-    left: -20px;
-    width: 160px;
-    height: 160px;
-  }
-  
-  .steam-direct-card-title {
-    font-size: 34px;
-    letter-spacing: 1px;
-  }
-  
-  .steam-direct-card-commission {
-    font-size: 17px;
-    letter-spacing: 1.5px;
-  }
-  
-  .steam-direct-badge {
-    bottom: 12px;
-    right: 14px;
-    height: 28px;
-    padding: 0 14px;
-    font-size: 10px;
-  }
-  
-  .steam-direct-title {
-    font-size: 32px;
-  }
-}
-
-@media (max-width: 480px) {
-  .steam-direct-card {
-    height: 140px;
-    border-radius: 24px;
-  }
-  
-  .steam-direct-overlay {
-    border-radius: 22px;
-  }
-  
-  .steam-direct-card::before {
-    border-radius: 22px;
-    inset: 2px;
-  }
-  
-  .steam-direct-logo-wrapper {
-    left: -16px;
-    width: 120px;
-    height: 120px;
-  }
-  
-  .steam-direct-logo {
-    width: 80%;
-    height: 80%;
-  }
-  
-  .steam-direct-card-title {
-    font-size: 26px;
-    letter-spacing: 0.5px;
-  }
-  
-  .steam-direct-card-commission {
-    font-size: 14px;
-    letter-spacing: 1px;
-  }
-  
-  .steam-direct-badge {
-    bottom: 10px;
-    right: 10px;
-    height: 24px;
-    padding: 0 12px;
-    font-size: 9px;
-    gap: 6px;
-  }
-  
-  .badge-dot {
-    width: 5px;
-    height: 5px;
-  }
-  
-  .steam-direct-title {
-    font-size: 26px;
-  }
-  
-  .steam-direct-icon {
-    width: 36px;
-    height: 36px;
-  }
-}
 /* ============================================= */
 /* БЛОК: ЭКРАН ДЕТАЛЕЙ СЕРВИСА                 */
-/* ============================================= */
-#screen-service-details {
-  width: 100%;
-  display: none;
-  flex-direction: column;
-  padding: 0 0 20px 0;
-}
-
-#screen-service-details.active {
-  display: flex;
-}
-
-/* ===== ВЕРХНЯЯ ПЛАШКА ===== */
-.service-detail-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  padding: 10px 0 20px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  margin-bottom: 16px;
-}
-
-.service-detail-info {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.service-detail-icon {
-  width: 44px;
-  height: 44px;
-  object-fit: contain;
-}
-
-.service-detail-name {
-  color: #FAF8F6;
-  font-size: 28px;
-  font-weight: 700;
-  letter-spacing: -0.3px;
-}
-
-.service-detail-placeholder {
-  width: 48px;
-}
-
-/* ===== ПОДЗАГОЛОВОК ===== */
-.service-detail-subtitle {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 16px;
-  font-weight: 400;
-  margin-bottom: 24px;
-  letter-spacing: 0.3px;
-  text-align: center;
-}
-/* ============================================= */
-/* БЛОК: ЭКРАН ДЕТАЛЕЙ СЕРВИСА - ОГРОМНЫЙ       */
 /* ============================================= */
 
 #screen-service-details {
@@ -558,14 +351,14 @@
 /* ===== ПЛАШКА СЕРВИСА ===== */
 .service-detail-card {
   width: 100%;
-  padding: 24px 28px;
-  border-radius: 28px;
+  padding: clamp(10px, 1.5vw, 14px) clamp(12px, 2vw, 16px);
+  border-radius: clamp(12px, 1.8vw, 16px);
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.06);
   display: flex;
   align-items: center;
-  gap: 18px;
-  margin-bottom: 28px;
+  gap: clamp(8px, 1.2vw, 12px);
+  margin-bottom: clamp(12px, 2vh, 16px);
   backdrop-filter: blur(10px);
 }
 
@@ -574,26 +367,27 @@
   background: transparent;
   border: none;
   color: #FAF8F6;
-  font-size: 34px;
+  font-size: clamp(16px, 2.5vw, 20px);
   cursor: pointer;
-  padding: 0;
-  transition: opacity 0.2s ease;
-}
-
-.service-detail-card .back-btn:hover {
-  opacity: 0.7;
+  padding: 4px 6px;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .service-detail-content {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: clamp(8px, 1.2vw, 12px);
   flex: 1;
 }
 
 .service-detail-icon {
-  width: 72px;
-  height: 72px;
+  width: clamp(28px, 4vw, 36px);
+  height: clamp(28px, 4vw, 36px);
   object-fit: contain;
   flex-shrink: 0;
 }
@@ -601,12 +395,12 @@
 .service-detail-text {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
 }
 
 .service-detail-name {
   color: #FAF8F6;
-  font-size: 40px;
+  font-size: clamp(16px, 2.5vw, 20px);
   font-weight: 700;
   letter-spacing: -0.3px;
   line-height: 1.2;
@@ -614,25 +408,25 @@
 
 .service-detail-subtitle {
   color: rgba(255, 255, 255, 0.5);
-  font-size: 18px;
+  font-size: clamp(10px, 1.2vw, 13px);
   font-weight: 400;
   letter-spacing: 0.3px;
 }
 
 /* ============================================= */
-/* БЛОК: БЛОК ВЫБОРА (РЕГИОН/НОМИНАЛ) - ОГРОМНЫЙ */
+/* БЛОК: БЛОК ВЫБОРА (РЕГИОН/НОМИНАЛ)          */
 /* ============================================= */
 
 .selection-block {
-  margin-bottom: 32px;
+  margin-bottom: clamp(12px, 2vh, 16px);
   width: 100%;
 }
 
 .block-label {
   color: rgba(255, 255, 255, 0.7);
-  font-size: 22px;
+  font-size: clamp(12px, 1.5vw, 14px);
   font-weight: 600;
-  margin-bottom: 16px;
+  margin-bottom: clamp(8px, 1vw, 12px);
   letter-spacing: 0.2px;
 }
 
@@ -646,10 +440,10 @@
 
 .scroll-container {
   display: flex;
-  gap: 18px;
+  gap: clamp(8px, 1vw, 12px);
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 6px 4px 18px 4px;
+  padding: 6px 4px 12px 4px;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   cursor: grab;
@@ -661,32 +455,23 @@
   display: none;
 }
 
-.scroll-container:active {
-  cursor: grabbing;
-}
-
-/* ===== КНОПКИ РЕГИОНОВ (ОГРОМНЫЕ) ===== */
+/* ===== КНОПКИ РЕГИОНОВ ===== */
 .region-btn {
   flex-shrink: 0;
-  padding: 18px 32px;
-  border-radius: 36px;
+  padding: clamp(8px, 1vw, 12px) clamp(12px, 2vw, 18px);
+  border-radius: clamp(16px, 2.5vw, 20px);
   border: 2px solid rgba(255, 255, 255, 0.10);
   background: rgba(255, 255, 255, 0.04);
   color: #FAF8F6;
-  font-size: 24px;
+  font-size: clamp(12px, 1.5vw, 14px);
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
   white-space: nowrap;
   backdrop-filter: blur(4px);
-  min-height: 68px;
+  min-height: clamp(32px, 5vh, 40px);
   display: flex;
   align-items: center;
-}
-
-.region-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.20);
+  -webkit-tap-highlight-color: transparent;
 }
 
 .region-btn.active {
@@ -695,30 +480,25 @@
   box-shadow: 0 0 40px rgba(255, 255, 255, 0.08);
 }
 
-/* ===== КНОПКИ НОМИНАЛОВ (ОГРОМНЫЕ) ===== */
+/* ===== КНОПКИ НОМИНАЛОВ ===== */
 .nominal-btn {
   flex-shrink: 0;
-  min-width: 180px;
-  padding: 20px 28px;
-  border-radius: 24px;
+  min-width: clamp(80px, 12vw, 110px);
+  padding: clamp(10px, 1.5vw, 14px) clamp(12px, 2vw, 16px);
+  border-radius: clamp(12px, 1.8vw, 16px);
   border: 2px solid rgba(255, 255, 255, 0.08);
   background: rgba(255, 255, 255, 0.03);
   color: #FAF8F6;
   cursor: pointer;
-  transition: all 0.2s ease;
   text-align: center;
   backdrop-filter: blur(4px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  min-height: 100px;
+  gap: 2px;
+  min-height: clamp(50px, 7vh, 60px);
   justify-content: center;
-}
-
-.nominal-btn:hover {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(255, 255, 255, 0.18);
+  -webkit-tap-highlight-color: transparent;
 }
 
 .nominal-btn.active {
@@ -728,12 +508,12 @@
 }
 
 .nominal-amount {
-  font-size: 28px;
+  font-size: clamp(14px, 2vw, 18px);
   font-weight: 700;
 }
 
 .nominal-stock {
-  font-size: 15px;
+  font-size: clamp(9px, 1vw, 11px);
   font-weight: 400;
   color: rgba(255, 255, 255, 0.4);
 }
@@ -747,11 +527,11 @@
 /* ===== ИНДИКАТОР СКРОЛЛА ===== */
 .scroll-indicator {
   display: none;
-  height: 5px;
+  height: 3px;
   width: 100%;
   background: rgba(255, 255, 255, 0.06);
   border-radius: 4px;
-  margin-top: 8px;
+  margin-top: 4px;
 }
 
 .scroll-indicator.active {
@@ -763,51 +543,46 @@
   width: 30%;
   background: rgba(255, 255, 255, 0.25);
   border-radius: 4px;
-  transition: transform 0.15s ease;
 }
 
 /* ============================================= */
-/* БЛОК: ИТОГО И ОПЛАТА - ОГРОМНЫЙ              */
+/* БЛОК: ИТОГО И ОПЛАТА                         */
 /* ============================================= */
 
 .total-block {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  gap: clamp(8px, 1vw, 12px);
   background: rgba(255, 255, 255, 0.04);
-  border-radius: 24px;
-  padding: 24px 28px;
-  margin: 24px 0 28px 0;
+  border-radius: clamp(12px, 1.8vw, 16px);
+  padding: clamp(10px, 1.5vw, 14px) clamp(12px, 2vw, 16px);
+  margin: clamp(10px, 1.5vh, 14px) 0 clamp(12px, 2vh, 16px) 0;
   border: 1px solid rgba(255, 255, 255, 0.06);
+  flex-wrap: wrap;
 }
 
 .total-price {
   color: #FAF8F6;
-  font-size: 34px;
+  font-size: clamp(16px, 2.5vw, 20px);
   font-weight: 700;
   letter-spacing: -0.2px;
+  flex: 1;
 }
 
 .pay-btn {
-  padding: 18px 48px;
-  border-radius: 36px;
+  padding: clamp(8px, 1vw, 12px) clamp(16px, 3vw, 28px);
+  border-radius: clamp(16px, 2.5vw, 20px);
   border: none;
   background: #FAF8F6;
   color: #0b0b0f;
-  font-size: 22px;
+  font-size: clamp(12px, 1.5vw, 14px);
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s ease;
-  min-height: 68px;
-}
-
-.pay-btn:hover {
-  transform: scale(1.03);
-  box-shadow: 0 8px 32px rgba(255, 255, 255, 0.15);
-}
-
-.pay-btn:active {
-  transform: scale(0.96);
+  min-height: clamp(32px, 5vh, 40px);
+  min-width: clamp(60px, 10vw, 80px);
+  -webkit-tap-highlight-color: transparent;
 }
 
 .pay-btn.disabled {
@@ -816,46 +591,32 @@
 }
 
 /* ============================================= */
-/* БЛОК: ИНСТРУКЦИЯ - ОГРОМНАЯ                  */
+/* БЛОК: ИНСТРУКЦИЯ                             */
 /* ============================================= */
 
 .instruction-block {
   background: rgba(255, 255, 255, 0.03);
-  border-radius: 24px;
-  padding: 22px 26px;
+  border-radius: clamp(12px, 1.8vw, 16px);
+  padding: clamp(10px, 1.5vw, 14px) clamp(12px, 2vw, 16px);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  margin-top: 12px;
+  margin-top: 8px;
 }
 
 .instruction-title {
   color: rgba(255, 255, 255, 0.6);
-  font-size: 18px;
+  font-size: clamp(11px, 1.3vw, 13px);
   font-weight: 600;
-  margin-bottom: 10px;
+  margin-bottom: 4px;
   letter-spacing: 0.3px;
 }
 
 .instruction-text {
   color: rgba(255, 255, 255, 0.5);
-  font-size: 17px;
+  font-size: clamp(10px, 1.2vw, 12px);
   font-weight: 400;
   line-height: 1.7;
 }
-/* ===== Стили для unavailable состояния ===== */
-.nominal-btn.out-of-stock {
-  opacity: 0.5;
-  pointer-events: none;
-  border-color: rgba(255, 255, 255, 0.05);
-  background: rgba(255, 255, 255, 0.01);
-}
 
-.nominal-stock.out-of-stock-text {
-  color: rgba(255, 100, 100, 0.5);
-}
-
-.nominal-btn.out-of-stock .nominal-amount {
-  opacity: 0.6;
-}
 /* ============================================= */
 /* БЛОК: STEAM ПОПОЛНЕНИЕ                       */
 /* ============================================= */
@@ -877,20 +638,20 @@
   width: 100%;
   max-width: 600px;
   background: rgba(255, 255, 255, 0.03);
-  border-radius: 28px;
-  padding: 24px 22px 28px;
+  border-radius: clamp(14px, 2vw, 18px);
+  padding: clamp(12px, 1.8vw, 16px) clamp(12px, 1.8vw, 16px) clamp(14px, 2vw, 18px);
   border: 1px solid rgba(255, 255, 255, 0.06);
   backdrop-filter: blur(10px);
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: clamp(10px, 1.5vh, 14px);
 }
 
 /* ===== HEADER ===== */
 .steam-header {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: clamp(8px, 1vw, 12px);
 }
 
 .steam-header .back-btn {
@@ -898,14 +659,15 @@
   background: transparent;
   border: none;
   color: #FAF8F6;
-  font-size: 34px;
+  font-size: clamp(16px, 2.5vw, 20px);
   cursor: pointer;
-  padding: 0;
-  transition: opacity 0.2s ease;
-}
-
-.steam-header .back-btn:hover {
-  opacity: 0.7;
+  padding: 4px 6px;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .steam-header-content {
@@ -914,7 +676,7 @@
 
 .steam-title {
   color: #FAF8F6;
-  font-size: 32px;
+  font-size: clamp(16px, 2.2vw, 20px);
   font-weight: 700;
   letter-spacing: -0.3px;
   line-height: 1.2;
@@ -922,7 +684,7 @@
 
 .steam-subtitle {
   color: rgba(255, 255, 255, 0.5);
-  font-size: 15px;
+  font-size: clamp(10px, 1.2vw, 12px);
   font-weight: 400;
   margin-top: 2px;
 }
@@ -931,12 +693,12 @@
 .steam-block {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: clamp(6px, 1vh, 8px);
 }
 
 .steam-block-label {
   color: rgba(255, 255, 255, 0.6);
-  font-size: 14px;
+  font-size: clamp(9px, 1vw, 11px);
   font-weight: 600;
   letter-spacing: 0.5px;
   text-transform: uppercase;
@@ -945,23 +707,24 @@
 /* ===== ВЫБОР ВАЛЮТЫ ===== */
 .steam-currency-row {
   display: flex;
-  gap: 10px;
+  gap: clamp(4px, 0.6vw, 6px);
   flex-wrap: wrap;
 }
 
 .steam-currency-btn {
   flex: 1;
-  min-width: 60px;
-  padding: 14px 0;
-  border-radius: 16px;
+  min-width: clamp(32px, 5vw, 40px);
+  padding: clamp(6px, 1vh, 10px) 0;
+  border-radius: clamp(8px, 1.2vw, 12px);
   border: 2px solid rgba(255, 255, 255, 0.08);
   background: rgba(255, 255, 255, 0.03);
   color: rgba(255, 255, 255, 0.5);
-  font-size: 18px;
+  font-size: clamp(11px, 1.3vw, 13px);
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
   text-align: center;
+  -webkit-tap-highlight-color: transparent;
+  min-height: clamp(28px, 4vh, 36px);
 }
 
 .steam-currency-btn.active {
@@ -969,11 +732,6 @@
   border-color: #FAF8F6;
   color: #FAF8F6;
   box-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
-}
-
-.steam-currency-btn:hover:not(.active) {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.15);
 }
 
 /* ===== ЛОГИН STEAM ===== */
@@ -987,58 +745,57 @@
   background: rgba(255, 255, 255, 0.06);
   border: none;
   color: rgba(255, 255, 255, 0.4);
-  width: 32px;
-  height: 32px;
+  width: clamp(20px, 3vw, 24px);
+  height: clamp(20px, 3vw, 24px);
   border-radius: 50%;
-  font-size: 16px;
+  font-size: clamp(11px, 1.3vw, 13px);
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.steam-toggle-btn:hover {
-  background: rgba(255, 255, 255, 0.12);
-  color: #FAF8F6;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .steam-info-block {
   background: rgba(255, 255, 255, 0.04);
-  border-radius: 12px;
-  padding: 12px 16px;
+  border-radius: clamp(8px, 1vw, 10px);
+  padding: 8px 12px;
   border: 1px solid rgba(255, 255, 255, 0.05);
-  transition: all 0.3s ease;
   overflow: hidden;
   max-height: 200px;
   opacity: 1;
+  transform-origin: top;
 }
 
 .steam-info-block.hidden {
   max-height: 0;
-  padding: 0 16px;
+  padding: 0 12px;
   border: none;
   opacity: 0;
+  transform: scaleY(0);
+  margin: 0;
 }
 
 .steam-info-text {
   color: rgba(255, 255, 255, 0.5);
-  font-size: 14px;
+  font-size: clamp(10px, 1.1vw, 12px);
   line-height: 1.6;
 }
 
 .steam-input {
   width: 100%;
-  padding: 16px 18px;
-  border-radius: 14px;
+  padding: clamp(8px, 1vw, 12px) clamp(10px, 1.2vw, 14px);
+  border-radius: clamp(8px, 1vw, 10px);
   border: 2px solid rgba(255, 255, 255, 0.08);
   background: rgba(255, 255, 255, 0.03);
   color: #FAF8F6;
-  font-size: 18px;
+  font-size: clamp(12px, 1.5vw, 14px);
   font-weight: 500;
   outline: none;
-  transition: border-color 0.2s ease;
+  position: relative;
+  z-index: 1;
+  -webkit-appearance: none;
 }
 
 .steam-input:focus {
@@ -1054,10 +811,11 @@
   display: flex;
   align-items: center;
   background: rgba(255, 255, 255, 0.03);
-  border-radius: 14px;
+  border-radius: clamp(8px, 1vw, 10px);
   border: 2px solid rgba(255, 255, 255, 0.08);
-  padding: 0 18px;
-  transition: border-color 0.2s ease;
+  padding: 0 clamp(8px, 1vw, 12px);
+  position: relative;
+  z-index: 1;
 }
 
 .steam-amount-field:focus-within {
@@ -1066,31 +824,32 @@
 
 .steam-currency-symbol {
   color: rgba(255, 255, 255, 0.5);
-  font-size: 28px;
+  font-size: clamp(16px, 2vw, 20px);
   font-weight: 600;
-  margin-right: 12px;
+  margin-right: clamp(6px, 0.8vw, 10px);
   flex-shrink: 0;
 }
 
 .steam-amount-input {
   width: 100%;
-  padding: 16px 0;
+  padding: clamp(8px, 1vw, 12px) 0;
   background: transparent;
   border: none;
   color: #FAF8F6;
-  font-size: 28px;
+  font-size: clamp(16px, 2vw, 20px);
   font-weight: 600;
   outline: none;
+  -webkit-appearance: none;
 }
 
 .steam-amount-input::placeholder {
   color: rgba(255, 255, 255, 0.15);
 }
 
-/* ===== ПОДСКАЗКА О ЛИМИТАХ ===== */
-.steam-limits-hint {
-  color: rgba(255, 255, 255, 0.3);
-  font-size: 13px;
+/* ===== ПОДСКАЗКА О ДИАПАЗОНЕ ===== */
+.steam-range-hint {
+  color: rgba(255, 255, 255, 0.35);
+  font-size: clamp(9px, 1vw, 11px);
   margin-top: 4px;
   text-align: right;
   letter-spacing: 0.3px;
@@ -1099,26 +858,22 @@
 /* ===== БЫСТРЫЕ СУММЫ ===== */
 .steam-quick-amounts {
   display: flex;
-  gap: 10px;
+  gap: clamp(4px, 0.6vw, 6px);
   flex-wrap: wrap;
 }
 
 .steam-quick-btn {
-  padding: 12px 18px;
-  border-radius: 14px;
+  padding: clamp(6px, 1vh, 10px) clamp(8px, 1vw, 12px);
+  border-radius: clamp(8px, 1vw, 10px);
   border: 1.5px solid rgba(255, 255, 255, 0.06);
   background: rgba(255, 255, 255, 0.02);
   color: rgba(255, 255, 255, 0.5);
-  font-size: 16px;
+  font-size: clamp(11px, 1.3vw, 13px);
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
-  min-width: 60px;
-}
-
-.steam-quick-btn:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.12);
+  min-width: clamp(32px, 5vw, 40px);
+  min-height: clamp(28px, 4vh, 36px);
+  -webkit-tap-highlight-color: transparent;
 }
 
 .steam-quick-btn.active {
@@ -1131,7 +886,7 @@
 .steam-info-row {
   display: flex;
   justify-content: space-between;
-  padding: 8px 0;
+  padding: clamp(4px, 0.5vh, 6px) 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
 
@@ -1141,76 +896,33 @@
 
 .steam-info-label {
   color: rgba(255, 255, 255, 0.4);
-  font-size: 15px;
+  font-size: clamp(10px, 1.1vw, 12px);
 }
 
 .steam-info-value {
   color: #FAF8F6;
-  font-size: 15px;
+  font-size: clamp(10px, 1.1vw, 12px);
   font-weight: 500;
 }
 
 /* ===== КНОПКА ===== */
 .steam-submit-btn {
   width: 100%;
-  padding: 18px 0;
-  border-radius: 20px;
+  padding: clamp(10px, 1.5vh, 14px) 0;
+  border-radius: clamp(12px, 1.8vw, 16px);
   border: none;
   background: rgba(255, 255, 255, 0.06);
   color: rgba(255, 255, 255, 0.3);
-  font-size: 18px;
+  font-size: clamp(12px, 1.5vw, 14px);
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.25s ease;
-  margin-top: 4px;
-}
-
-.steam-submit-btn.active {
-  background: #FAF8F6;
-  color: #0b0b0f;
-  box-shadow: 0 8px 32px rgba(255, 255, 255, 0.10);
-}
-
-.steam-submit-btn.active:hover {
-  transform: scale(1.02);
-}
-
-.steam-submit-btn.active:active {
-  transform: scale(0.97);
-}
-/* ===== ПОДСКАЗКА О ДИАПАЗОНЕ ===== */
-.steam-range-hint {
-  color: rgba(255, 255, 255, 0.35);
-  font-size: 13px;
-  margin-top: 6px;
-  text-align: right;
-  letter-spacing: 0.3px;
-  transition: color 0.3s ease;
-}
-
-.steam-range-hint.active {
-  color: rgba(255, 255, 255, 0.6);
-}
-
-/* ===== КНОПКА С ЛИМИТАМИ ===== */
-.steam-submit-btn {
-  width: 100%;
-  padding: 16px 0;
-  border-radius: 20px;
-  border: none;
-  background: rgba(255, 255, 255, 0.06);
-  color: rgba(255, 255, 255, 0.3);
-  font-size: 18px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  margin-top: 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 2px;
-  min-height: 68px;
+  min-height: clamp(40px, 6vh, 50px);
+  -webkit-tap-highlight-color: transparent;
 }
 
 .steam-submit-btn.active {
@@ -1219,16 +931,8 @@
   box-shadow: 0 8px 32px rgba(255, 255, 255, 0.10);
 }
 
-.steam-submit-btn.active:hover {
-  transform: scale(1.02);
-}
-
-.steam-submit-btn.active:active {
-  transform: scale(0.97);
-}
-
 .submit-limits {
-  font-size: 13px;
+  font-size: clamp(9px, 1vw, 11px);
   font-weight: 400;
   opacity: 0.5;
   letter-spacing: 0.3px;
@@ -1238,6 +942,7 @@
   opacity: 0.4;
   color: #0b0b0f;
 }
+
 /* ============================================= */
 /* БЛОК: ПОДПИСКИ (ОТДЕЛЬНЫЙ ЭКРАН)             */
 /* ============================================= */
@@ -1257,10 +962,10 @@
 .sub-header {
     display: flex;
     align-items: center;
-    gap: 16px;
-    padding: 0 4px 20px 4px;
+    gap: clamp(8px, 1vw, 12px);
+    padding: 0 4px clamp(10px, 1.5vh, 14px) 4px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    margin-bottom: 20px;
+    margin-bottom: clamp(10px, 1.5vh, 14px);
     width: 100%;
 }
 
@@ -1269,21 +974,22 @@
     background: transparent;
     border: none;
     color: #FAF8F6;
-    font-size: 34px;
+    font-size: clamp(16px, 2.5vw, 20px);
     cursor: pointer;
-    padding: 0;
-    transition: opacity 0.2s ease;
-}
-
-.sub-header .back-btn:hover {
-    opacity: 0.7;
+    padding: 4px 6px;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .sub-header-icons {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 20px;
+    gap: clamp(8px, 1.5vw, 14px);
     flex: 1;
 }
 
@@ -1291,16 +997,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
+    gap: 2px;
     cursor: pointer;
-    padding: 4px 12px;
-    border-radius: 16px;
-    transition: all 0.2s ease;
+    padding: 4px clamp(4px, 0.8vw, 8px);
+    border-radius: 12px;
     opacity: 0.4;
-}
-
-.sub-header-icon-wrapper:hover {
-    opacity: 0.7;
+    -webkit-tap-highlight-color: transparent;
+    min-width: clamp(32px, 5vw, 44px);
 }
 
 .sub-header-icon-wrapper.active {
@@ -1312,34 +1015,33 @@
 }
 
 .sub-header-icon {
-    width: 44px;
-    height: 44px;
+    width: clamp(22px, 3.5vw, 32px);
+    height: clamp(22px, 3.5vw, 32px);
     object-fit: contain;
 }
 
 .sub-header-label {
     color: rgba(255, 255, 255, 0.4);
-    font-size: 12px;
+    font-size: clamp(8px, 1vw, 10px);
     font-weight: 500;
-    transition: color 0.2s ease;
 }
 
 .sub-header-placeholder {
-    width: 48px;
+    width: clamp(24px, 4vw, 32px);
     flex-shrink: 0;
 }
 
-/* ===== КОНТЕНТ ПОДПИСОК (переиспользуем стили из деталей) ===== */
+/* ===== КОНТЕНТ ПОДПИСОК ===== */
 #sub-content .selection-block {
-    margin-bottom: 32px;
+    margin-bottom: clamp(12px, 2vh, 16px);
     width: 100%;
 }
 
 #sub-content .block-label {
     color: rgba(255, 255, 255, 0.7);
-    font-size: 22px;
+    font-size: clamp(12px, 1.5vw, 14px);
     font-weight: 600;
-    margin-bottom: 16px;
+    margin-bottom: clamp(8px, 1vw, 12px);
     letter-spacing: 0.2px;
 }
 
@@ -1352,10 +1054,10 @@
 
 #sub-content .scroll-container {
     display: flex;
-    gap: 18px;
+    gap: clamp(8px, 1vw, 12px);
     overflow-x: auto;
     overflow-y: hidden;
-    padding: 6px 4px 18px 4px;
+    padding: 6px 4px 12px 4px;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     cursor: grab;
@@ -1367,34 +1069,30 @@
     display: none;
 }
 
-#sub-content .scroll-container:active {
-    cursor: grabbing;
-}
-
 /* ===== КНОПКИ ДЛЯ ПОДПИСОК ===== */
 .sub-plan-btn {
     flex-shrink: 0;
-    min-width: 160px;
-    padding: 20px 28px;
-    border-radius: 24px;
+    min-width: clamp(70px, 10vw, 90px);
+    width: auto;
+    max-width: clamp(120px, 18vw, 160px);
+    padding: clamp(10px, 1.5vw, 14px) clamp(12px, 2vw, 16px);
+    border-radius: clamp(12px, 1.8vw, 16px);
     border: 2px solid rgba(255, 255, 255, 0.08);
     background: rgba(255, 255, 255, 0.03);
     color: #FAF8F6;
     cursor: pointer;
-    transition: all 0.2s ease;
     text-align: center;
     backdrop-filter: blur(4px);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
-    min-height: 90px;
+    min-height: clamp(45px, 6vh, 55px);
     justify-content: center;
+    -webkit-tap-highlight-color: transparent;
 }
 
-.sub-plan-btn:hover {
-    background: rgba(255, 255, 255, 0.07);
-    border-color: rgba(255, 255, 255, 0.18);
+.sub-plan-btn > * + * {
+    margin-top: 2px;
 }
 
 .sub-plan-btn.active {
@@ -1404,12 +1102,12 @@
 }
 
 .sub-plan-btn .plan-name {
-    font-size: 22px;
+    font-size: clamp(13px, 1.8vw, 16px);
     font-weight: 700;
 }
 
 .sub-plan-btn .plan-desc {
-    font-size: 14px;
+    font-size: clamp(9px, 1vw, 11px);
     font-weight: 400;
     color: rgba(255, 255, 255, 0.4);
 }
@@ -1423,25 +1121,20 @@
 /* ===== КНОПКИ ДЛЯ DISCORD (Basic/Nitro) ===== */
 .discord-type-btn {
     flex-shrink: 0;
-    padding: 18px 40px;
-    border-radius: 36px;
+    padding: clamp(10px, 1.5vw, 14px) clamp(16px, 2.5vw, 24px);
+    border-radius: clamp(16px, 2.5vw, 20px);
     border: 2px solid rgba(255, 255, 255, 0.10);
     background: rgba(255, 255, 255, 0.04);
     color: #FAF8F6;
-    font-size: 24px;
+    font-size: clamp(13px, 1.8vw, 16px);
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s ease;
     white-space: nowrap;
     backdrop-filter: blur(4px);
-    min-height: 68px;
+    min-height: clamp(32px, 5vh, 40px);
     display: flex;
     align-items: center;
-}
-
-.discord-type-btn:hover {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.20);
+    -webkit-tap-highlight-color: transparent;
 }
 
 .discord-type-btn.active {
@@ -1453,42 +1146,37 @@
 /* ===== БЛОК ИТОГО ДЛЯ ПОДПИСОК ===== */
 #sub-content .total-block {
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    gap: clamp(8px, 1vw, 12px);
     background: rgba(255, 255, 255, 0.04);
-    border-radius: 24px;
-    padding: 24px 28px;
-    margin: 24px 0 28px 0;
+    border-radius: clamp(12px, 1.8vw, 16px);
+    padding: clamp(10px, 1.5vw, 14px) clamp(12px, 2vw, 16px);
+    margin: clamp(10px, 1.5vh, 14px) 0 clamp(12px, 2vh, 16px) 0;
     border: 1px solid rgba(255, 255, 255, 0.06);
+    flex-wrap: wrap;
 }
 
 #sub-content .total-price {
     color: #FAF8F6;
-    font-size: 34px;
+    font-size: clamp(16px, 2.5vw, 20px);
     font-weight: 700;
     letter-spacing: -0.2px;
 }
 
 #sub-content .pay-btn {
-    padding: 18px 48px;
-    border-radius: 36px;
+    padding: clamp(8px, 1vw, 12px) clamp(16px, 3vw, 28px);
+    border-radius: clamp(16px, 2.5vw, 20px);
     border: none;
     background: #FAF8F6;
     color: #0b0b0f;
-    font-size: 22px;
+    font-size: clamp(12px, 1.5vw, 14px);
     font-weight: 700;
     cursor: pointer;
-    transition: all 0.2s ease;
-    min-height: 68px;
-}
-
-#sub-content .pay-btn:hover {
-    transform: scale(1.03);
-    box-shadow: 0 8px 32px rgba(255, 255, 255, 0.15);
-}
-
-#sub-content .pay-btn:active {
-    transform: scale(0.96);
+    min-height: clamp(32px, 5vh, 40px);
+    min-width: clamp(60px, 10vw, 80px);
+    -webkit-tap-highlight-color: transparent;
 }
 
 #sub-content .pay-btn.disabled {
@@ -1499,23 +1187,23 @@
 /* ===== ИНСТРУКЦИЯ ДЛЯ ПОДПИСОК ===== */
 #sub-content .instruction-block {
     background: rgba(255, 255, 255, 0.03);
-    border-radius: 24px;
-    padding: 22px 26px;
+    border-radius: clamp(12px, 1.8vw, 16px);
+    padding: clamp(10px, 1.5vw, 14px) clamp(12px, 2vw, 16px);
     border: 1px solid rgba(255, 255, 255, 0.05);
-    margin-top: 12px;
+    margin-top: 8px;
 }
 
 #sub-content .instruction-title {
     color: rgba(255, 255, 255, 0.6);
-    font-size: 18px;
+    font-size: clamp(11px, 1.3vw, 13px);
     font-weight: 600;
-    margin-bottom: 10px;
+    margin-bottom: 4px;
     letter-spacing: 0.3px;
 }
 
 #sub-content .instruction-text {
     color: rgba(255, 255, 255, 0.5);
-    font-size: 17px;
+    font-size: clamp(10px, 1.2vw, 12px);
     font-weight: 400;
     line-height: 1.7;
 }
