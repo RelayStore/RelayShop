@@ -11,32 +11,29 @@
 }
 
 /* ============================================= */
-/* БЛОК: ГЛАВНАЯ СТРАНИЦА - КАРТЫ РЕГИОНОВ     */
+/* БЛОК: КАРТЫ РЕГИОНОВ - ДВЕ В РЯД           */
 /* ============================================= */
 
 .country-cards {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(12px, 2vh, 16px);
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(8px, 1.5vw, 14px);
   width: 100%;
-  max-width: 500px;
+  max-width: 600px;
   margin: 0 auto;
 }
 
 .country-card {
   width: 100%;
-  max-width: 500px;
-  aspect-ratio: 16/9;
+  aspect-ratio: 4/3;
   position: relative;
   overflow: hidden;
   border: none;
   outline: none;
-  border-radius: clamp(16px, 2.5vw, 24px);
+  border-radius: clamp(14px, 2vw, 20px);
   cursor: pointer;
   background: #111;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
 }
 
 .country-card img {
@@ -49,8 +46,8 @@
 
 .overlay {
   position: absolute;
-  inset: 3px;
-  border-radius: clamp(14px, 2.2vw, 22px);
+  inset: 2px;
+  border-radius: clamp(12px, 1.8vw, 18px);
   background: linear-gradient(
     to bottom,
     rgba(0, 0, 0, 0.25),
@@ -64,57 +61,57 @@
 
 .country-title {
   position: absolute;
-  top: clamp(14px, 2.5vh, 20px);
-  left: clamp(16px, 2.5vw, 24px);
+  top: clamp(8px, 1.5vh, 14px);
+  left: clamp(10px, 1.5vw, 16px);
   z-index: 5;
   color: #FAF8F6;
-  font-size: clamp(24px, 4vw, 34px);
+  font-size: clamp(16px, 2.5vw, 24px);
   font-weight: 700;
   letter-spacing: -0.3px;
 }
 
 .country-badge {
   position: absolute;
-  top: clamp(12px, 2vh, 18px);
-  right: clamp(12px, 2vw, 18px);
+  top: clamp(6px, 1vh, 12px);
+  right: clamp(6px, 1vw, 12px);
   z-index: 5;
   display: flex;
   align-items: center;
-  gap: 6px;
-  height: clamp(24px, 3.5vh, 30px);
-  padding: 0 clamp(10px, 1.5vw, 14px);
+  gap: 5px;
+  height: clamp(18px, 2.5vh, 24px);
+  padding: 0 clamp(6px, 1vw, 10px);
   border-radius: 999px;
   background: rgba(30, 30, 30, 0.5);
   backdrop-filter: blur(18px);
   border: 1px solid rgba(255, 255, 255, 0.06);
   color: white;
-  font-size: clamp(10px, 1.2vw, 12px);
+  font-size: clamp(7px, 1vw, 10px);
   font-weight: 600;
 }
 
 .badge-dot {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
   background: #ff8d23;
 }
 
 .country-region {
   position: absolute;
-  left: clamp(16px, 2.5vw, 24px);
-  bottom: clamp(14px, 2.5vh, 20px);
+  left: clamp(10px, 1.5vw, 16px);
+  bottom: clamp(8px, 1.5vh, 14px);
   z-index: 5;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   color: #d8d8d8;
-  font-size: clamp(13px, 1.6vw, 16px);
+  font-size: clamp(10px, 1.2vw, 13px);
   font-weight: 500;
 }
 
 .region-dot {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: #2fd37a;
 }
@@ -135,14 +132,11 @@
 
 .gift-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   width: 100%;
   margin-bottom: 6px;
   padding: 0 4px;
-  position: relative;
-  flex-wrap: wrap;
-  gap: clamp(8px, 1.5vw, 12px);
 }
 
 .gift-title {
@@ -151,28 +145,34 @@
   font-weight: 700;
   letter-spacing: -0.5px;
   line-height: 1.2;
-  flex: 1;
-  min-width: clamp(140px, 30vw, 200px);
+  text-align: center;
+}
+
+/* УДАЛИТЬ СТАРЫЙ .show-all-btn ИЗ .gift-header */
+
+/* ===== НОВЫЙ БЛОК: КНОПКА "ПОКАЗАТЬ ВСЕ" ===== */
+.gift-show-all-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: clamp(12px, 2vh, 18px);
 }
 
 .show-all-btn {
   background: transparent;
   border: none;
   color: rgba(255, 255, 255, 0.5);
-  font-size: clamp(14px, 2vw, 17px);
+  font-size: clamp(14px, 1.8vw, 17px);
   font-weight: 400;
   cursor: pointer;
-  padding: 8px 12px;
+  padding: 8px 20px;
   border-radius: 8px;
   min-width: 44px;
   min-height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  white-space: nowrap;
-  flex-shrink: 0;
 }
-
 .gift-subtitle {
   color: rgba(255, 255, 255, 0.5);
   font-size: clamp(14px, 1.8vw, 17px);
@@ -568,89 +568,31 @@
 }
 
 /* ============================================= */
-/* БЛОК: SERVICES PAGE - ВЫБОР СЕРВИСА          */
+/* БЛОК: КАРТОЧКА СЕРВИСА - УМЕНЬШЕННАЯ        */
 /* ============================================= */
-
-#screen-services {
-  width: 100%;
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  margin-top: clamp(8px, 1.5vh, 16px);
-  padding: 0 0 clamp(16px, 3vh, 24px) 0;
-}
-
-#screen-services.active {
-  display: flex;
-}
-
-.services-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  margin-bottom: clamp(16px, 2.5vw, 24px);
-  padding: 0 4px;
-}
-
-.back-btn {
-  background: transparent;
-  border: none;
-  color: #FAF8F6;
-  font-size: clamp(22px, 3.5vw, 28px);
-  cursor: pointer;
-  padding: 8px 12px;
-  min-width: 44px;
-  min-height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.services-title {
-  color: #FAF8F6;
-  font-size: clamp(22px, 3.5vw, 28px);
-  font-weight: 700;
-  letter-spacing: -0.3px;
-  text-align: center;
-}
-
-.services-placeholder {
-  width: 44px;
-  height: 44px;
-}
-
-.services-list {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(10px, 1.5vw, 14px);
-  width: 100%;
-  max-width: 900px;
-}
 
 .service-card {
   width: 100%;
-  min-height: clamp(64px, 9vh, 80px);
-  border-radius: clamp(14px, 2vw, 20px);
+  min-height: clamp(48px, 7vh, 60px);
+  border-radius: clamp(12px, 1.8vw, 16px);
   position: relative;
   overflow: hidden;
   cursor: pointer;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .service-info {
   position: absolute;
   top: 50%;
-  left: clamp(16px, 2.5vw, 24px);
+  left: clamp(12px, 2vw, 18px);
   transform: translateY(-50%);
   z-index: 2;
 }
 
 .service-name {
   color: #FFFFFF;
-  font-size: clamp(20px, 3vw, 26px);
+  font-size: clamp(16px, 2.2vw, 20px);
   font-weight: 700;
   letter-spacing: -0.3px;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
@@ -658,22 +600,22 @@
 
 .service-logo-wrapper {
   position: absolute;
-  right: clamp(-20px, -2vw, 0px);
+  right: clamp(-40px, -6vw, -20px);
   top: 50%;
   transform: translateY(-50%) rotate(-25deg);
   z-index: 1;
-  width: clamp(120px, 20vw, 180px);
-  height: clamp(120px, 20vw, 180px);
+  width: clamp(80px, 15vw, 130px);
+  height: clamp(80px, 15vw, 130px);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .service-logo {
-  width: 85%;
-  height: 85%;
-  object-fit: cover;
-  opacity: 0.3;
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+  opacity: 0.25;
 }
 
 /* ============================================= */
