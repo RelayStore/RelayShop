@@ -30,7 +30,7 @@ body {
   width: 100%;
   min-height: 100vh;
   background: radial-gradient(circle at 30% 10%, #1a1a2e, #0b0b0f 80%);
-  padding: 5vh 4vw 4vh 4vw;
+  padding: clamp(12px, 3vw, 32px);
   position: relative;
 }
 
@@ -44,18 +44,18 @@ body {
   align-items: center;
   width: 100%;
   padding: 0;
-  margin-bottom: 6vh;
+  margin-bottom: clamp(16px, 4vh, 48px);
 }
 
 .header-left {
   display: flex;
   align-items: center;
-  gap: 1.2vw;
-  flex-wrap: wrap;
+  gap: clamp(4px, 1vw, 12px);
+  flex-wrap: nowrap;
 }
 
 .logo-image {
-  height: 10vh;
+  height: clamp(28px, 5vh, 56px);
   width: auto;
   display: block;
   object-fit: contain;
@@ -64,7 +64,7 @@ body {
 
 .logo-divider {
   color: rgba(255, 255, 255, 0.3);
-  font-size: 4vh;
+  font-size: clamp(16px, 3vh, 32px);
   font-weight: 300;
   line-height: 1;
   display: inline-block;
@@ -72,11 +72,12 @@ body {
 
 .logo-text {
   color: #ffffff;
-  font-size: 3.2vh;
+  font-size: clamp(16px, 2.5vh, 28px);
   font-weight: 600;
   letter-spacing: 0.5px;
   display: inline-block;
   line-height: 1.2;
+  white-space: nowrap;
 }
 
 .header-right {
@@ -92,24 +93,15 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.2s ease;
-}
-
-.profile-button:hover {
-  opacity: 0.7;
 }
 
 .profile-icon {
-  width: 5vh;
-  height: 5vh;
+  width: clamp(20px, 4vh, 40px);
+  height: clamp(20px, 4vh, 40px);
   color: #f0f0f5;
   stroke: currentColor;
   fill: none;
   display: block;
-}
-
-.profile-button {
-  -webkit-tap-highlight-color: transparent;
 }
 
 /* ============================================= */
@@ -126,367 +118,1384 @@ body {
 }
 
 /* ============================================= */
-/* БЛОК: АДАПТИВНОСТЬ                           */
+/* БЛОК: ВСЕ ЗАГОЛОВКИ С ИКОНКАМИ (ВКЛЕЕНЫ)    */
 /* ============================================= */
 
-/* ---- БАЗОВЫЕ НАСТРОЙКИ ДЛЯ ВСЕХ УСТРОЙСТВ ---- */
-#app {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: clamp(16px, 4vw, 48px);
+/* ---- PS HEADER ---- */
+.ps-header {
+  display: flex;
+  align-items: center;
+  gap: clamp(6px, 1vw, 14px);
+  flex-wrap: nowrap;
+  margin-bottom: clamp(6px, 1vh, 12px);
 }
 
-/* ---- КОНТЕЙНЕРЫ ---- */
-.gift-icons,
-.subscription-icons {
-  gap: clamp(8px, 2vw, 24px);
+.ps-icon {
+  width: clamp(24px, 4vw, 44px);
+  height: clamp(24px, 4vw, 44px);
+  flex-shrink: 0;
+  object-fit: contain;
 }
 
-.gift-icon-btn,
-.subscription-icon-btn {
-  width: clamp(60px, 12vw, 88px);
-  height: clamp(60px, 12vw, 88px);
+.ps-title {
+  color: #FAF8F6;
+  font-size: clamp(18px, 3.5vw, 38px);
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+  white-space: nowrap;
 }
 
-.gift-icon,
-.subscription-icon {
-  width: clamp(32px, 7vw, 52px);
-  height: clamp(32px, 7vw, 52px);
+/* ---- GIFT HEADER ---- */
+.gift-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 6px;
+  padding: 0 4px;
+  position: relative;
 }
 
-/* ---- КАРТЫ РЕГИОНОВ ---- */
-.country-cards {
-  gap: clamp(12px, 2vw, 24px);
+.gift-title {
+  color: #FAF8F6;
+  font-size: clamp(20px, 3.5vw, 34px);
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
 }
 
-.country-card {
-  width: clamp(280px, 40vw, 400px);
-  height: clamp(160px, 22vw, 240px);
+/* ---- STEAM DIRECT HEADER ---- */
+.steam-direct-header {
+  display: flex;
+  align-items: center;
+  gap: clamp(6px, 1vw, 14px);
+  flex-wrap: nowrap;
+  margin-bottom: 4px;
+  justify-content: center;
+  width: 100%;
 }
 
-.country-title {
-  font-size: clamp(20px, 3.5vw, 33px);
+.steam-direct-icon {
+  width: clamp(24px, 4vw, 40px);
+  height: clamp(24px, 4vw, 40px);
+  flex-shrink: 0;
+  object-fit: contain;
 }
 
-.country-badge {
-  font-size: clamp(9px, 1.2vw, 11px);
-  height: clamp(22px, 3vw, 28px);
-  padding: 0 clamp(8px, 1.5vw, 12px);
-}
-
-.country-region {
-  font-size: clamp(11px, 1.5vw, 14px);
-}
-
-/* ---- STEAM DIRECT ---- */
-.steam-direct-card {
-  height: clamp(120px, 20vw, 200px);
-}
-
-.steam-direct-card-title {
-  font-size: clamp(22px, 4.5vw, 44px);
-}
-
-.steam-direct-card-commission {
-  font-size: clamp(12px, 2vw, 20px);
-}
-
-.steam-direct-logo-wrapper {
-  width: clamp(80px, 18vw, 220px);
-  height: clamp(80px, 18vw, 220px);
-  left: clamp(-20px, -3vw, -30px);
-}
-
-/* ---- PROMO CARD ---- */
-.promo-card {
-  height: clamp(140px, 22vw, 200px);
-}
-
-.promo-main-text {
-  font-size: clamp(24px, 4.5vw, 42px);
-}
-
-.promo-sub-text {
-  font-size: clamp(14px, 2vw, 18px);
-}
-
-/* ---- ЗАГОЛОВКИ ---- */
-.ps-title,
-.gift-title,
-.subscription-title,
-.promo-title,
 .steam-direct-title {
-  font-size: clamp(28px, 5vw, 52px);
+  color: #FAF8F6;
+  font-size: clamp(18px, 3.5vw, 34px);
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+  white-space: nowrap;
 }
+
+/* ---- SUBSCRIPTION HEADER ---- */
+.subscription-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 6px;
+  padding: 0 4px;
+  position: relative;
+}
+
+.subscription-title {
+  color: #FAF8F6;
+  font-size: clamp(20px, 3.5vw, 34px);
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* ---- PROMO HEADER ---- */
+.promo-header {
+  display: flex;
+  align-items: center;
+  gap: clamp(6px, 1vw, 14px);
+  flex-wrap: nowrap;
+  margin-bottom: clamp(12px, 2vh, 24px);
+  justify-content: center;
+  width: 100%;
+}
+
+.promo-icon {
+  width: clamp(24px, 4vw, 40px);
+  height: clamp(24px, 4vw, 40px);
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.promo-title {
+  color: #FAF8F6;
+  font-size: clamp(18px, 3.5vw, 34px);
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* ---- SERVICE DETAIL CONTENT ---- */
+.service-detail-content {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 1.5vw, 18px);
+  flex-wrap: nowrap;
+  flex: 1;
+}
+
+.service-detail-icon {
+  width: clamp(36px, 5vw, 60px);
+  height: clamp(36px, 5vw, 60px);
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.service-detail-name {
+  color: #FAF8F6;
+  font-size: clamp(20px, 3.5vw, 34px);
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* ============================================= */
+/* БЛОК: ПОДЗАГОЛОВКИ                          */
+/* ============================================= */
 
 .ps-subtitle,
 .gift-subtitle,
 .subscription-subtitle,
 .steam-direct-subtitle {
-  font-size: clamp(14px, 2vw, 20px);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: clamp(12px, 1.8vw, 16px);
+  font-weight: 300;
+  text-align: center;
+  width: 100%;
+  letter-spacing: 0.2px;
 }
 
-/* ---- SERVICE CARDS ---- */
+.ps-subtitle {
+  margin-bottom: clamp(16px, 3vh, 32px);
+}
+
+.gift-subtitle,
+.subscription-subtitle,
+.steam-direct-subtitle {
+  margin-bottom: clamp(12px, 2vh, 24px);
+}
+
+/* ============================================= */
+/* БЛОК: СЕКЦИИ                                 */
+/* ============================================= */
+
+.ps-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: clamp(24px, 6vh, 64px);
+}
+
+.gift-section,
+.steam-direct-section,
+.subscription-section,
+.promo-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: clamp(20px, 4vh, 48px);
+  padding-top: clamp(16px, 3vh, 32px);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* ============================================= */
+/* БЛОК: ИКОНКИ ПЛАТФОРМ                       */
+/* ============================================= */
+
+.gift-icons,
+.subscription-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(8px, 2vw, 20px);
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.gift-icon-wrapper,
+.subscription-icon-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.gift-icon-btn,
+.subscription-icon-btn {
+  width: clamp(48px, 8vw, 72px);
+  height: clamp(48px, 8vw, 72px);
+  border-radius: 16px;
+  background: rgba(30, 30, 40, 0.6);
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  backdrop-filter: blur(10px);
+}
+
+.gift-icon,
+.subscription-icon {
+  width: clamp(28px, 5vw, 44px);
+  height: clamp(28px, 5vw, 44px);
+  object-fit: contain;
+  display: block;
+  opacity: 0.9;
+}
+
+.gift-icon-label,
+.subscription-icon-label {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: clamp(10px, 1.2vw, 13px);
+  font-weight: 400;
+  text-align: center;
+  letter-spacing: 0.2px;
+}
+
+/* ============================================= */
+/* БЛОК: STEAM DIRECT КАРТА (УПРОЩЕННАЯ)       */
+/* ============================================= */
+
+.steam-direct-card {
+  width: 100%;
+  height: clamp(100px, 18vw, 160px);
+  position: relative;
+  overflow: hidden;
+  border-radius: clamp(16px, 2.5vw, 24px);
+  cursor: pointer;
+  background: linear-gradient(135deg, #0a1628 0%, #1a3a6a 50%, #2d6bb8 100%);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.steam-direct-overlay {
+  position: absolute;
+  inset: 2px;
+  border-radius: clamp(14px, 2vw, 22px);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.40) 60%, rgba(0, 0, 0, 0.70) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.steam-direct-logo-wrapper {
+  position: absolute;
+  left: clamp(-16px, -3vw, -24px);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: clamp(80px, 16vw, 160px);
+  height: clamp(80px, 16vw, 160px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.steam-direct-logo {
+  width: 85%;
+  height: 85%;
+  object-fit: contain;
+  transform: scaleX(-1);
+  opacity: 0.9;
+  filter: drop-shadow(0 0 30px rgba(91, 160, 224, 0.15));
+}
+
+.steam-direct-card-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  text-align: center;
+  width: 80%;
+  pointer-events: none;
+}
+
+.steam-direct-card-title {
+  display: block;
+  color: #FFFFFF;
+  font-size: clamp(18px, 3.5vw, 34px);
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
+  line-height: 1.1;
+  margin-bottom: 2px;
+}
+
+.steam-direct-card-commission {
+  display: block;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: clamp(11px, 1.5vw, 16px);
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+.steam-direct-badge {
+  position: absolute;
+  bottom: clamp(8px, 1.5vw, 14px);
+  right: clamp(10px, 2vw, 18px);
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: clamp(4px, 0.6vw, 8px);
+  height: clamp(18px, 3vw, 28px);
+  padding: 0 clamp(8px, 1.2vw, 14px);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: #FFFFFF;
+  font-size: clamp(7px, 1vw, 11px);
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.badge-dot {
+  width: clamp(4px, 0.6vw, 6px);
+  height: clamp(4px, 0.6vw, 6px);
+  border-radius: 50%;
+  background: #ff8d23;
+  flex-shrink: 0;
+}
+
+/* ============================================= */
+/* БЛОК: КАРТЫ РЕГИОНОВ                        */
+/* ============================================= */
+
+.country-cards {
+  display: flex;
+  gap: clamp(10px, 1.5vw, 20px);
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.country-card {
+  width: clamp(200px, 30vw, 320px);
+  height: clamp(120px, 18vw, 190px);
+  position: relative;
+  overflow: hidden;
+  border: none;
+  outline: none;
+  border-radius: clamp(16px, 2.5vw, 24px);
+  cursor: pointer;
+  background: #111;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.country-card img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.overlay {
+  position: absolute;
+  inset: 2px;
+  border-radius: clamp(14px, 2vw, 22px);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.35) 20%, rgba(0, 0, 0, 0.50) 45%, rgba(0, 0, 0, 0.70) 70%, rgba(0, 0, 0, 0.85) 100%);
+  pointer-events: none;
+}
+
+.country-title {
+  position: absolute;
+  top: clamp(12px, 2vw, 18px);
+  left: clamp(14px, 2vw, 22px);
+  z-index: 5;
+  color: #FAF8F6;
+  font-size: clamp(16px, 2.5vw, 26px);
+  font-weight: 700;
+  letter-spacing: -0.2px;
+}
+
+.country-badge {
+  position: absolute;
+  top: clamp(10px, 1.5vw, 16px);
+  right: clamp(10px, 1.5vw, 16px);
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: clamp(4px, 0.6vw, 6px);
+  height: clamp(18px, 2.5vw, 24px);
+  padding: 0 clamp(8px, 1.2vw, 12px);
+  border-radius: 999px;
+  background: rgba(30, 30, 30, 0.5);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: white;
+  font-size: clamp(8px, 0.9vw, 10px);
+  font-weight: 600;
+}
+
+.badge-dot {
+  width: clamp(4px, 0.5vw, 5px);
+  height: clamp(4px, 0.5vw, 5px);
+  border-radius: 50%;
+  background: #ff8d23;
+  flex-shrink: 0;
+}
+
+.country-region {
+  position: absolute;
+  left: clamp(14px, 2vw, 20px);
+  bottom: clamp(12px, 2vw, 18px);
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: clamp(4px, 0.6vw, 8px);
+  color: #d8d8d8;
+  font-size: clamp(10px, 1.2vw, 13px);
+  font-weight: 500;
+}
+
+.region-dot {
+  width: clamp(5px, 0.8vw, 7px);
+  height: clamp(5px, 0.8vw, 7px);
+  border-radius: 50%;
+  background: #2fd37a;
+}
+
+/* ============================================= */
+/* БЛОК: PROMO CARD                             */
+/* ============================================= */
+
+.promo-card {
+  width: 100%;
+  height: clamp(100px, 16vw, 160px);
+  position: relative;
+  overflow: hidden;
+  border-radius: clamp(16px, 2.5vw, 24px);
+  cursor: pointer;
+  background: #111;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.promo-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.promo-overlay {
+  position: absolute;
+  inset: 2px;
+  border-radius: clamp(14px, 2vw, 22px);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.40) 30%, rgba(0, 0, 0, 0.60) 60%, rgba(0, 0, 0, 0.80) 100%);
+  pointer-events: none;
+}
+
+.promo-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  text-align: center;
+  width: 90%;
+}
+
+.promo-main-text {
+  color: #FAF8F6;
+  font-size: clamp(18px, 3vw, 32px);
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+  margin-bottom: 4px;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.6);
+}
+
+.promo-sub-text {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: clamp(12px, 1.6vw, 16px);
+  font-weight: 400;
+  letter-spacing: 0.2px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+}
+
+.promo-section a {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  text-decoration: none;
+}
+
+/* ============================================= */
+/* БЛОК: SERVICES PAGE                          */
+/* ============================================= */
+
+#screen-services {
+  width: 100%;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  margin-top: clamp(8px, 1.5vh, 16px);
+  padding: 0 0 4vh 0;
+}
+
+#screen-services.active {
+  display: flex;
+}
+
+.services-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: clamp(12px, 2vh, 24px);
+  padding: 0 4px;
+}
+
+.services-title {
+  color: #FAF8F6;
+  font-size: clamp(20px, 3.5vw, 32px);
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  text-align: center;
+}
+
+.services-placeholder {
+  width: clamp(32px, 5vw, 48px);
+  height: clamp(32px, 5vw, 48px);
+}
+
+.services-list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 1.5vw, 16px);
+  width: 100%;
+}
+
 .service-card {
-  height: clamp(60px, 10vw, 90px);
+  width: 100%;
+  height: clamp(56px, 8vw, 76px);
+  border-radius: clamp(14px, 2vw, 20px);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.service-info {
+  position: absolute;
+  top: 50%;
+  left: clamp(14px, 2vw, 22px);
+  transform: translateY(-50%);
+  z-index: 2;
 }
 
 .service-name {
-  font-size: clamp(18px, 3vw, 28px);
+  color: #FFFFFF;
+  font-size: clamp(16px, 2.5vw, 24px);
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
 }
 
 .service-logo-wrapper {
-  width: clamp(100px, 18vw, 180px);
-  height: clamp(100px, 18vw, 180px);
-  right: clamp(-30px, -6vw, -60px);
+  position: absolute;
+  right: clamp(-20px, -4vw, -40px);
+  top: 50%;
+  transform: translateY(-50%) rotate(-20deg);
+  z-index: 1;
+  width: clamp(80px, 14vw, 140px);
+  height: clamp(80px, 14vw, 140px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* ---- SERVICE DETAILS ---- */
-.service-detail-name {
-  font-size: clamp(24px, 4vw, 40px);
+.service-logo {
+  width: 80%;
+  height: 80%;
+  object-fit: cover;
+  opacity: 0.3;
 }
 
-.service-detail-icon {
-  width: clamp(44px, 7vw, 72px);
-  height: clamp(44px, 7vw, 72px);
+/* ============================================= */
+/* БЛОК: SERVICE DETAILS SCREEN                */
+/* ============================================= */
+
+#screen-service-details {
+  width: 100%;
+  display: none;
+  flex-direction: column;
+  padding: 0 0 20px 0;
+}
+
+#screen-service-details.active {
+  display: flex;
 }
 
 .service-detail-card {
-  padding: clamp(16px, 2.5vw, 28px);
-  gap: clamp(12px, 2vw, 18px);
+  width: 100%;
+  padding: clamp(12px, 2vw, 20px) clamp(14px, 2.5vw, 24px);
+  border-radius: clamp(16px, 2.5vw, 24px);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 1.5vw, 16px);
+  margin-bottom: clamp(16px, 3vh, 28px);
+  backdrop-filter: blur(10px);
 }
 
-/* ---- БЛОК ВЫБОРА ---- */
+.service-detail-card .back-btn {
+  font-size: clamp(22px, 3.5vw, 32px);
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.service-detail-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.service-detail-subtitle {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: clamp(12px, 1.5vw, 16px);
+  font-weight: 400;
+  letter-spacing: 0.2px;
+}
+
+/* ============================================= */
+/* БЛОК: ВЫБОР РЕГИОНА / НОМИНАЛА              */
+/* ============================================= */
+
+.selection-block {
+  margin-bottom: clamp(16px, 3vh, 32px);
+  width: 100%;
+}
+
 .block-label {
-  font-size: clamp(16px, 2.5vw, 22px);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: clamp(14px, 2vw, 18px);
+  font-weight: 600;
+  margin-bottom: clamp(10px, 1.5vh, 16px);
+  letter-spacing: 0.2px;
+}
+
+.scroll-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.scroll-container {
+  display: flex;
+  gap: clamp(8px, 1.2vw, 14px);
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 4px 2px 12px 2px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  cursor: grab;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-container:active {
+  cursor: grabbing;
 }
 
 .region-btn {
-  font-size: clamp(16px, 2.5vw, 24px);
-  padding: clamp(12px, 2vw, 18px) clamp(18px, 3vw, 32px);
-  min-height: clamp(48px, 7vw, 68px);
+  flex-shrink: 0;
+  padding: clamp(10px, 1.5vw, 16px) clamp(16px, 2.5vw, 26px);
+  border-radius: clamp(20px, 3vw, 32px);
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: #FAF8F6;
+  font-size: clamp(14px, 2vw, 20px);
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  backdrop-filter: blur(4px);
+  min-height: clamp(40px, 5vw, 56px);
+  display: flex;
+  align-items: center;
+}
+
+.region-btn.active {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: #FAF8F6;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.06);
 }
 
 .nominal-btn {
-  min-width: clamp(120px, 20vw, 180px);
-  min-height: clamp(70px, 10vw, 100px);
-  padding: clamp(14px, 2vw, 20px) clamp(18px, 2.5vw, 28px);
+  flex-shrink: 0;
+  min-width: clamp(100px, 15vw, 150px);
+  padding: clamp(12px, 1.5vw, 18px) clamp(14px, 2vw, 22px);
+  border-radius: clamp(16px, 2vw, 22px);
+  border: 2px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.03);
+  color: #FAF8F6;
+  cursor: pointer;
+  text-align: center;
+  backdrop-filter: blur(4px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-height: clamp(60px, 8vw, 84px);
+  justify-content: center;
+}
+
+.nominal-btn.active {
+  background: rgba(255, 255, 255, 0.10);
+  border-color: #FAF8F6;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.06);
 }
 
 .nominal-amount {
-  font-size: clamp(20px, 3vw, 28px);
+  font-size: clamp(16px, 2.5vw, 24px);
+  font-weight: 700;
 }
 
 .nominal-stock {
-  font-size: clamp(12px, 1.5vw, 15px);
+  font-size: clamp(10px, 1.2vw, 13px);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.4);
 }
 
-/* ---- ТОТАЛ И ОПЛАТА ---- */
+.nominal-btn.out-of-stock {
+  opacity: 0.4;
+  pointer-events: none;
+  border-color: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.01);
+}
+
+.nominal-stock.out-of-stock-text {
+  color: rgba(255, 100, 100, 0.4);
+}
+
+.nominal-btn.out-of-stock .nominal-amount {
+  opacity: 0.5;
+}
+
+/* ============================================= */
+/* БЛОК: ИНДИКАТОР СКРОЛЛА                     */
+/* ============================================= */
+
+.scroll-indicator {
+  display: none;
+  height: 3px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  margin-top: 6px;
+}
+
+.scroll-indicator.active {
+  display: block;
+}
+
+.scroll-indicator .indicator-bar {
+  height: 100%;
+  width: 30%;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+/* ============================================= */
+/* БЛОК: ТОТАЛ И ОПЛАТА                        */
+/* ============================================= */
+
 .total-block {
-  padding: clamp(16px, 2.5vw, 28px);
-  flex-direction: row;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: clamp(16px, 2vw, 22px);
+  padding: clamp(14px, 2vw, 22px) clamp(16px, 2.5vw, 24px);
+  margin: clamp(16px, 3vh, 28px) 0 clamp(16px, 3vh, 28px) 0;
+  border: 1px solid rgba(255, 255, 255, 0.05);
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 10px;
 }
 
 .total-price {
-  font-size: clamp(24px, 3.5vw, 34px);
+  color: #FAF8F6;
+  font-size: clamp(18px, 3vw, 28px);
+  font-weight: 700;
+  letter-spacing: -0.2px;
 }
 
 .pay-btn {
-  padding: clamp(14px, 2vw, 18px) clamp(28px, 4vw, 48px);
-  font-size: clamp(18px, 2.5vw, 22px);
-  min-height: clamp(48px, 7vw, 68px);
+  padding: clamp(12px, 1.5vw, 16px) clamp(24px, 3.5vw, 40px);
+  border-radius: clamp(20px, 3vw, 32px);
+  border: none;
+  background: #FAF8F6;
+  color: #0b0b0f;
+  font-size: clamp(16px, 2vw, 20px);
+  font-weight: 700;
+  cursor: pointer;
+  min-height: clamp(40px, 5vw, 56px);
 }
 
-/* ---- STEAM SCREEN ---- */
-.steam-title {
-  font-size: clamp(22px, 3.5vw, 32px);
+.pay-btn.disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* ============================================= */
+/* БЛОК: ИНСТРУКЦИЯ                             */
+/* ============================================= */
+
+.instruction-block {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: clamp(14px, 2vw, 20px);
+  padding: clamp(14px, 2vw, 20px) clamp(16px, 2.5vw, 22px);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  margin-top: clamp(8px, 1vh, 12px);
+}
+
+.instruction-title {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: clamp(14px, 1.8vw, 17px);
+  font-weight: 600;
+  margin-bottom: 6px;
+  letter-spacing: 0.2px;
+}
+
+.instruction-text {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: clamp(13px, 1.6vw, 16px);
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+/* ============================================= */
+/* БЛОК: STEAM SCREEN                           */
+/* ============================================= */
+
+#screen-steam {
+  width: 100%;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 0 20px 0;
+}
+
+#screen-steam.active {
+  display: flex;
 }
 
 .steam-card {
-  padding: clamp(16px, 2.5vw, 28px);
-  gap: clamp(16px, 2vw, 24px);
+  width: 100%;
+  max-width: 600px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: clamp(16px, 2.5vw, 24px);
+  padding: clamp(14px, 2vw, 22px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 2vw, 20px);
 }
 
-.steam-currency-btn {
-  font-size: clamp(14px, 2vw, 18px);
-  padding: clamp(10px, 1.5vw, 14px) 0;
-  min-width: clamp(44px, 6vw, 60px);
+.steam-header {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 1.5vw, 16px);
 }
 
-.steam-amount-input {
-  font-size: clamp(20px, 3vw, 28px);
-  padding: clamp(12px, 1.5vw, 16px) 0;
+.steam-header .back-btn {
+  font-size: clamp(22px, 3.5vw, 32px);
+  padding: 0;
+  flex-shrink: 0;
 }
 
-.steam-currency-symbol {
-  font-size: clamp(20px, 3vw, 28px);
+.steam-header-content {
+  flex: 1;
 }
 
-.steam-input {
-  font-size: clamp(14px, 2vw, 18px);
-  padding: clamp(12px, 1.5vw, 16px) clamp(12px, 1.5vw, 18px);
+.steam-title {
+  color: #FAF8F6;
+  font-size: clamp(18px, 3vw, 28px);
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  line-height: 1.2;
 }
 
-.steam-quick-btn {
-  font-size: clamp(13px, 1.5vw, 16px);
-  padding: clamp(8px, 1.2vw, 12px) clamp(12px, 2vw, 18px);
-  min-width: clamp(44px, 6vw, 60px);
-}
-
-.steam-submit-btn {
-  font-size: clamp(14px, 2vw, 18px);
-  min-height: clamp(48px, 7vw, 68px);
-  padding: clamp(12px, 1.5vw, 16px) 0;
-}
-
-/* ---- SUBSCRIPTIONS ---- */
-.sub-header-icon {
-  width: clamp(32px, 5vw, 44px);
-  height: clamp(32px, 5vw, 44px);
-}
-
-.sub-header-label {
-  font-size: clamp(10px, 1.2vw, 12px);
-}
-
-.sub-plan-btn {
-  min-width: clamp(120px, 18vw, 160px);
-  min-height: clamp(65px, 9vw, 90px);
-  padding: clamp(14px, 2vw, 20px) clamp(16px, 2.5vw, 28px);
-}
-
-.sub-plan-btn .plan-name {
-  font-size: clamp(17px, 2.5vw, 22px);
-}
-
-.sub-plan-btn .plan-desc {
+.steam-subtitle {
+  color: rgba(255, 255, 255, 0.5);
   font-size: clamp(12px, 1.5vw, 14px);
+  font-weight: 400;
+  margin-top: 2px;
 }
 
-.discord-type-btn {
-  font-size: clamp(17px, 2.5vw, 24px);
-  padding: clamp(12px, 1.5vw, 18px) clamp(20px, 3.5vw, 40px);
-  min-height: clamp(48px, 7vw, 68px);
+.steam-block {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1vw, 12px);
 }
 
-/* ---- SCROLL CONTAINERS ---- */
-.scroll-container {
-  gap: clamp(10px, 1.5vw, 18px);
-  padding: clamp(4px, 0.6vw, 6px) clamp(2px, 0.5vw, 4px) clamp(12px, 2vw, 18px) clamp(2px, 0.5vw, 4px);
+.steam-block-label {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: clamp(11px, 1.2vw, 13px);
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
 }
 
-/* ============================================= */
-/* БЛОК: ОСОБЫЕ СЛУЧАИ ДЛЯ МАЛЕНЬКИХ ЭКРАНОВ   */
-/* ============================================= */
-
-@media (max-width: 480px) {
-  /* ---- TOTAL BLOCK ---- */
-  .total-block {
-    flex-direction: column;
-    align-items: stretch;
-    text-align: center;
-  }
-  
-  .pay-btn {
-    width: 100%;
-  }
-  
-  /* ---- STEAM DIRECT BADGE ---- */
-  .steam-direct-badge {
-    bottom: 8px;
-    right: 10px;
-    height: 20px;
-    padding: 0 10px;
-    font-size: 8px;
-  }
-  
-  .badge-dot {
-    width: 4px;
-    height: 4px;
-  }
-  
-  /* ---- COUNTRY CARDS ---- */
-  .country-card {
-    width: 100%;
-    max-width: 400px;
-  }
-  
-  /* ---- SERVICE DETAILS ---- */
-  .service-detail-card {
-    flex-wrap: wrap;
-  }
-  
-  .service-detail-content {
-    flex: 1 1 100%;
-    justify-content: center;
-  }
-  
-  /* ---- STEAM CURRENCY ROW ---- */
-  .steam-currency-row {
-    gap: 6px;
-  }
-  
-  .steam-currency-btn {
-    flex: 0 0 auto;
-    min-width: 40px;
-    padding: 10px 6px;
-    font-size: 13px;
-  }
-  
-  /* ---- SUB-HEADER ---- */
-  .sub-header-icons {
-    gap: 8px;
-  }
-  
-  .sub-header-icon-wrapper {
-    padding: 2px 6px;
-  }
-}
-
-/* ============================================= */
-/* БЛОК: ОСОБЫЕ СЛУЧАИ ДЛЯ БОЛЬШИХ ЭКРАНОВ     */
-/* ============================================= */
-
-@media (min-width: 1200px) {
-  /* ---- ЦЕНТРИРОВАНИЕ ---- */
-  .gift-icons,
-  .subscription-icons {
-    justify-content: center;
-  }
-  
-  .country-cards {
-    justify-content: center;
-  }
-  
-  /* ---- MAX WIDTH FOR LARGE SCREENS ---- */
-  .steam-card {
-    max-width: 700px;
-  }
-}
-
-/* ============================================= */
-/* БЛОК: ПЕРЕНОС НА НОВЫЕ СТРОКИ ПРИ НЕХВАТКЕ  */
-/* ============================================= */
-
-/* ---- ГИБКИЕ КОНТЕЙНЕРЫ ---- */
-.gift-icons,
-.subscription-icons,
-.country-cards,
-.steam-currency-row,
-.steam-quick-amounts,
-.sub-header-icons {
+.steam-currency-row {
+  display: flex;
+  gap: clamp(6px, 0.8vw, 10px);
   flex-wrap: wrap;
 }
 
-/* ---- ТЕКСТ НЕ ПЕРЕНосится ---- */
-.region-btn,
-.discord-type-btn {
-  white-space: nowrap;
+.steam-currency-btn {
+  flex: 1;
+  min-width: clamp(36px, 5vw, 52px);
+  padding: clamp(10px, 1.2vw, 12px) 0;
+  border-radius: clamp(12px, 1.5vw, 16px);
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: clamp(12px, 1.5vw, 16px);
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
 }
 
-/* ---- НОМИНАЛЫ ПЕРЕНОСЯТСЯ ---- */
-.nominal-amount {
+.steam-currency-btn.active {
+  background: rgba(255, 255, 255, 0.10);
+  border-color: #FAF8F6;
+  color: #FAF8F6;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.04);
+}
+
+.steam-login-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.steam-toggle-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: none;
+  color: rgba(255, 255, 255, 0.4);
+  width: clamp(26px, 3vw, 32px);
+  height: clamp(26px, 3vw, 32px);
+  border-radius: 50%;
+  font-size: clamp(13px, 1.5vw, 16px);
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.steam-info-block {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: clamp(10px, 1.2vw, 12px);
+  padding: clamp(8px, 1vw, 12px) clamp(12px, 1.5vw, 16px);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  overflow: hidden;
+  max-height: 200px;
+  opacity: 1;
+}
+
+.steam-info-block.hidden {
+  max-height: 0;
+  padding: 0 16px;
+  border: none;
+  opacity: 0;
+}
+
+.steam-info-text {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: clamp(12px, 1.2vw, 14px);
+  line-height: 1.5;
+}
+
+.steam-input {
+  width: 100%;
+  padding: clamp(12px, 1.2vw, 14px) clamp(12px, 1.5vw, 16px);
+  border-radius: clamp(12px, 1.5vw, 14px);
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: #FAF8F6;
+  font-size: clamp(14px, 1.5vw, 17px);
+  font-weight: 500;
+  outline: none;
+}
+
+.steam-input:focus {
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.steam-input::placeholder {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.steam-amount-field {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: clamp(12px, 1.5vw, 14px);
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  padding: 0 clamp(12px, 1.5vw, 16px);
+}
+
+.steam-amount-field:focus-within {
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.steam-currency-symbol {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: clamp(18px, 2.5vw, 24px);
+  font-weight: 600;
+  margin-right: clamp(8px, 1vw, 12px);
+  flex-shrink: 0;
+}
+
+.steam-amount-input {
+  width: 100%;
+  padding: clamp(12px, 1.2vw, 14px) 0;
+  background: transparent;
+  border: none;
+  color: #FAF8F6;
+  font-size: clamp(18px, 2.5vw, 24px);
+  font-weight: 600;
+  outline: none;
+}
+
+.steam-amount-input::placeholder {
+  color: rgba(255, 255, 255, 0.15);
+}
+
+.steam-range-hint {
+  color: rgba(255, 255, 255, 0.35);
+  font-size: clamp(11px, 1vw, 13px);
+  margin-top: 4px;
+  text-align: right;
+  letter-spacing: 0.2px;
+}
+
+.steam-range-hint.active {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.steam-quick-amounts {
+  display: flex;
+  gap: clamp(6px, 0.8vw, 10px);
+  flex-wrap: wrap;
+}
+
+.steam-quick-btn {
+  padding: clamp(8px, 1vw, 10px) clamp(12px, 1.5vw, 16px);
+  border-radius: clamp(10px, 1.2vw, 14px);
+  border: 1.5px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: clamp(12px, 1.3vw, 15px);
+  font-weight: 500;
+  cursor: pointer;
+  min-width: clamp(36px, 5vw, 52px);
+}
+
+.steam-quick-btn.active {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #FAF8F6;
+}
+
+.steam-info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.steam-info-row:last-child {
+  border-bottom: none;
+}
+
+.steam-info-label {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: clamp(13px, 1.3vw, 15px);
+}
+
+.steam-info-value {
+  color: #FAF8F6;
+  font-size: clamp(13px, 1.3vw, 15px);
+  font-weight: 500;
+}
+
+.steam-submit-btn {
+  width: 100%;
+  padding: clamp(12px, 1.5vw, 16px) 0;
+  border-radius: clamp(14px, 2vw, 18px);
+  border: none;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.3);
+  font-size: clamp(14px, 1.8vw, 17px);
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: clamp(44px, 5vw, 56px);
+}
+
+.steam-submit-btn.active {
+  background: #FAF8F6;
+  color: #0b0b0f;
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.08);
+}
+
+.submit-limits {
+  font-size: clamp(10px, 1vw, 12px);
+  font-weight: 400;
+  opacity: 0.5;
+  letter-spacing: 0.2px;
+}
+
+.steam-submit-btn.active .submit-limits {
+  opacity: 0.4;
+  color: #0b0b0f;
+}
+
+/* ============================================= */
+/* БЛОК: SUBSCRIPTIONS SCREEN                   */
+/* ============================================= */
+
+#screen-subscriptions {
+  width: 100%;
+  display: none;
+  flex-direction: column;
+  padding: 0 0 20px 0;
+}
+
+#screen-subscriptions.active {
+  display: flex;
+}
+
+.sub-header {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 1.5vw, 16px);
+  padding: 0 4px clamp(12px, 2vh, 20px) 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  margin-bottom: clamp(12px, 2vh, 20px);
+  width: 100%;
+}
+
+.sub-header .back-btn {
+  font-size: clamp(22px, 3.5vw, 32px);
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.sub-header-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(10px, 2vw, 20px);
+  flex: 1;
+}
+
+.sub-header-icon-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+  padding: 2px clamp(6px, 1vw, 12px);
+  border-radius: 12px;
+  opacity: 0.4;
+}
+
+.sub-header-icon-wrapper.active {
+  opacity: 1;
+}
+
+.sub-header-icon-wrapper.active .sub-header-label {
+  color: #FAF8F6;
+}
+
+.sub-header-icon {
+  width: clamp(28px, 4vw, 40px);
+  height: clamp(28px, 4vw, 40px);
+  object-fit: contain;
+}
+
+.sub-header-label {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: clamp(9px, 1vw, 11px);
+  font-weight: 500;
+}
+
+.sub-header-placeholder {
+  width: clamp(32px, 5vw, 48px);
+  flex-shrink: 0;
+}
+
+/* ============================================= */
+/* БЛОК: ПОДПИСКИ (ВНУТРЕННИЕ КОМПОНЕНТЫ)      */
+/* ============================================= */
+
+#sub-content .selection-block {
+  margin-bottom: clamp(16px, 3vh, 32px);
+  width: 100%;
+}
+
+#sub-content .block-label {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: clamp(14px, 2vw, 18px);
+  font-weight: 600;
+  margin-bottom: clamp(10px, 1.5vh, 16px);
+  letter-spacing: 0.2px;
+}
+
+#sub-content .scroll-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+#sub-content .scroll-container {
+  display: flex;
+  gap: clamp(8px, 1.2vw, 14px);
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 4px 2px 12px 2px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  cursor: grab;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+#sub-content .scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+#sub-content .scroll-container:active {
+  cursor: grabbing;
+}
+
+.sub-plan-btn {
+  flex-shrink: 0;
+  min-width: clamp(100px, 15vw, 140px);
+  padding: clamp(12px, 1.5vw, 18px) clamp(14px, 2vw, 22px);
+  border-radius: clamp(16px, 2vw, 22px);
+  border: 2px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.03);
+  color: #FAF8F6;
+  cursor: pointer;
+  text-align: center;
+  backdrop-filter: blur(4px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-height: clamp(56px, 7vw, 76px);
+  justify-content: center;
+}
+
+.sub-plan-btn.active {
+  background: rgba(255, 255, 255, 0.10);
+  border-color: #FAF8F6;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.06);
+}
+
+.sub-plan-btn .plan-name {
+  font-size: clamp(15px, 2vw, 20px);
+  font-weight: 700;
+}
+
+.sub-plan-btn .plan-desc {
+  font-size: clamp(10px, 1.2vw, 13px);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.sub-plan-btn.out-of-stock {
+  opacity: 0.3;
+  pointer-events: none;
+  border-color: rgba(255, 255, 255, 0.03);
+}
+
+.discord-type-btn {
+  flex-shrink: 0;
+  padding: clamp(10px, 1.5vw, 16px) clamp(16px, 2.5vw, 32px);
+  border-radius: clamp(20px, 3vw, 32px);
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: #FAF8F6;
+  font-size: clamp(14px, 2vw, 20px);
+  font-weight: 600;
+  cursor: pointer;
   white-space: nowrap;
+  backdrop-filter: blur(4px);
+  min-height: clamp(40px, 5vw, 56px);
+  display: flex;
+  align-items: center;
+}
+
+.discord-type-btn.active {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: #FAF8F6;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.06);
+}
+
+/* ============================================= */
+/* БЛОК: ПЕРЕТАСКИВАНИЕ СКРОЛЛЕРА              */
+/* ============================================= */
+
+.scroll-container {
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.scroll-container.dragging {
+  cursor: grabbing;
+  scroll-behavior: auto;
+}
+
+.scroll-container.dragging .region-btn,
+.scroll-container.dragging .nominal-btn {
+  pointer-events: none;
 }
