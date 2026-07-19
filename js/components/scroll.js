@@ -3,9 +3,14 @@
 // =============================================
 
 export function initScrollDrag(containerSelector) {
-    const containers = document.querySelectorAll(containerSelector);
+    // Поддерживаем оба селектора: .scroll-container (старый) и .scroll-horizontal (новый)
+    const containers = document.querySelectorAll(containerSelector || '.scroll-container, .scroll-horizontal');
     
     containers.forEach(container => {
+        // Защита от двойной инициализации
+        if (container.dataset.scrollDragInitialized === 'true') return;
+        container.dataset.scrollDragInitialized = 'true';
+        
         let isDown = false;
         let startX = 0;
         let scrollLeft = 0;
