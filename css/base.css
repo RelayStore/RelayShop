@@ -1,0 +1,492 @@
+/* ============================================= */
+/* БЛОК: СБРОС И ГЛОБАЛЬНЫЕ НАСТРОЙКИ           */
+/* ============================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+}
+
+body {
+  background-color: #0b0b0f;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* ============================================= */
+/* БЛОК: ГЛОБАЛЬНЫЙ КОНТЕЙНЕР                  */
+/* ============================================= */
+
+#app {
+  width: 100%;
+  min-height: 100vh;
+  background: radial-gradient(circle at 30% 10%, #1a1a2e, #0b0b0f 80%);
+  padding: 5vh 4vw 4vh 4vw;
+  position: relative;
+}
+
+/* ============================================= */
+/* БЛОК: HEADER                                 */
+/* ============================================= */
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0;
+  margin-bottom: 6vh;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1.2vw;
+  flex-wrap: wrap;
+}
+
+.logo-image {
+  height: 10vh;
+  width: auto;
+  display: block;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.logo-divider {
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 4vh;
+  font-weight: 300;
+  line-height: 1;
+  display: inline-block;
+}
+
+.logo-text {
+  color: #ffffff;
+  font-size: 3.2vh;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  display: inline-block;
+  line-height: 1.2;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.profile-button {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease;
+}
+
+.profile-button:hover {
+  opacity: 0.7;
+}
+
+.profile-icon {
+  width: 5vh;
+  height: 5vh;
+  color: #f0f0f5;
+  stroke: currentColor;
+  fill: none;
+  display: block;
+}
+
+.profile-button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ============================================= */
+/* БЛОК: СКРОЛЛБАРЫ                            */
+/* ============================================= */
+
+.scroll-container {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* ============================================= */
+/* БЛОК: АДАПТИВНОСТЬ                           */
+/* ============================================= */
+
+/* ---- БАЗОВЫЕ НАСТРОЙКИ ДЛЯ ВСЕХ УСТРОЙСТВ ---- */
+#app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: clamp(16px, 4vw, 48px);
+}
+
+/* ---- КОНТЕЙНЕРЫ ---- */
+.gift-icons,
+.subscription-icons {
+  gap: clamp(8px, 2vw, 24px);
+}
+
+.gift-icon-btn,
+.subscription-icon-btn {
+  width: clamp(60px, 12vw, 88px);
+  height: clamp(60px, 12vw, 88px);
+}
+
+.gift-icon,
+.subscription-icon {
+  width: clamp(32px, 7vw, 52px);
+  height: clamp(32px, 7vw, 52px);
+}
+
+/* ---- КАРТЫ РЕГИОНОВ ---- */
+.country-cards {
+  gap: clamp(12px, 2vw, 24px);
+}
+
+.country-card {
+  width: clamp(280px, 40vw, 400px);
+  height: clamp(160px, 22vw, 240px);
+}
+
+.country-title {
+  font-size: clamp(20px, 3.5vw, 33px);
+}
+
+.country-badge {
+  font-size: clamp(9px, 1.2vw, 11px);
+  height: clamp(22px, 3vw, 28px);
+  padding: 0 clamp(8px, 1.5vw, 12px);
+}
+
+.country-region {
+  font-size: clamp(11px, 1.5vw, 14px);
+}
+
+/* ---- STEAM DIRECT ---- */
+.steam-direct-card {
+  height: clamp(120px, 20vw, 200px);
+}
+
+.steam-direct-card-title {
+  font-size: clamp(22px, 4.5vw, 44px);
+}
+
+.steam-direct-card-commission {
+  font-size: clamp(12px, 2vw, 20px);
+}
+
+.steam-direct-logo-wrapper {
+  width: clamp(80px, 18vw, 220px);
+  height: clamp(80px, 18vw, 220px);
+  left: clamp(-20px, -3vw, -30px);
+}
+
+/* ---- PROMO CARD ---- */
+.promo-card {
+  height: clamp(140px, 22vw, 200px);
+}
+
+.promo-main-text {
+  font-size: clamp(24px, 4.5vw, 42px);
+}
+
+.promo-sub-text {
+  font-size: clamp(14px, 2vw, 18px);
+}
+
+/* ---- ЗАГОЛОВКИ ---- */
+.ps-title,
+.gift-title,
+.subscription-title,
+.promo-title,
+.steam-direct-title {
+  font-size: clamp(28px, 5vw, 52px);
+}
+
+.ps-subtitle,
+.gift-subtitle,
+.subscription-subtitle,
+.steam-direct-subtitle {
+  font-size: clamp(14px, 2vw, 20px);
+}
+
+/* ---- SERVICE CARDS ---- */
+.service-card {
+  height: clamp(60px, 10vw, 90px);
+}
+
+.service-name {
+  font-size: clamp(18px, 3vw, 28px);
+}
+
+.service-logo-wrapper {
+  width: clamp(100px, 18vw, 180px);
+  height: clamp(100px, 18vw, 180px);
+  right: clamp(-30px, -6vw, -60px);
+}
+
+/* ---- SERVICE DETAILS ---- */
+.service-detail-name {
+  font-size: clamp(24px, 4vw, 40px);
+}
+
+.service-detail-icon {
+  width: clamp(44px, 7vw, 72px);
+  height: clamp(44px, 7vw, 72px);
+}
+
+.service-detail-card {
+  padding: clamp(16px, 2.5vw, 28px);
+  gap: clamp(12px, 2vw, 18px);
+}
+
+/* ---- БЛОК ВЫБОРА ---- */
+.block-label {
+  font-size: clamp(16px, 2.5vw, 22px);
+}
+
+.region-btn {
+  font-size: clamp(16px, 2.5vw, 24px);
+  padding: clamp(12px, 2vw, 18px) clamp(18px, 3vw, 32px);
+  min-height: clamp(48px, 7vw, 68px);
+}
+
+.nominal-btn {
+  min-width: clamp(120px, 20vw, 180px);
+  min-height: clamp(70px, 10vw, 100px);
+  padding: clamp(14px, 2vw, 20px) clamp(18px, 2.5vw, 28px);
+}
+
+.nominal-amount {
+  font-size: clamp(20px, 3vw, 28px);
+}
+
+.nominal-stock {
+  font-size: clamp(12px, 1.5vw, 15px);
+}
+
+/* ---- ТОТАЛ И ОПЛАТА ---- */
+.total-block {
+  padding: clamp(16px, 2.5vw, 28px);
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.total-price {
+  font-size: clamp(24px, 3.5vw, 34px);
+}
+
+.pay-btn {
+  padding: clamp(14px, 2vw, 18px) clamp(28px, 4vw, 48px);
+  font-size: clamp(18px, 2.5vw, 22px);
+  min-height: clamp(48px, 7vw, 68px);
+}
+
+/* ---- STEAM SCREEN ---- */
+.steam-title {
+  font-size: clamp(22px, 3.5vw, 32px);
+}
+
+.steam-card {
+  padding: clamp(16px, 2.5vw, 28px);
+  gap: clamp(16px, 2vw, 24px);
+}
+
+.steam-currency-btn {
+  font-size: clamp(14px, 2vw, 18px);
+  padding: clamp(10px, 1.5vw, 14px) 0;
+  min-width: clamp(44px, 6vw, 60px);
+}
+
+.steam-amount-input {
+  font-size: clamp(20px, 3vw, 28px);
+  padding: clamp(12px, 1.5vw, 16px) 0;
+}
+
+.steam-currency-symbol {
+  font-size: clamp(20px, 3vw, 28px);
+}
+
+.steam-input {
+  font-size: clamp(14px, 2vw, 18px);
+  padding: clamp(12px, 1.5vw, 16px) clamp(12px, 1.5vw, 18px);
+}
+
+.steam-quick-btn {
+  font-size: clamp(13px, 1.5vw, 16px);
+  padding: clamp(8px, 1.2vw, 12px) clamp(12px, 2vw, 18px);
+  min-width: clamp(44px, 6vw, 60px);
+}
+
+.steam-submit-btn {
+  font-size: clamp(14px, 2vw, 18px);
+  min-height: clamp(48px, 7vw, 68px);
+  padding: clamp(12px, 1.5vw, 16px) 0;
+}
+
+/* ---- SUBSCRIPTIONS ---- */
+.sub-header-icon {
+  width: clamp(32px, 5vw, 44px);
+  height: clamp(32px, 5vw, 44px);
+}
+
+.sub-header-label {
+  font-size: clamp(10px, 1.2vw, 12px);
+}
+
+.sub-plan-btn {
+  min-width: clamp(120px, 18vw, 160px);
+  min-height: clamp(65px, 9vw, 90px);
+  padding: clamp(14px, 2vw, 20px) clamp(16px, 2.5vw, 28px);
+}
+
+.sub-plan-btn .plan-name {
+  font-size: clamp(17px, 2.5vw, 22px);
+}
+
+.sub-plan-btn .plan-desc {
+  font-size: clamp(12px, 1.5vw, 14px);
+}
+
+.discord-type-btn {
+  font-size: clamp(17px, 2.5vw, 24px);
+  padding: clamp(12px, 1.5vw, 18px) clamp(20px, 3.5vw, 40px);
+  min-height: clamp(48px, 7vw, 68px);
+}
+
+/* ---- SCROLL CONTAINERS ---- */
+.scroll-container {
+  gap: clamp(10px, 1.5vw, 18px);
+  padding: clamp(4px, 0.6vw, 6px) clamp(2px, 0.5vw, 4px) clamp(12px, 2vw, 18px) clamp(2px, 0.5vw, 4px);
+}
+
+/* ============================================= */
+/* БЛОК: ОСОБЫЕ СЛУЧАИ ДЛЯ МАЛЕНЬКИХ ЭКРАНОВ   */
+/* ============================================= */
+
+@media (max-width: 480px) {
+  /* ---- TOTAL BLOCK ---- */
+  .total-block {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+  
+  .pay-btn {
+    width: 100%;
+  }
+  
+  /* ---- STEAM DIRECT BADGE ---- */
+  .steam-direct-badge {
+    bottom: 8px;
+    right: 10px;
+    height: 20px;
+    padding: 0 10px;
+    font-size: 8px;
+  }
+  
+  .badge-dot {
+    width: 4px;
+    height: 4px;
+  }
+  
+  /* ---- COUNTRY CARDS ---- */
+  .country-card {
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  /* ---- SERVICE DETAILS ---- */
+  .service-detail-card {
+    flex-wrap: wrap;
+  }
+  
+  .service-detail-content {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+  
+  /* ---- STEAM CURRENCY ROW ---- */
+  .steam-currency-row {
+    gap: 6px;
+  }
+  
+  .steam-currency-btn {
+    flex: 0 0 auto;
+    min-width: 40px;
+    padding: 10px 6px;
+    font-size: 13px;
+  }
+  
+  /* ---- SUB-HEADER ---- */
+  .sub-header-icons {
+    gap: 8px;
+  }
+  
+  .sub-header-icon-wrapper {
+    padding: 2px 6px;
+  }
+}
+
+/* ============================================= */
+/* БЛОК: ОСОБЫЕ СЛУЧАИ ДЛЯ БОЛЬШИХ ЭКРАНОВ     */
+/* ============================================= */
+
+@media (min-width: 1200px) {
+  /* ---- ЦЕНТРИРОВАНИЕ ---- */
+  .gift-icons,
+  .subscription-icons {
+    justify-content: center;
+  }
+  
+  .country-cards {
+    justify-content: center;
+  }
+  
+  /* ---- MAX WIDTH FOR LARGE SCREENS ---- */
+  .steam-card {
+    max-width: 700px;
+  }
+}
+
+/* ============================================= */
+/* БЛОК: ПЕРЕНОС НА НОВЫЕ СТРОКИ ПРИ НЕХВАТКЕ  */
+/* ============================================= */
+
+/* ---- ГИБКИЕ КОНТЕЙНЕРЫ ---- */
+.gift-icons,
+.subscription-icons,
+.country-cards,
+.steam-currency-row,
+.steam-quick-amounts,
+.sub-header-icons {
+  flex-wrap: wrap;
+}
+
+/* ---- ТЕКСТ НЕ ПЕРЕНосится ---- */
+.region-btn,
+.discord-type-btn {
+  white-space: nowrap;
+}
+
+/* ---- НОМИНАЛЫ ПЕРЕНОСЯТСЯ ---- */
+.nominal-amount {
+  white-space: nowrap;
+}

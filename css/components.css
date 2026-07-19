@@ -11,34 +11,8 @@
 }
 
 /* ============================================= */
-/* БЛОК: SERVICES PAGE - ВЫБОР СЕРВИСА          */
+/* БЛОК: НАВИГАЦИЯ (КНОПКА НАЗАД)              */
 /* ============================================= */
-
-#screen-services {
-  width: 100%;
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 2vh;
-  padding: 0 0 4vh 0;
-}
-
-#screen-services.active {
-  display: flex;
-}
-
-/* ============================================= */
-/* БЛОК: ЗАГОЛОВОК С КНОПКОЙ НАЗАД            */
-/* ============================================= */
-
-.services-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 24px;
-  padding: 0 4px;
-}
 
 .back-btn {
   background: transparent;
@@ -47,108 +21,265 @@
   font-size: 28px;
   cursor: pointer;
   padding: 4px 8px;
-  transition: opacity 0.2s ease;
 }
 
-.back-btn:hover {
-  opacity: 0.7;
+/* ============================================= */
+/* БЛОК: PLAYSTATION SECTION                    */
+/* ============================================= */
+
+.ps-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 8vh;
 }
 
-.services-title {
+.ps-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+  justify-content: center;
+  width: 100%;
+}
+
+.ps-icon {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.ps-title {
   color: #FAF8F6;
-  font-size: 32px;
+  font-size: 52px;
   font-weight: 700;
-  letter-spacing: -0.3px;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
   text-align: center;
 }
 
-.services-placeholder {
-  width: 48px;
-  height: 48px;
+.ps-subtitle {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 20px;
+  font-weight: 300;
+  margin-bottom: 32px;
+  letter-spacing: 0.3px;
+  text-align: center;
+  width: 100%;
 }
 
 /* ============================================= */
-/* БЛОК: СПИСОК СЕРВИСОВ (ОДИН В СТРОКЕ)       */
+/* БЛОК: КАРТЫ РЕГИОНОВ                        */
 /* ============================================= */
 
-.services-list {
+.country-cards {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
+  gap: 24px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
   width: 100%;
-  max-width: 900px;
 }
 
-/* ============================================= */
-/* БЛОК: КАРТОЧКА СЕРВИСА (ГОРИЗОНТАЛЬНАЯ)     */
-/* ============================================= */
-
-.service-card {
-  width: 100%;
-  height: 90px;
-  border-radius: 22px;
+.country-card {
+  width: 400px;
+  height: 240px;
   position: relative;
   overflow: hidden;
+  border: none;
+  outline: none;
+  border-radius: 30px;
   cursor: pointer;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #111;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
 }
 
-.service-card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
-}
-
-.service-card:active {
-  transform: scale(0.98);
-}
-
-/* ============================================= */
-/* БЛОК: НАЗВАНИЕ СЕРВИСА (СЛЕВА)             */
-/* ============================================= */
-
-.service-info {
+.country-card img {
   position: absolute;
-  top: 50%;
-  left: 24px;
-  transform: translateY(-50%);
-  z-index: 2;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.service-name {
-  color: #FFFFFF;
-  font-size: 28px;
+.overlay {
+  position: absolute;
+  inset: 3px;
+  border-radius: 28px;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.25),
+    rgba(0, 0, 0, 0.35) 20%,
+    rgba(0, 0, 0, 0.50) 45%,
+    rgba(0, 0, 0, 0.65) 70%,
+    rgba(0, 0, 0, 0.80) 100%
+  );
+  pointer-events: none;
+}
+
+.country-title {
+  position: absolute;
+  top: 18px;
+  left: 22px;
+  z-index: 5;
+  color: #FAF8F6;
+  font-size: 33px;
   font-weight: 700;
   letter-spacing: -0.3px;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+.country-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(30, 30, 30, 0.5);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ff8d23;
+}
+
+.country-region {
+  position: absolute;
+  left: 20px;
+  bottom: 18px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #d8d8d8;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.region-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #2fd37a;
 }
 
 /* ============================================= */
-/* БЛОК: ЛОГОТИП СЕРВИСА (СПРАВА)                */
+/* БЛОК: GIFT CARDS SECTION                    */
 /* ============================================= */
 
-.service-logo-wrapper {
+.gift-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 6vh;
+  padding-top: 4vh;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.gift-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 8px;
+  padding: 0 4px;
+  position: relative;
+}
+
+.gift-title {
+  color: #FAF8F6;
+  font-size: 38px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.show-all-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 16px;
+  font-weight: 400;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 8px;
   position: absolute;
-  right: -60px;
-  top: 50%;
-  transform: translateY(-50%) rotate(-25deg);
-  z-index: 1;
-  width: 180px;
-  height: 180px;
+  right: 0;
+}
+
+.gift-subtitle {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 16px;
+  font-weight: 300;
+  text-align: center;
+  width: 100%;
+  margin-bottom: 24px;
+  letter-spacing: 0.2px;
+}
+
+.gift-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.gift-icon-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.gift-icon-btn {
+  width: 88px;
+  height: 88px;
+  border-radius: 20px;
+  background: rgba(30, 30, 40, 0.6);
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0;
+  backdrop-filter: blur(10px);
 }
 
-.service-logo {
-  width: 80%;
-  height: 80%;
-  object-fit: cover;
-  opacity: 0.4;
+.gift-icon {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  display: block;
+  opacity: 0.9;
 }
+
+.gift-icon-label {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 13px;
+  font-weight: 400;
+  text-align: center;
+  letter-spacing: 0.2px;
+}
+
 /* ============================================= */
-/* БЛОК: STEAM DIRECT (ПРЕМИУМ ВЕРСИЯ)          */
+/* БЛОК: STEAM DIRECT SECTION                   */
 /* ============================================= */
 
 .steam-direct-section {
@@ -161,7 +292,6 @@
   border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* ===== ЗАГОЛОВОК ===== */
 .steam-direct-header {
   display: flex;
   align-items: center;
@@ -187,7 +317,6 @@
   text-align: center;
 }
 
-/* ===== ПОДЗАГОЛОВОК ===== */
 .steam-direct-subtitle {
   color: rgba(255, 255, 255, 0.5);
   font-size: 16px;
@@ -198,10 +327,6 @@
   letter-spacing: 0.2px;
 }
 
-/* ============================================= */
-/* БЛОК: КАРТОЧКА-КНОПКА (ПРЕМИУМ)             */
-/* ============================================= */
-
 .steam-direct-card {
   width: 100%;
   max-width: 900px;
@@ -210,51 +335,26 @@
   overflow: hidden;
   border-radius: 30px;
   cursor: pointer;
-  
-  /* ГРАДИЕНТ СВЕРХУ ВНИЗ - КОНТРАСТНЫЙ */
-  background: linear-gradient(
-    180deg,
-    #0a1628 0%,
-    #1a3a6a 30%,
-    #2d6bb8 60%,
-    #5ba0e0 85%,
-    #89c4f4 100%
-  );
-  
+  background: linear-gradient(180deg, #0a1628 0%, #1a3a6a 30%, #2d6bb8 60%, #5ba0e0 85%, #89c4f4 100%);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-/* ===== ОВЕРЛЕЙ (КАК У ПРОМО-БЛОКА) ===== */
 .steam-direct-overlay {
   position: absolute;
   inset: 3px;
   border-radius: 28px;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.30) 0%,
-    rgba(0, 0, 0, 0.40) 30%,
-    rgba(0, 0, 0, 0.55) 60%,
-    rgba(0, 0, 0, 0.75) 100%
-  );
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.30) 0%, rgba(0, 0, 0, 0.40) 30%, rgba(0, 0, 0, 0.55) 60%, rgba(0, 0, 0, 0.75) 100%);
   pointer-events: none;
   z-index: 1;
 }
 
-/* ===== СВЕТЛАЯ ОБВОДКА (КАК У КАРТОК РЕГИОНОВ) ===== */
 .steam-direct-card::before {
   content: '';
   position: absolute;
   inset: 3px;
   border-radius: 28px;
   padding: 1.5px;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.25) 0%,
-    rgba(255, 255, 255, 0.05) 40%,
-    rgba(255, 255, 255, 0.02) 70%,
-    rgba(255, 255, 255, 0.12) 100%
-  );
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.05) 40%, rgba(255, 255, 255, 0.02) 70%, rgba(255, 255, 255, 0.12) 100%);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
@@ -262,20 +362,6 @@
   pointer-events: none;
   z-index: 2;
 }
-
-/* ===== ХОВЕР И АКТИВ ===== */
-.steam-direct-card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-}
-
-.steam-direct-card:active {
-  transform: scale(0.98);
-}
-
-/* ============================================= */
-/* БЛОК: ЛОГОТИП (ПРИЖАТ К ЛЕВОМУ КРАЮ)        */
-/* ============================================= */
 
 .steam-direct-logo-wrapper {
   position: absolute;
@@ -296,13 +382,9 @@
   height: 85%;
   object-fit: contain;
   transform: scaleX(-1);
-  opacity: 1; /* ← 100% непрозрачность */
+  opacity: 1;
   filter: drop-shadow(0 0 40px rgba(91, 160, 224, 0.20));
 }
-
-/* ============================================= */
-/* БЛОК: КОНТЕНТ ПО ЦЕНТРУ                      */
-/* ============================================= */
 
 .steam-direct-card-content {
   position: absolute;
@@ -322,9 +404,7 @@
   font-weight: 800;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  text-shadow: 
-    0 2px 20px rgba(0, 0, 0, 0.4),
-    0 0 60px rgba(91, 160, 224, 0.10);
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.4), 0 0 60px rgba(91, 160, 224, 0.10);
   line-height: 1.1;
   margin-bottom: 6px;
 }
@@ -333,14 +413,10 @@
   display: block;
   color: rgba(255, 255, 255, 0.90);
   font-size: 20px;
-  font-weight: 600; /* ← стандартная жирность (не тонкая) */
+  font-weight: 600;
   letter-spacing: 2px;
   text-shadow: 0 2px 16px rgba(0, 0, 0, 0.3);
 }
-
-/* ============================================= */
-/* БЛОК: БЕЙДЖ (КАК У КАРТОК РЕГИОНОВ)         */
-/* ============================================= */
 
 .steam-direct-badge {
   position: absolute;
@@ -364,184 +440,294 @@
   pointer-events: none;
 }
 
-.badge-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #ff8d23;
+/* ============================================= */
+/* БЛОК: SUBSCRIPTIONS SECTION                  */
+/* ============================================= */
+
+.subscription-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 6vh;
+  padding-top: 4vh;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.subscription-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 8px;
+  padding: 0 4px;
+  position: relative;
+}
+
+.subscription-title {
+  color: #FAF8F6;
+  font-size: 38px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.subscription-subtitle {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 16px;
+  font-weight: 300;
+  text-align: center;
+  width: 100%;
+  margin-bottom: 24px;
+  letter-spacing: 0.2px;
+}
+
+.subscription-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.subscription-icon-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.subscription-icon-btn {
+  width: 88px;
+  height: 88px;
+  border-radius: 20px;
+  background: rgba(30, 30, 40, 0.6);
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  backdrop-filter: blur(10px);
+}
+
+.subscription-icon {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  display: block;
+  opacity: 0.9;
+}
+
+.subscription-icon-label {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 13px;
+  font-weight: 400;
+  text-align: center;
+  letter-spacing: 0.2px;
+}
+
+/* ============================================= */
+/* БЛОК: PROMO SECTION                          */
+/* ============================================= */
+
+.promo-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 6vh;
+  padding-top: 4vh;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.promo-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  justify-content: center;
+  width: 100%;
+}
+
+.promo-icon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
   flex-shrink: 0;
-  animation: pulse-dot 2s ease-in-out infinite;
 }
 
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(0.8); }
+.promo-title {
+  color: #FAF8F6;
+  font-size: 38px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.promo-card {
+  width: 100%;
+  max-width: 900px;
+  height: 200px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 30px;
+  cursor: pointer;
+  background: #111;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
+  margin: 0 auto;
+}
+
+.promo-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.promo-overlay {
+  position: absolute;
+  inset: 3px;
+  border-radius: 28px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.30), rgba(0, 0, 0, 0.40) 30%, rgba(0, 0, 0, 0.55) 60%, rgba(0, 0, 0, 0.75) 100%);
+  pointer-events: none;
+}
+
+.promo-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  text-align: center;
+  width: 90%;
+}
+
+.promo-main-text {
+  color: #FAF8F6;
+  font-size: 42px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+  margin-bottom: 8px;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.promo-sub-text {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+}
+
+.promo-section a {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  text-decoration: none;
 }
 
 /* ============================================= */
-/* БЛОК: АДАПТИВНОСТЬ                           */
+/* БЛОК: SERVICES PAGE                          */
 /* ============================================= */
 
-@media (max-width: 768px) {
-  .steam-direct-card {
-    height: 170px;
-  }
-  
-  .steam-direct-overlay {
-    border-radius: 24px;
-  }
-  
-  .steam-direct-card::before {
-    border-radius: 24px;
-  }
-  
-  .steam-direct-logo-wrapper {
-    left: -20px;
-    width: 160px;
-    height: 160px;
-  }
-  
-  .steam-direct-card-title {
-    font-size: 34px;
-    letter-spacing: 1px;
-  }
-  
-  .steam-direct-card-commission {
-    font-size: 17px;
-    letter-spacing: 1.5px;
-  }
-  
-  .steam-direct-badge {
-    bottom: 12px;
-    right: 14px;
-    height: 28px;
-    padding: 0 14px;
-    font-size: 10px;
-  }
-  
-  .steam-direct-title {
-    font-size: 32px;
-  }
-}
-
-@media (max-width: 480px) {
-  .steam-direct-card {
-    height: 140px;
-    border-radius: 24px;
-  }
-  
-  .steam-direct-overlay {
-    border-radius: 22px;
-  }
-  
-  .steam-direct-card::before {
-    border-radius: 22px;
-    inset: 2px;
-  }
-  
-  .steam-direct-logo-wrapper {
-    left: -16px;
-    width: 120px;
-    height: 120px;
-  }
-  
-  .steam-direct-logo {
-    width: 80%;
-    height: 80%;
-  }
-  
-  .steam-direct-card-title {
-    font-size: 26px;
-    letter-spacing: 0.5px;
-  }
-  
-  .steam-direct-card-commission {
-    font-size: 14px;
-    letter-spacing: 1px;
-  }
-  
-  .steam-direct-badge {
-    bottom: 10px;
-    right: 10px;
-    height: 24px;
-    padding: 0 12px;
-    font-size: 9px;
-    gap: 6px;
-  }
-  
-  .badge-dot {
-    width: 5px;
-    height: 5px;
-  }
-  
-  .steam-direct-title {
-    font-size: 26px;
-  }
-  
-  .steam-direct-icon {
-    width: 36px;
-    height: 36px;
-  }
-}
-/* ============================================= */
-/* БЛОК: ЭКРАН ДЕТАЛЕЙ СЕРВИСА                 */
-/* ============================================= */
-#screen-service-details {
+#screen-services {
   width: 100%;
   display: none;
   flex-direction: column;
-  padding: 0 0 20px 0;
+  align-items: center;
+  margin-top: 2vh;
+  padding: 0 0 4vh 0;
 }
 
-#screen-service-details.active {
+#screen-services.active {
   display: flex;
 }
 
-/* ===== ВЕРХНЯЯ ПЛАШКА ===== */
-.service-detail-header {
+.services-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 10px 0 20px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  margin-bottom: 16px;
+  margin-bottom: 24px;
+  padding: 0 4px;
 }
 
-.service-detail-info {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.service-detail-icon {
-  width: 44px;
-  height: 44px;
-  object-fit: contain;
-}
-
-.service-detail-name {
+.services-title {
   color: #FAF8F6;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  text-align: center;
+}
+
+.services-placeholder {
+  width: 48px;
+  height: 48px;
+}
+
+.services-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 900px;
+}
+
+.service-card {
+  width: 100%;
+  height: 90px;
+  border-radius: 22px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.service-info {
+  position: absolute;
+  top: 50%;
+  left: 24px;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+.service-name {
+  color: #FFFFFF;
   font-size: 28px;
   font-weight: 700;
   letter-spacing: -0.3px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
 }
 
-.service-detail-placeholder {
-  width: 48px;
+.service-logo-wrapper {
+  position: absolute;
+  right: -60px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-25deg);
+  z-index: 1;
+  width: 180px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* ===== ПОДЗАГОЛОВОК ===== */
-.service-detail-subtitle {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 16px;
-  font-weight: 400;
-  margin-bottom: 24px;
-  letter-spacing: 0.3px;
-  text-align: center;
+.service-logo {
+  width: 80%;
+  height: 80%;
+  object-fit: cover;
+  opacity: 0.4;
 }
+
 /* ============================================= */
-/* БЛОК: ЭКРАН ДЕТАЛЕЙ СЕРВИСА - ОГРОМНЫЙ       */
+/* БЛОК: SERVICE DETAILS SCREEN                */
 /* ============================================= */
 
 #screen-service-details {
@@ -555,7 +741,6 @@
   display: flex;
 }
 
-/* ===== ПЛАШКА СЕРВИСА ===== */
 .service-detail-card {
   width: 100%;
   padding: 24px 28px;
@@ -570,18 +755,9 @@
 }
 
 .service-detail-card .back-btn {
-  flex-shrink: 0;
-  background: transparent;
-  border: none;
-  color: #FAF8F6;
   font-size: 34px;
-  cursor: pointer;
   padding: 0;
-  transition: opacity 0.2s ease;
-}
-
-.service-detail-card .back-btn:hover {
-  opacity: 0.7;
+  flex-shrink: 0;
 }
 
 .service-detail-content {
@@ -620,7 +796,7 @@
 }
 
 /* ============================================= */
-/* БЛОК: БЛОК ВЫБОРА (РЕГИОН/НОМИНАЛ) - ОГРОМНЫЙ */
+/* БЛОК: ВЫБОР РЕГИОНА / НОМИНАЛА              */
 /* ============================================= */
 
 .selection-block {
@@ -636,7 +812,6 @@
   letter-spacing: 0.2px;
 }
 
-/* ===== КОНТЕЙНЕР ДЛЯ ГОРИЗОНТАЛЬНОГО СКРОЛЛА ===== */
 .scroll-wrapper {
   position: relative;
   width: 100%;
@@ -665,7 +840,6 @@
   cursor: grabbing;
 }
 
-/* ===== КНОПКИ РЕГИОНОВ (ОГРОМНЫЕ) ===== */
 .region-btn {
   flex-shrink: 0;
   padding: 18px 32px;
@@ -676,17 +850,11 @@
   font-size: 24px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
   white-space: nowrap;
   backdrop-filter: blur(4px);
   min-height: 68px;
   display: flex;
   align-items: center;
-}
-
-.region-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.20);
 }
 
 .region-btn.active {
@@ -695,7 +863,6 @@
   box-shadow: 0 0 40px rgba(255, 255, 255, 0.08);
 }
 
-/* ===== КНОПКИ НОМИНАЛОВ (ОГРОМНЫЕ) ===== */
 .nominal-btn {
   flex-shrink: 0;
   min-width: 180px;
@@ -705,7 +872,6 @@
   background: rgba(255, 255, 255, 0.03);
   color: #FAF8F6;
   cursor: pointer;
-  transition: all 0.2s ease;
   text-align: center;
   backdrop-filter: blur(4px);
   display: flex;
@@ -714,11 +880,6 @@
   gap: 6px;
   min-height: 100px;
   justify-content: center;
-}
-
-.nominal-btn:hover {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(255, 255, 255, 0.18);
 }
 
 .nominal-btn.active {
@@ -739,12 +900,20 @@
 }
 
 .nominal-btn.out-of-stock {
-  opacity: 0.3;
+  opacity: 0.5;
   pointer-events: none;
-  border-color: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.01);
 }
 
-/* ===== ИНДИКАТОР СКРОЛЛА ===== */
+.nominal-stock.out-of-stock-text {
+  color: rgba(255, 100, 100, 0.5);
+}
+
+.nominal-btn.out-of-stock .nominal-amount {
+  opacity: 0.6;
+}
+
 .scroll-indicator {
   display: none;
   height: 5px;
@@ -763,11 +932,10 @@
   width: 30%;
   background: rgba(255, 255, 255, 0.25);
   border-radius: 4px;
-  transition: transform 0.15s ease;
 }
 
 /* ============================================= */
-/* БЛОК: ИТОГО И ОПЛАТА - ОГРОМНЫЙ              */
+/* БЛОК: ТОТАЛ И ОПЛАТА                        */
 /* ============================================= */
 
 .total-block {
@@ -797,17 +965,7 @@
   font-size: 22px;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s ease;
   min-height: 68px;
-}
-
-.pay-btn:hover {
-  transform: scale(1.03);
-  box-shadow: 0 8px 32px rgba(255, 255, 255, 0.15);
-}
-
-.pay-btn:active {
-  transform: scale(0.96);
 }
 
 .pay-btn.disabled {
@@ -816,7 +974,7 @@
 }
 
 /* ============================================= */
-/* БЛОК: ИНСТРУКЦИЯ - ОГРОМНАЯ                  */
+/* БЛОК: ИНСТРУКЦИЯ                             */
 /* ============================================= */
 
 .instruction-block {
@@ -841,23 +999,9 @@
   font-weight: 400;
   line-height: 1.7;
 }
-/* ===== Стили для unavailable состояния ===== */
-.nominal-btn.out-of-stock {
-  opacity: 0.5;
-  pointer-events: none;
-  border-color: rgba(255, 255, 255, 0.05);
-  background: rgba(255, 255, 255, 0.01);
-}
 
-.nominal-stock.out-of-stock-text {
-  color: rgba(255, 100, 100, 0.5);
-}
-
-.nominal-btn.out-of-stock .nominal-amount {
-  opacity: 0.6;
-}
 /* ============================================= */
-/* БЛОК: STEAM ПОПОЛНЕНИЕ                       */
+/* БЛОК: STEAM SCREEN                           */
 /* ============================================= */
 
 #screen-steam {
@@ -872,7 +1016,6 @@
   display: flex;
 }
 
-/* ===== КАРТОЧКА STEAM ===== */
 .steam-card {
   width: 100%;
   max-width: 600px;
@@ -886,7 +1029,6 @@
   gap: 24px;
 }
 
-/* ===== HEADER ===== */
 .steam-header {
   display: flex;
   align-items: center;
@@ -894,18 +1036,9 @@
 }
 
 .steam-header .back-btn {
-  flex-shrink: 0;
-  background: transparent;
-  border: none;
-  color: #FAF8F6;
   font-size: 34px;
-  cursor: pointer;
   padding: 0;
-  transition: opacity 0.2s ease;
-}
-
-.steam-header .back-btn:hover {
-  opacity: 0.7;
+  flex-shrink: 0;
 }
 
 .steam-header-content {
@@ -927,7 +1060,6 @@
   margin-top: 2px;
 }
 
-/* ===== БЛОКИ ===== */
 .steam-block {
   display: flex;
   flex-direction: column;
@@ -942,7 +1074,6 @@
   text-transform: uppercase;
 }
 
-/* ===== ВЫБОР ВАЛЮТЫ ===== */
 .steam-currency-row {
   display: flex;
   gap: 10px;
@@ -960,7 +1091,6 @@
   font-size: 18px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
   text-align: center;
 }
 
@@ -971,12 +1101,6 @@
   box-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
 }
 
-.steam-currency-btn:hover:not(.active) {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.15);
-}
-
-/* ===== ЛОГИН STEAM ===== */
 .steam-login-header {
   display: flex;
   justify-content: space-between;
@@ -993,15 +1117,9 @@
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.steam-toggle-btn:hover {
-  background: rgba(255, 255, 255, 0.12);
-  color: #FAF8F6;
 }
 
 .steam-info-block {
@@ -1009,7 +1127,6 @@
   border-radius: 12px;
   padding: 12px 16px;
   border: 1px solid rgba(255, 255, 255, 0.05);
-  transition: all 0.3s ease;
   overflow: hidden;
   max-height: 200px;
   opacity: 1;
@@ -1038,7 +1155,6 @@
   font-size: 18px;
   font-weight: 500;
   outline: none;
-  transition: border-color 0.2s ease;
 }
 
 .steam-input:focus {
@@ -1049,7 +1165,6 @@
   color: rgba(255, 255, 255, 0.25);
 }
 
-/* ===== СУММА ===== */
 .steam-amount-field {
   display: flex;
   align-items: center;
@@ -1057,7 +1172,6 @@
   border-radius: 14px;
   border: 2px solid rgba(255, 255, 255, 0.08);
   padding: 0 18px;
-  transition: border-color 0.2s ease;
 }
 
 .steam-amount-field:focus-within {
@@ -1087,16 +1201,18 @@
   color: rgba(255, 255, 255, 0.15);
 }
 
-/* ===== ПОДСКАЗКА О ЛИМИТАХ ===== */
-.steam-limits-hint {
-  color: rgba(255, 255, 255, 0.3);
+.steam-range-hint {
+  color: rgba(255, 255, 255, 0.35);
   font-size: 13px;
-  margin-top: 4px;
+  margin-top: 6px;
   text-align: right;
   letter-spacing: 0.3px;
 }
 
-/* ===== БЫСТРЫЕ СУММЫ ===== */
+.steam-range-hint.active {
+  color: rgba(255, 255, 255, 0.6);
+}
+
 .steam-quick-amounts {
   display: flex;
   gap: 10px;
@@ -1112,13 +1228,7 @@
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
   min-width: 60px;
-}
-
-.steam-quick-btn:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.12);
 }
 
 .steam-quick-btn.active {
@@ -1127,7 +1237,6 @@
   color: #FAF8F6;
 }
 
-/* ===== ИНФОРМАЦИОННЫЙ БЛОК ===== */
 .steam-info-row {
   display: flex;
   justify-content: space-between;
@@ -1150,49 +1259,6 @@
   font-weight: 500;
 }
 
-/* ===== КНОПКА ===== */
-.steam-submit-btn {
-  width: 100%;
-  padding: 18px 0;
-  border-radius: 20px;
-  border: none;
-  background: rgba(255, 255, 255, 0.06);
-  color: rgba(255, 255, 255, 0.3);
-  font-size: 18px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  margin-top: 4px;
-}
-
-.steam-submit-btn.active {
-  background: #FAF8F6;
-  color: #0b0b0f;
-  box-shadow: 0 8px 32px rgba(255, 255, 255, 0.10);
-}
-
-.steam-submit-btn.active:hover {
-  transform: scale(1.02);
-}
-
-.steam-submit-btn.active:active {
-  transform: scale(0.97);
-}
-/* ===== ПОДСКАЗКА О ДИАПАЗОНЕ ===== */
-.steam-range-hint {
-  color: rgba(255, 255, 255, 0.35);
-  font-size: 13px;
-  margin-top: 6px;
-  text-align: right;
-  letter-spacing: 0.3px;
-  transition: color 0.3s ease;
-}
-
-.steam-range-hint.active {
-  color: rgba(255, 255, 255, 0.6);
-}
-
-/* ===== КНОПКА С ЛИМИТАМИ ===== */
 .steam-submit-btn {
   width: 100%;
   padding: 16px 0;
@@ -1203,7 +1269,6 @@
   font-size: 18px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.25s ease;
   margin-top: 4px;
   display: flex;
   flex-direction: column;
@@ -1219,14 +1284,6 @@
   box-shadow: 0 8px 32px rgba(255, 255, 255, 0.10);
 }
 
-.steam-submit-btn.active:hover {
-  transform: scale(1.02);
-}
-
-.steam-submit-btn.active:active {
-  transform: scale(0.97);
-}
-
 .submit-limits {
   font-size: 13px;
   font-weight: 400;
@@ -1238,284 +1295,208 @@
   opacity: 0.4;
   color: #0b0b0f;
 }
+
 /* ============================================= */
-/* БЛОК: ПОДПИСКИ (ОТДЕЛЬНЫЙ ЭКРАН)             */
+/* БЛОК: SUBSCRIPTIONS SCREEN                   */
 /* ============================================= */
 
 #screen-subscriptions {
-    width: 100%;
-    display: none;
-    flex-direction: column;
-    padding: 0 0 20px 0;
+  width: 100%;
+  display: none;
+  flex-direction: column;
+  padding: 0 0 20px 0;
 }
 
 #screen-subscriptions.active {
-    display: flex;
+  display: flex;
 }
 
-/* ===== ВЕРХНЯЯ ПАНЕЛЬ С ИКОНКАМИ ===== */
 .sub-header {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 0 4px 20px 4px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    margin-bottom: 20px;
-    width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 4px 20px 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  margin-bottom: 20px;
+  width: 100%;
 }
 
 .sub-header .back-btn {
-    flex-shrink: 0;
-    background: transparent;
-    border: none;
-    color: #FAF8F6;
-    font-size: 34px;
-    cursor: pointer;
-    padding: 0;
-    transition: opacity 0.2s ease;
-}
-
-.sub-header .back-btn:hover {
-    opacity: 0.7;
+  font-size: 34px;
+  padding: 0;
+  flex-shrink: 0;
 }
 
 .sub-header-icons {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-    flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  flex: 1;
 }
 
 .sub-header-icon-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    cursor: pointer;
-    padding: 4px 12px;
-    border-radius: 16px;
-    transition: all 0.2s ease;
-    opacity: 0.4;
-}
-
-.sub-header-icon-wrapper:hover {
-    opacity: 0.7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  padding: 4px 12px;
+  border-radius: 16px;
+  opacity: 0.4;
 }
 
 .sub-header-icon-wrapper.active {
-    opacity: 1;
+  opacity: 1;
 }
 
 .sub-header-icon-wrapper.active .sub-header-label {
-    color: #FAF8F6;
+  color: #FAF8F6;
 }
 
 .sub-header-icon {
-    width: 44px;
-    height: 44px;
-    object-fit: contain;
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
 }
 
 .sub-header-label {
-    color: rgba(255, 255, 255, 0.4);
-    font-size: 12px;
-    font-weight: 500;
-    transition: color 0.2s ease;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 12px;
+  font-weight: 500;
 }
 
 .sub-header-placeholder {
-    width: 48px;
-    flex-shrink: 0;
+  width: 48px;
+  flex-shrink: 0;
 }
 
-/* ===== КОНТЕНТ ПОДПИСОК (переиспользуем стили из деталей) ===== */
+/* ============================================= */
+/* БЛОК: ПОДПИСКИ (внутренние компоненты)      */
+/* ============================================= */
+
 #sub-content .selection-block {
-    margin-bottom: 32px;
-    width: 100%;
+  margin-bottom: 32px;
+  width: 100%;
 }
 
 #sub-content .block-label {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 22px;
-    font-weight: 600;
-    margin-bottom: 16px;
-    letter-spacing: 0.2px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  letter-spacing: 0.2px;
 }
 
 #sub-content .scroll-wrapper {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-    margin-bottom: 8px;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 8px;
 }
 
 #sub-content .scroll-container {
-    display: flex;
-    gap: 18px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding: 6px 4px 18px 4px;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    cursor: grab;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 6px 4px 18px 4px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  cursor: grab;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 #sub-content .scroll-container::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 #sub-content .scroll-container:active {
-    cursor: grabbing;
+  cursor: grabbing;
 }
 
-/* ===== КНОПКИ ДЛЯ ПОДПИСОК ===== */
 .sub-plan-btn {
-    flex-shrink: 0;
-    min-width: 160px;
-    padding: 20px 28px;
-    border-radius: 24px;
-    border: 2px solid rgba(255, 255, 255, 0.08);
-    background: rgba(255, 255, 255, 0.03);
-    color: #FAF8F6;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    text-align: center;
-    backdrop-filter: blur(4px);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    min-height: 90px;
-    justify-content: center;
-}
-
-.sub-plan-btn:hover {
-    background: rgba(255, 255, 255, 0.07);
-    border-color: rgba(255, 255, 255, 0.18);
+  flex-shrink: 0;
+  min-width: 160px;
+  padding: 20px 28px;
+  border-radius: 24px;
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: #FAF8F6;
+  cursor: pointer;
+  text-align: center;
+  backdrop-filter: blur(4px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-height: 90px;
+  justify-content: center;
 }
 
 .sub-plan-btn.active {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: #FAF8F6;
-    box-shadow: 0 0 40px rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: #FAF8F6;
+  box-shadow: 0 0 40px rgba(255, 255, 255, 0.08);
 }
 
 .sub-plan-btn .plan-name {
-    font-size: 22px;
-    font-weight: 700;
+  font-size: 22px;
+  font-weight: 700;
 }
 
 .sub-plan-btn .plan-desc {
-    font-size: 14px;
-    font-weight: 400;
-    color: rgba(255, 255, 255, 0.4);
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .sub-plan-btn.out-of-stock {
-    opacity: 0.3;
-    pointer-events: none;
-    border-color: rgba(255, 255, 255, 0.03);
+  opacity: 0.3;
+  pointer-events: none;
+  border-color: rgba(255, 255, 255, 0.03);
 }
 
-/* ===== КНОПКИ ДЛЯ DISCORD (Basic/Nitro) ===== */
 .discord-type-btn {
-    flex-shrink: 0;
-    padding: 18px 40px;
-    border-radius: 36px;
-    border: 2px solid rgba(255, 255, 255, 0.10);
-    background: rgba(255, 255, 255, 0.04);
-    color: #FAF8F6;
-    font-size: 24px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    white-space: nowrap;
-    backdrop-filter: blur(4px);
-    min-height: 68px;
-    display: flex;
-    align-items: center;
-}
-
-.discord-type-btn:hover {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.20);
+  flex-shrink: 0;
+  padding: 18px 40px;
+  border-radius: 36px;
+  border: 2px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.04);
+  color: #FAF8F6;
+  font-size: 24px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  backdrop-filter: blur(4px);
+  min-height: 68px;
+  display: flex;
+  align-items: center;
 }
 
 .discord-type-btn.active {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: #FAF8F6;
-    box-shadow: 0 0 40px rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: #FAF8F6;
+  box-shadow: 0 0 40px rgba(255, 255, 255, 0.08);
 }
 
-/* ===== БЛОК ИТОГО ДЛЯ ПОДПИСОК ===== */
-#sub-content .total-block {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: rgba(255, 255, 255, 0.04);
-    border-radius: 24px;
-    padding: 24px 28px;
-    margin: 24px 0 28px 0;
-    border: 1px solid rgba(255, 255, 255, 0.06);
+/* ============================================= */
+/* БЛОК: ПЕРЕТАСКИВАНИЕ СКРОЛЛЕРА              */
+/* ============================================= */
+
+.scroll-container {
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
-#sub-content .total-price {
-    color: #FAF8F6;
-    font-size: 34px;
-    font-weight: 700;
-    letter-spacing: -0.2px;
+.scroll-container.dragging {
+  cursor: grabbing;
+  scroll-behavior: auto;
 }
 
-#sub-content .pay-btn {
-    padding: 18px 48px;
-    border-radius: 36px;
-    border: none;
-    background: #FAF8F6;
-    color: #0b0b0f;
-    font-size: 22px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    min-height: 68px;
-}
-
-#sub-content .pay-btn:hover {
-    transform: scale(1.03);
-    box-shadow: 0 8px 32px rgba(255, 255, 255, 0.15);
-}
-
-#sub-content .pay-btn:active {
-    transform: scale(0.96);
-}
-
-#sub-content .pay-btn.disabled {
-    opacity: 0.3;
-    pointer-events: none;
-}
-
-/* ===== ИНСТРУКЦИЯ ДЛЯ ПОДПИСОК ===== */
-#sub-content .instruction-block {
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 24px;
-    padding: 22px 26px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    margin-top: 12px;
-}
-
-#sub-content .instruction-title {
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 10px;
-    letter-spacing: 0.3px;
-}
-
-#sub-content .instruction-text {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 17px;
-    font-weight: 400;
-    line-height: 1.7;
+.scroll-container.dragging .region-btn,
+.scroll-container.dragging .nominal-btn {
+  pointer-events: none;
 }
