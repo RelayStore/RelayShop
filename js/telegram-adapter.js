@@ -24,10 +24,7 @@ export function initTelegramAdapter() {
     window.Telegram.WebApp.expand();
   }
   
-  // 4. Подписываемся на изменения размера окна
-  window.addEventListener('resize', handleResize);
-  
-  // 5. Подписываемся на события Telegram WebView
+  // 4. Подписываемся на события Telegram WebView
   if (window.Telegram?.WebApp) {
     window.Telegram.WebApp.onEvent('viewportChanged', handleViewportChange);
     applyTelegramTheme();
