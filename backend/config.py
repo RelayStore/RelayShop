@@ -27,7 +27,38 @@ class Config:
     TEST_MODE = os.getenv("TEST_MODE", "true").lower() == "true"
     # Эмулируемый баланс (если TEST_MODE = true)
     MOCK_BALANCE = float(os.getenv("MOCK_BALANCE", "999999"))
-    
+   
+    STEAM_DIRECT_PRODUCTS = {
+        "RUB": {
+            "product_id": "product_01kjp6vtkme90ba0r0dpdvkapv",
+            "min": 50,
+            "max": 30000,
+            "symbol": "₽",
+            "currency": "RUB"
+        },
+        "KZT": {
+            "product_id": "product_01kjp6vtm9ez19ckmjwxdgy7ky",
+            "min": 250,
+            "max": 150000,
+            "symbol": "₸",
+            "currency": "KZT"
+        },
+        "UAH": {
+            "product_id": "product_01kv84qc6tfxsbkn4t50etgbt4",
+            "min": 50,
+            "max": 13500,
+            "symbol": "₴",
+            "currency": "UAH"
+        },
+        "USD": {
+            "product_id": "product_01kjp6vtmjf8rbbxw88719wz3b",
+            "min": 1,
+            "max": 300,
+            "symbol": "$",
+            "currency": "USD"
+        }
+    }
+
     @classmethod
     def validate(cls):
         if not cls.FOXRELOAD_API_KEY:
