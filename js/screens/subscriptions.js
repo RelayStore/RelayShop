@@ -663,16 +663,41 @@ document.addEventListener('click', async function(e) {
         if (!subState.currentPlan) return;
         
         const btn = e.target;
-        btn.textContent = 'Обработка...';
+
+        let userId = null;
+        if (window.Telegram?.WebApp?.initDataUnsafe?.user?.id) {
+            userId = window.Telegram.WebApp.initDataUnsafe.user.id;
+        }
+
+        if (!userId) {
+            alert('❌ Ошибка: не удалось определить пользователя');
+            return;
+        }
+        
+        btn.textContent = 'Создание заказа...';
         btn.disabled = true;
         
         try {
-            const order = await API.createGiftOrder(subState.currentPlan.id, 1);
-            console.log('✅ Заказ подписки создан:', order);
-            alert(`✅ Заказ #${order.order_id} создан!\nСумма: ${order.price} руб\nСтатус: ${order.status}`);
+            const result = await API.createOrder({
+                user_id: userId,
+                product_id: subState.currentPlan.id,
+                product_name: subState.currentPlan.name || `Подписка ${subState.currentService}`,
+                product_slug: subState.currentService,
+                region_slug: subState.currentRegion || 'global',
+                quantity: 1,
+                amount: parseFloat(subState.currentPlan.price || 0),
+                currency: 'rub',
+                note: {}
+            });
+
+            window.open(result.payment_url, '_blank');
+            
+            if (window.Telegram?.WebApp) {
+                window.Telegram.WebApp.close();
+            }
+
         } catch (error) {
-            console.error('Ошибка оплаты подписки:', error);
-            alert('❌ Ошибка при создании заказа: ' + error.message);
+            alert('❌ Ошибка: ' + error.message);
         } finally {
             btn.textContent = 'Оплатить';
             btn.disabled = false;

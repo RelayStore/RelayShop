@@ -112,24 +112,40 @@ export function initGiftPayment() {
     els.payBtn.addEventListener('click', async function() {
         if (this.classList.contains('disabled') || !AppState.currentNominal) return;
 
+        let userId = null;
+        if (window.Telegram?.WebApp?.initDataUnsafe?.user?.id) {
+            userId = window.Telegram.WebApp.initDataUnsafe.user.id;
+        }
+
+        if (!userId) {
+            alert('❌ Ошибка: не удалось определить пользователя');
+            return;
+        }
+
         try {
-            this.textContent = 'Обработка...';
+            this.textContent = 'Создание заказа...';
             this.disabled = true;
 
-            const order = await API.createGiftOrder(AppState.currentNominal.id, 1);
-            console.log('✅ Заказ создан:', order);
-            alert(`✅ Заказ #${order.order_id} создан!\nСумма: ${order.price} руб\nСтатус: ${order.status}`);
+            const result = await API.createOrder({
+                user_id: userId,
+                product_id: AppState.currentNominal.id,
+                product_name: `${AppState.currentNominal.amount} ${AppState.currentNominal.currency} - ${AppState.currentServiceSlug}`,
+                product_slug: AppState.currentServiceSlug,
+                region_slug: AppState.currentRegionSlug,
+                quantity: 1,
+                amount: AppState.currentNominal.price,
+                currency: AppState.currentNominal.currency,
+                note: {}
+            });
 
-            const details = await API.getNominalDetails(AppState.currentNominal.id);
-            AppState.currentNominal.stock = details.stock;
-            AppState.currentNominal.price = details.price;
-
-            const nominals = await API.getNominals(AppState.currentServiceSlug, AppState.currentRegionSlug);
-            renderNominals(nominals);
+            window.open(result.payment_url, '_blank');
+            
+            if (window.Telegram?.WebApp) {
+                window.Telegram.WebApp.close();
+            }
 
         } catch (error) {
-            console.error('Ошибка оплаты:', error);
-            alert('❌ Ошибка при создании заказа: ' + error.message);
+            alert('❌ Ошибка: ' + error.message);
         } finally {
             this.textContent = 'Оплатить';
             this.disabled = false;
