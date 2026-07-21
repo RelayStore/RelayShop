@@ -1,7 +1,7 @@
 // =============================================
 // БЛОК: ТОЧКА ВХОДА
 // =============================================
-
+import { initTelegramAdapter } from './telegram-adapter.js';
 import { AppState, els } from './core/app.js';
 import { showScreen, initNavigation } from './core/navigation.js';
 import { initScrollDrag, updateScrollIndicator } from './components/scroll.js';
@@ -45,7 +45,8 @@ window.openSubscription = openSubscription;
 // =============================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Навигация
+    initTelegramAdapter();
+        // 1. Навигация
     initNavigation();
     
     // 2. Скроллеры

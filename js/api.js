@@ -46,6 +46,24 @@ function getServices() {
 }
 
 // =============================================
+// БЛОК: СОЗДАНИЕ ЗАКАЗА (НОВЫЙ FLOW)
+// =============================================
+
+function createOrder(data) {
+    return apiRequest('/orders/create', {
+        method: 'POST',
+        body: JSON.stringify(data)
+    });
+}
+
+function getTelegramUserId() {
+    if (window.Telegram?.WebApp?.initDataUnsafe?.user?.id) {
+        return window.Telegram.WebApp.initDataUnsafe.user.id;
+    }
+    return null;
+}
+
+// =============================================
 // БЛОК: РЕГИОНЫ И НОМИНАЛЫ
 // =============================================
 
@@ -178,7 +196,9 @@ window.API = {
     createSteamOrder,
     getSteamConfig,
     getOrderStatus,
-    getBalance
+    getBalance,
+    createOrder,
+    getTelegramUserId
 };
 
 console.log('✅ API клиент инициализирован');
