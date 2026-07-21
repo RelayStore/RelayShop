@@ -7,6 +7,7 @@ from models import OrderCreateRequest, OrderResponse
 from orders import create_order
 import asyncio
 from typing import List, Dict, Any, Optional
+from bot_client import send_telegram_message
 import uuid
 from config import config
 from payments import process_mock_payment
@@ -68,28 +69,23 @@ init_db()
 # =============================================
 
 @app.post("/api/orders/create", response_model=OrderResponse)
-async def create_order_endpoint(
-    request: OrderCreateRequest,
-    db: Session = Depends(get_db)
-):
-    try:
-        logger.info(f"📝 Создание заказа для пользователя {request.user_id}")
-        logger.info(f"   Товар: {request.product_name} | {request.amount} руб")
-        
-        order = create_order(db, request.dict())
-        
-        payment_url = f"https://t.me/{config.BOT_USERNAME}?start=order_{order.id}"
-        
-        return OrderResponse(
-            order_id=order.id,        # ← int
-            status=order.status,
-            payment_url=payment_url,
-            created_at=order.created_at
-        )
-        
-    except Exception as e:
-        logger.error(f"❌ Ошибка создания заказа: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+async def create_order_endpoint(request: OrderCreateRequest, db: Session = Depends(get_db)):
+    order = create_order(db, request.dict())
+    
+    # Отправляем сообщение в бота
+    await send_telegram_message(
+        request.user_id,
+        f"🛒 Заказ #{order.id} создан!\n\n"
+        f"Товар: {order.product_name}\n"
+        f"Сумма: {order.amount} {order.currency}"
+    )
+    
+    return OrderResponse(
+        order_id=order.id,
+        status=order.status,
+        payment_url="",
+        created_at=order.created_at
+    )
 
 
 # =============================================

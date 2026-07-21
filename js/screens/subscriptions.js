@@ -690,11 +690,15 @@ document.addEventListener('click', async function(e) {
                 note: {}
             });
 
-            window.open(result.payment_url, '_blank');
-            
-            if (window.Telegram?.WebApp) {
-                window.Telegram.WebApp.close();
-            }
+            showToast('✅ Заказ успешно создан!');
+
+            setTimeout(() => {
+                if (window.Telegram?.WebApp) {
+                    window.Telegram.WebApp.close();
+                } else {
+                    window.close();
+                }
+            }, 500);
 
         } catch (error) {
             alert('❌ Ошибка: ' + error.message);

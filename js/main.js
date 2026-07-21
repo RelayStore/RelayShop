@@ -114,6 +114,14 @@ document.addEventListener('DOMContentLoaded', () => {
             showScreen('screen-services');
         });
     });
+
+    function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'app-toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.classList.add('show'), 10);
+}
     
     console.log('✅ Relay Mini App инициализирован');
     console.log('ℹ️ Данные загружаются из API');

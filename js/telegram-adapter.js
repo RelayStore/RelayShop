@@ -19,19 +19,20 @@ export function initTelegramAdapter() {
   // 2. Применяем отступы для безопасных зон
   applySafeAreas();
   
-  // 3. Подписываемся на изменения размера окна
+  // 3. ПРИНУДИТЕЛЬНО РАСШИРЯЕМ ПРИЛОЖЕНИЕ (НОВОЕ!)
+  if (window.Telegram?.WebApp) {
+    window.Telegram.WebApp.expand();
+  }
+  
+  // 4. Подписываемся на изменения размера окна
   window.addEventListener('resize', handleResize);
   
-  // 4. Подписываемся на события Telegram WebView
+  // 5. Подписываемся на события Telegram WebView
   if (window.Telegram?.WebApp) {
-    // Событие изменения вьюпорта (клавиатура, панели)
     window.Telegram.WebApp.onEvent('viewportChanged', handleViewportChange);
-    
-    // Если нужно - применяем тему Telegram
     applyTelegramTheme();
   }
   
-  // 5. Логируем успешную инициализацию (для отладки)
   console.log('[Telegram Adapter] Инициализация завершена');
 }
 
@@ -87,8 +88,13 @@ function applySafeAreas() {
  * Обработчик изменения размера окна
  * Обновляет высоту вьюпорта
  */
-function handleResize() {
+function handleViewportChange() {
   setViewportHeight();
+  
+  if (window.Telegram?.WebApp) {
+    // Принудительно расширяем при каждом изменении вьюпорта
+    window.Telegram.WebApp.expand();
+  }
 }
 
 /**
