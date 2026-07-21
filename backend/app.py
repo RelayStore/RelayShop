@@ -1,15 +1,26 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.orm import Session
+from database import get_db, init_db
 import logging
+from models import OrderCreateRequest, OrderResponse
+from orders import create_order
 import asyncio
 from typing import List, Dict, Any, Optional
 import uuid
 from config import config
+from payments import process_mock_payment
 from models import (
-    Region, Nominal, Service, 
-    GiftOrderRequest, SteamOrderRequest, 
-    OrderResponse, SteamOrderResponse,
-    ProductSearchResult
+    OrderCreateRequest,
+    OrderResponse,
+    GiftOrderResponse,
+    GiftOrderRequest,
+    SteamOrderRequest,
+    SteamOrderResponse,
+    ProductSearchResult,
+    Region,
+    Nominal,
+    Service
 )
 from services import (
     SERVICE_CATEGORIES, 
@@ -39,17 +50,94 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# CORS для фронтенда
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*"],  # ← РАЗРЕШАЕТ ВСЕ ДОМЕНЫ
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["*"],  # ← РАЗРЕШАЕТ ВСЕ МЕТОДЫ
+    allow_headers=["*"],  # ← РАЗРЕШАЕТ ВСЕ ЗАГОЛОВКИ
 )
-
 # Создаем клиент FoxReload
 fox = FoxReloadClient()
+
+# Инициализация БД
+init_db()
+
+# =============================================
+# ЭНДПОИНТ: СОЗДАНИЕ ЗАКАЗА
+# =============================================
+
+@app.post("/api/orders/create", response_model=OrderResponse)
+async def create_order_endpoint(
+    request: OrderCreateRequest,
+    db: Session = Depends(get_db)
+):
+    try:
+        logger.info(f"📝 Создание заказа для пользователя {request.user_id}")
+        logger.info(f"   Товар: {request.product_name} | {request.amount} руб")
+        
+        order = create_order(db, request.dict())
+        
+        payment_url = f"https://t.me/{config.BOT_USERNAME}?start=order_{order.id}"
+        
+        return OrderResponse(
+            order_id=order.id,        # ← int
+            status=order.status,
+            payment_url=payment_url,
+            created_at=order.created_at
+        )
+        
+    except Exception as e:
+        logger.error(f"❌ Ошибка создания заказа: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# =============================================
+# ЭНДПОИНТ: ПОЛУЧИТЬ ЗАКАЗ (ДЛЯ БОТА)
+# =============================================
+
+@app.get("/api/orders/{order_id}")
+async def get_order_endpoint(
+    order_id: int,
+    user_id: int,
+    db: Session = Depends(get_db)
+):
+    """
+    Получить заказ по ID с проверкой владельца.
+    Используется ботом для отображения заказа.
+    """
+    from orders import get_order
+    
+    order = get_order(db, order_id, user_id)
+    if not order:
+        raise HTTPException(status_code=404, detail="Заказ не найден или не принадлежит вам")
+    
+    return order.to_dict()
+
+
+# =============================================
+# ЭНДПОИНТ: ПОЛУЧИТЬ СЕРВИСЫ (СУЩЕСТВУЮЩИЙ)
+# =============================================
+
+@app.get("/api/services")
+async def get_services():
+    """Получить список сервисов"""
+    return get_all_services()
+
+
+# =============================================
+# ЗАПУСК
+# =============================================
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(
+        "app:app",
+        host="0.0.0.0",
+        port=8000,
+        reload=config.DEBUG
+    )
+
 # =============================================
 # БЛОК: ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ ДЛЯ ОЧИСТКИ НАЗВАНИЙ
 # =============================================
@@ -386,7 +474,7 @@ async def get_nominal_details(product_id: str):
 # БЛОК: ЗАКАЗЫ (GIFT CARDS)
 # =============================================
 
-@app.post("/api/orders/gift", response_model=OrderResponse)
+@app.post("/api/orders/gift", response_model=GiftOrderResponse)
 async def create_gift_order(request: GiftOrderRequest):
     """Создать заказ на gift-карту."""
     try:
@@ -753,7 +841,50 @@ async def shutdown_event():
     """Закрыть соединения при завершении"""
     fox.close()
 
+# =============================================
+# БЛОК: MOCK ОПЛАТА
+# =============================================
 
+from pydantic import BaseModel
+
+
+class MockPaymentRequest(BaseModel):
+    order_id: int
+    user_id: int
+
+
+class MockPaymentResponse(BaseModel):
+    status: str
+    message: str
+
+
+@app.post("/api/payments/mock", response_model=MockPaymentResponse)
+async def mock_payment(
+    request: MockPaymentRequest,
+    db: Session = Depends(get_db)
+):
+    """
+    Mock-оплата заказа.
+    Принимает order_id и user_id, меняет статус на paid.
+    """
+    try:
+        from payments import process_mock_payment
+        
+        logger.info(f"💰 Mock оплата: заказ #{request.order_id}, пользователь {request.user_id}")
+        
+        result = process_mock_payment(db, request.order_id, request.user_id)
+        
+        if result["status"] == "error":
+            raise HTTPException(status_code=400, detail=result["message"])
+        
+        return result
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"❌ Ошибка Mock оплаты: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+    
 # =============================================
 # БЛОК: ЗАПУСК
 # =============================================

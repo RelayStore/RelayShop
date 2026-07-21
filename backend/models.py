@@ -2,12 +2,79 @@
 # БЛОК: PYDANTIC МОДЕЛИ
 # =============================================
 
-from pydantic import BaseModel, Field
 from typing import List, Dict, Any, Optional
+from datetime import datetime
+from pydantic import BaseModel, Field # если ещё нет
 
+class MockPaymentRequest(BaseModel):
+    order_id: int
+    user_id: int
+
+class MockPaymentResponse(BaseModel):
+    status: str
+    message: str
+
+
+
+# =============================================
+# НОВЫЙ ЭНДПОИНТ: /api/orders/create
+# =============================================
+
+class OrderCreateRequest(BaseModel):
+    """Запрос на создание заказа от Mini App"""
+    user_id: int = Field(..., description="Telegram user_id")
+    product_id: str = Field(..., description="FoxReload product_id")
+    product_name: str = Field(..., description="Название товара")
+    product_slug: Optional[str] = Field(None, description="Slug сервиса")
+    region_slug: Optional[str] = Field(None, description="Slug региона")
+    quantity: int = Field(1, ge=1, description="Количество")
+    amount: float = Field(..., gt=0, description="Цена в рублях")
+    currency: str = Field("rub", description="Валюта")
+    note: Optional[Dict[str, Any]] = Field(None, description="Дополнительные данные")
+
+
+class OrderResponse(BaseModel):
+    """Ответ при создании заказа (новый эндпоинт)"""
+    order_id: int
+    status: str
+    payment_url: str
+    created_at: Optional[datetime] = None
+
+
+class OrderStatusResponse(BaseModel):
+    """Ответ с информацией о заказе"""
+    id: int
+    user_id: int
+    product_name: str
+    amount: float
+    currency: str
+    status: str
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+    result_data: Optional[Dict[str, Any]] = None
+    error: Optional[str] = None
+
+
+# =============================================
+# СТАРЫЙ ЭНДПОИНТ: /api/orders/gift (FoxReload)
+# =============================================
+
+class GiftOrderResponse(BaseModel):
+    """Ответ после создания заказа через FoxReload (старый эндпоинт)"""
+    order_id: str
+    status: str
+    price: float
+    currency: str
+    payment_expires_at: Optional[str] = None
+    code: Optional[str] = None
+    error: Optional[str] = None
+
+
+# =============================================
+# ОСТАЛЬНЫЕ МОДЕЛИ (без изменений)
+# =============================================
 
 class Service(BaseModel):
-    """Модель сервиса"""
     slug: str
     name: str
     icon: str
@@ -15,14 +82,12 @@ class Service(BaseModel):
 
 
 class Region(BaseModel):
-    """Модель региона"""
     slug: str
     name: str
     country_code: str
 
 
 class Nominal(BaseModel):
-    """Модель номинала"""
     id: str
     amount: float
     currency: str
@@ -33,45 +98,29 @@ class Nominal(BaseModel):
 
 
 class GiftOrderRequest(BaseModel):
-    """Запрос на создание заказа gift-карты"""
     product_id: str
     quantity: int = 1
     note: Optional[Dict[str, Any]] = None
-    total_price: Optional[str] = None  # ← price guard
+    total_price: Optional[str] = None
 
 
 class SteamOrderRequest(BaseModel):
-    """Запрос на создание заказа Steam Direct"""
-    currency: str  # RUB, KZT, UAH, USD
+    currency: str
     login: str
-    amount: int  # сумма в валюте
+    amount: int
 
 
 class SteamConfigResponse(BaseModel):
-    """Ответ с конфигурацией Steam"""
     currencies: List[Dict[str, Any]]
 
 
-class OrderResponse(BaseModel):
-    """Ответ после создания заказа"""
-    order_id: str
-    status: str
-    price: float
-    currency: str
-    payment_expires_at: Optional[str] = None
-    code: Optional[str] = None
-    error: Optional[str] = None
-
-
 class SteamOrderResponse(BaseModel):
-    """Ответ после создания Steam заказа"""
     status: str
     message: Optional[str] = None
     code: Optional[str] = None
 
 
 class ProductSearchResult(BaseModel):
-    """Результат поиска товара"""
     id: str
     name: str
     slug: str
