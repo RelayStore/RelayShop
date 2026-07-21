@@ -9,6 +9,7 @@ import asyncio
 from typing import List, Dict, Any, Optional
 from bot_client import send_telegram_message
 import uuid
+import httpx
 from config import config
 from payments import process_mock_payment
 from models import (
@@ -53,10 +54,10 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # ← РАЗРЕШАЕТ ВСЕ ДОМЕНЫ
+    allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["*"],  # ← РАЗРЕШАЕТ ВСЕ МЕТОДЫ
-    allow_headers=["*"],  # ← РАЗРЕШАЕТ ВСЕ ЗАГОЛОВКИ
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 # Создаем клиент FoxReload
 fox = FoxReloadClient()
@@ -72,12 +73,23 @@ init_db()
 async def create_order_endpoint(request: OrderCreateRequest, db: Session = Depends(get_db)):
     order = create_order(db, request.dict())
     
-    # Отправляем сообщение в бота
-    await send_telegram_message(
-        request.user_id,
-        f"🛒 Заказ #{order.id} создан!\n\n"
-        f"Товар: {order.product_name}\n"
-        f"Сумма: {order.amount} {order.currency}"
+    # Отправляем сообщение через Bot API с кнопкой
+    keyboard = {
+    "inline_keyboard": [[
+        {"text": "💳 Оплатить", "url": f"https://t.me/{config.BOT_USERNAME}?start=order_{order.id}"}
+    ]]
+    }
+
+    async with httpx.AsyncClient() as client:
+        await client.post(
+        f"https://api.telegram.org/bot{config.BOT_TOKEN}/sendMessage",
+        json={
+            "chat_id": request.user_id,
+            "text": f"🛒 Заказ #{order.id} создан!\n\n"
+                    f"Товар: {order.product_name}\n"
+                    f"Сумма: {order.amount} {order.currency}",
+            "reply_markup": keyboard
+        }
     )
     
     return OrderResponse(
