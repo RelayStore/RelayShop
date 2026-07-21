@@ -98,21 +98,6 @@ function handleViewportChange() {
 }
 
 /**
- * Обработчик события viewportChanged от Telegram
- * Срабатывает при открытии/закрытии клавиатуры,
- * изменении размера Mini App
- */
-function handleViewportChange() {
-  setViewportHeight();
-  
-  // Дополнительно: если нужно, можно расширить приложение
-  if (window.Telegram?.WebApp) {
-    // Убеждаемся, что приложение занимает весь экран
-    window.Telegram.WebApp.expand();
-  }
-}
-
-/**
  * Применяет тему Telegram к приложению
  * Опционально: можно использовать для тёмной/светлой темы
  */
