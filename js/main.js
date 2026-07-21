@@ -44,6 +44,18 @@ window.openSubscription = openSubscription;
 // ИНИЦИАЛИЗАЦИЯ
 // =============================================
 
+window.showToast = function(message) {
+    const toast = document.createElement('div');
+    toast.className = 'app-toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.classList.add('show'), 10);
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, 2000);
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     initTelegramAdapter();
         // 1. Навигация
@@ -114,14 +126,6 @@ document.addEventListener('DOMContentLoaded', () => {
             showScreen('screen-services');
         });
     });
-
-    function showToast(message) {
-    const toast = document.createElement('div');
-    toast.className = 'app-toast';
-    toast.textContent = message;
-    document.body.appendChild(toast);
-    setTimeout(() => toast.classList.add('show'), 10);
-}
     
     console.log('✅ Relay Mini App инициализирован');
     console.log('ℹ️ Данные загружаются из API');
