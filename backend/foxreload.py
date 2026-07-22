@@ -226,6 +226,23 @@ class FoxReloadClient:
         "GET",
         f"/api/topups/rates/{to_currency}"
       )    
+    
+    async def get_product_details_in_currency(self, product_id: str, currency: str = None):
+       """
+       Получить детали товара в указанной валюте.
+       Если currency не указан, используется значение из конфига.
+       """
+       headers = self._get_headers()
+       if currency:
+           headers["X-Currency"] = currency
+    
+       async with httpx.AsyncClient() as client:
+           response = await client.get(
+               f"{self.base_url}/api/products/{product_id}",
+               headers=headers
+            )
+           response.raise_for_status()
+           return response.json()
 
 
 # =============================================

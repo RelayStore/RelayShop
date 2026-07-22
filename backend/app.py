@@ -108,8 +108,8 @@ async def get_steam_price(product_id: str, quantity: int):
     Возвращает цену в рублях (пересчёт через курс FoxReload).
     """
     try:
-        # 1. Получаем цену товара от FoxReload (в USD)
-        product = await fox.get_product_details(product_id)
+        # 1. Получаем цену товара от FoxReload в USD
+        product = await fox.get_product_details_in_currency(product_id, "usd")
         price_per_unit_usd = float(product.get("price", 0))
         total_usd = price_per_unit_usd * quantity
         
