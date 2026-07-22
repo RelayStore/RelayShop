@@ -355,6 +355,11 @@ async function handleSteamSubmit() {
     updateSteamButton();
 
     try {
+        console.log('Steam order data:', {
+            user_id: userId,
+            product_id: steamState.productId,
+            amount: Math.round(steamState.amount * 0.0141 * 100) / 100
+        });
         // 1. Создаем заказ через единый эндпоинт
         const result = await API.createOrder({
             user_id: userId,
