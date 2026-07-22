@@ -29,6 +29,7 @@ export const steamEl = {
 };
 
 let steamCurrencies = {};
+let priceTimeout = null;
 
 export async function initSteam() {
     try {
@@ -44,7 +45,6 @@ export async function initSteam() {
             };
         });
 
-        // Устанавливаем productId для текущей валюты
         if (steamCurrencies[steamState.currency]) {
             steamState.productId = steamCurrencies[steamState.currency].product_id;
         }
@@ -72,65 +72,7 @@ export async function initSteam() {
         alert('Не удалось загрузить конфигурацию Steam');
     }
 }
-let priceTimeout = null;
 
-async function fetchSteamPrice() {
-    const currency = steamCurrencies[steamState.currency];
-    if (!currency || !steamState.productId || steamState.amount <= 0) return;
-
-    const submitBtn = document.getElementById('steam-submit-btn');
-    const textEl = document.getElementById('submit-text');
-    textEl.textContent = '⏳ Загрузка цены...';
-    submitBtn.disabled = true;
-
-    try {
-        const response = await fetch(
-            `${API_BASE_URL}/steam/price?product_id=${steamState.productId}&quantity=${steamState.amount}`
-        );
-        if (!response.ok) {
-            throw new Error('Ошибка получения цены');
-        }
-        const data = await response.json();
-        
-        document.getElementById('info-amount').textContent = `${data.price_rub} руб`;
-        textEl.textContent = `Продолжить — ${data.price_rub} руб`;
-        submitBtn.disabled = false;
-        submitBtn.classList.add('active');
-        
-    } catch (error) {
-        console.error('Ошибка получения цены:', error);
-        textEl.textContent = 'Ошибка загрузки цены';
-        submitBtn.disabled = true;
-    }
-}
-function handleSteamLoginInput(e) {
-    const value = e.target.value.replace(/[^a-zA-Z0-9_]/g, '');
-    e.target.value = value;
-    steamState.login = value;
-    updateSteamInfo();
-    updateSteamButton();
-}
-
-function handleSteamAmountInput(e) {
-    const raw = e.target.value.replace(/[^0-9]/g, '');
-    e.target.value = raw;
-
-    const num = Number(raw);
-    if (!isNaN(num) && num > 0) {
-        steamState.amount = num;
-    } else if (raw === '') {
-        steamState.amount = 0;
-    }
-
-    updateSteamInfo();
-    updateSteamButton();
-    updateSteamQuickButtons();
-
-    clearTimeout(priceTimeout);
-    priceTimeout = setTimeout(() => {
-        fetchSteamPrice();
-    }, 500);
-}
 function renderSteamCurrencies() {
     const row = steamEl.currencyRow;
     row.innerHTML = '';
@@ -321,6 +263,7 @@ function updateSteamButton() {
         return;
     }
 
+    // Сумма вне допустимого диапазона
     btn.classList.remove('active');
     btn.disabled = true;
     if (textEl) textEl.textContent = rangeText || 'Недопустимая сумма';
@@ -335,7 +278,34 @@ function updateSteamQuickButtons() {
     });
 }
 
+function handleSteamLoginInput(e) {
+    const value = e.target.value.replace(/[^a-zA-Z0-9_]/g, '');
+    e.target.value = value;
+    steamState.login = value;
+    updateSteamInfo();
+    updateSteamButton();
+}
 
+function handleSteamAmountInput(e) {
+    const raw = e.target.value.replace(/[^0-9]/g, '');
+    e.target.value = raw;
+
+    const num = Number(raw);
+    if (!isNaN(num) && num > 0) {
+        steamState.amount = num;
+    } else if (raw === '') {
+        steamState.amount = 0;
+    }
+
+    updateSteamInfo();
+    updateSteamButton();
+    updateSteamQuickButtons();
+
+    clearTimeout(priceTimeout);
+    priceTimeout = setTimeout(() => {
+        fetchSteamPrice();
+    }, 500);
+}
 
 function toggleSteamInfo() {
     const isHidden = steamEl.infoBlock.classList.toggle('hidden');
@@ -343,7 +313,41 @@ function toggleSteamInfo() {
 }
 
 // =============================================
-// ОСНОВНАЯ ФУНКЦИЯ ОПЛАТЫ STEAM (ЕДИНАЯ ЛОГИКА)
+// ПОЛУЧЕНИЕ ЦЕНЫ ОТ FOXRELOAD
+// =============================================
+
+async function fetchSteamPrice() {
+    const currency = steamCurrencies[steamState.currency];
+    if (!currency || !steamState.productId || steamState.amount <= 0) return;
+
+    const submitBtn = document.getElementById('steam-submit-btn');
+    const textEl = document.getElementById('submit-text');
+    textEl.textContent = '⏳ Загрузка цены...';
+    submitBtn.disabled = true;
+
+    try {
+        const response = await fetch(
+            `${API_BASE_URL}/steam/price?product_id=${steamState.productId}&quantity=${steamState.amount}`
+        );
+        if (!response.ok) {
+            throw new Error('Ошибка получения цены');
+        }
+        const data = await response.json();
+        
+        document.getElementById('info-amount').textContent = `${data.price_rub} руб`;
+        textEl.textContent = `Продолжить — ${data.price_rub} руб`;
+        submitBtn.disabled = false;
+        submitBtn.classList.add('active');
+        
+    } catch (error) {
+        console.error('Ошибка получения цены:', error);
+        textEl.textContent = 'Ошибка загрузки цены';
+        submitBtn.disabled = true;
+    }
+}
+
+// =============================================
+// ОСНОВНАЯ ФУНКЦИЯ ОПЛАТЫ STEAM
 // =============================================
 
 async function handleSteamSubmit() {
@@ -388,7 +392,6 @@ async function handleSteamSubmit() {
     updateSteamButton();
 
     try {
-        // Создаем заказ — цена будет взята из ответа FoxReload на бэкенде
         const result = await API.createOrder({
             user_id: userId,
             product_id: steamState.productId,
@@ -396,7 +399,7 @@ async function handleSteamSubmit() {
             product_slug: 'steam',
             region_slug: 'direct',
             quantity: steamState.amount,
-            amount: 0,  // Будет заполнено на бэкенде из FoxReload
+            amount: 0,
             currency: 'rub',
             note: { login: login }
         });
@@ -428,7 +431,6 @@ export function openSteamScreen() {
     steamState.amount = 1000;
     steamState.isProcessing = false;
 
-    // Устанавливаем productId для текущей валюты
     if (steamCurrencies[steamState.currency]) {
         steamState.productId = steamCurrencies[steamState.currency].product_id;
     }
@@ -449,7 +451,6 @@ export function openSteamScreen() {
     showScreen('screen-steam');
 }
 
-// Инициализация Steam при загрузке страницы
 document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('screen-steam')) {
         initSteam();
