@@ -113,18 +113,19 @@ async def get_steam_price(product_id: str, quantity: int):
         price_per_unit_usd = float(product.get("price", 0))
         total_usd = price_per_unit_usd * quantity
         
-        # 2. Получаем курс USD → RUB от FoxReload
+        # 2. Получаем курс RUB → USD от FoxReload
         rates = await fox.get_exchange_rates("usd")
-        usd_to_rub = None
+        rub_to_usd = None
         for rate in rates.get("rates", []):
-            if rate.get("from") == "usd" and rate.get("to") == "rub":
-                usd_to_rub = float(rate.get("rate", 0))
+            if rate.get("from") == "rub" and rate.get("to") == "usd":
+                rub_to_usd = float(rate.get("rate", 0))
                 break
         
-        if not usd_to_rub:
+        if not rub_to_usd:
             raise HTTPException(status_code=500, detail="Не удалось получить курс")
         
-        # 3. Пересчёт в рубли
+        # 3. Пересчёт USD → RUB
+        usd_to_rub = 1 / rub_to_usd
         total_rub = total_usd * usd_to_rub
         
         return {
@@ -137,6 +138,7 @@ async def get_steam_price(product_id: str, quantity: int):
     except Exception as e:
         logger.error(f"Ошибка получения цены Steam: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
 
 
 # =============================================
