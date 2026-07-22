@@ -695,7 +695,7 @@ async def create_steam_order(request: SteamOrderRequest):
                 "quantity": request.amount,  # ← сумма в валюте!
                 "note": {"login": request.login.strip()}
             }],
-            is_mock=False,
+            is_mock=True,
             idempotency_key=idempotency_key
         )
         
