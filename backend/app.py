@@ -621,7 +621,6 @@ async def get_steam_config():
     """
     Получить конфигурацию Steam (валюты, лимиты, быстрые суммы).
     """
-    # Используем конфигурацию из config
     config_data = []
     for code, data in config.STEAM_DIRECT_PRODUCTS.items():
         config_data.append({
@@ -629,7 +628,8 @@ async def get_steam_config():
             "symbol": data["symbol"],
             "min": data["min"],
             "max": data["max"],
-            "amounts": get_steam_amounts(code)  # быстрые суммы
+            "amounts": get_steam_amounts(code),
+            "product_id": data["product_id"]
         })
     return {"currencies": config_data}
 
