@@ -415,41 +415,6 @@ async function handleSteamSubmit() {
     }
 }
 
-let priceTimeout = null;
-
-async function fetchSteamPrice() {
-    const currency = steamCurrencies[steamState.currency];
-    if (!currency || !steamState.productId || steamState.amount <= 0) return;
-
-    const submitBtn = document.getElementById('steam-submit-btn');
-    const textEl = document.getElementById('submit-text');
-    const originalText = textEl.textContent;
-    textEl.textContent = '⏳ Загрузка цены...';
-    submitBtn.disabled = true;
-
-    try {
-        const response = await fetch(
-            `/api/steam/price?product_id=${steamState.productId}&quantity=${steamState.amount}`
-        );
-        if (!response.ok) {
-            throw new Error('Ошибка получения цены');
-        }
-        const data = await response.json();
-        
-        // Обновляем отображение цены
-        document.getElementById('info-amount').textContent = `${data.price_rub} руб`;
-        textEl.textContent = `Продолжить — ${data.price_rub} руб`;
-        submitBtn.disabled = false;
-        submitBtn.classList.add('active');
-        
-    } catch (error) {
-        console.error('Ошибка получения цены:', error);
-        textEl.textContent = 'Ошибка загрузки цены';
-        submitBtn.disabled = true;
-    }
-}
-
-
 export function openSteamScreen() {
     steamState.currency = 'RUB';
     steamState.login = '';
