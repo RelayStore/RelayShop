@@ -72,7 +72,58 @@ export async function initSteam() {
         alert('Не удалось загрузить конфигурацию Steam');
     }
 }
+let priceTimeout = null;
 
+async function fetchSteamPrice() {
+    const currency = steamCurrencies[steamState.currency];
+    if (!currency || !steamState.productId || steamState.amount <= 0) return;
+
+    const submitBtn = document.getElementById('steam-submit-btn');
+    const textEl = document.getElementById('submit-text');
+    textEl.textContent = '⏳ Загрузка цены...';
+    submitBtn.disabled = true;
+
+    try {
+        const response = await fetch(
+            `/api/steam/price?product_id=${steamState.productId}&quantity=${steamState.amount}`
+        );
+        if (!response.ok) {
+            throw new Error('Ошибка получения цены');
+        }
+        const data = await response.json();
+        
+        document.getElementById('info-amount').textContent = `${data.price_rub} руб`;
+        textEl.textContent = `Продолжить — ${data.price_rub} руб`;
+        submitBtn.disabled = false;
+        submitBtn.classList.add('active');
+        
+    } catch (error) {
+        console.error('Ошибка получения цены:', error);
+        textEl.textContent = 'Ошибка загрузки цены';
+        submitBtn.disabled = true;
+    }
+}
+
+function handleSteamAmountInput(e) {
+    const raw = e.target.value.replace(/[^0-9]/g, '');
+    e.target.value = raw;
+
+    const num = Number(raw);
+    if (!isNaN(num) && num > 0) {
+        steamState.amount = num;
+    } else if (raw === '') {
+        steamState.amount = 0;
+    }
+
+    updateSteamInfo();
+    updateSteamButton();
+    updateSteamQuickButtons();
+
+    clearTimeout(priceTimeout);
+    priceTimeout = setTimeout(() => {
+        fetchSteamPrice();
+    }, 500);
+}
 function renderSteamCurrencies() {
     const row = steamEl.currencyRow;
     row.innerHTML = '';
@@ -277,21 +328,7 @@ function updateSteamQuickButtons() {
     });
 }
 
-function handleSteamAmountInput(e) {
-    const raw = e.target.value.replace(/[^0-9]/g, '');
-    e.target.value = raw;
 
-    const num = Number(raw);
-    if (!isNaN(num) && num > 0) {
-        steamState.amount = num;
-    } else if (raw === '') {
-        steamState.amount = 0;
-    }
-
-    updateSteamInfo();
-    updateSteamButton();
-    updateSteamQuickButtons();
-}
 
 function toggleSteamInfo() {
     const isHidden = steamEl.infoBlock.classList.toggle('hidden');
@@ -412,26 +449,6 @@ async function fetchSteamPrice() {
     }
 }
 
-function handleSteamAmountInput(e) {
-    const raw = e.target.value.replace(/[^0-9]/g, '');
-    e.target.value = raw;
-
-    const num = Number(raw);
-    if (!isNaN(num) && num > 0) {
-        steamState.amount = num;
-    } else if (raw === '') {
-        steamState.amount = 0;
-    }
-
-    updateSteamInfo();
-    updateSteamButton();
-    updateSteamQuickButtons();
-
-    clearTimeout(priceTimeout);
-    priceTimeout = setTimeout(() => {
-        fetchSteamPrice();
-    }, 500);
-}
 
 export function openSteamScreen() {
     steamState.currency = 'RUB';
