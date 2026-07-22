@@ -109,7 +109,7 @@ export function selectNominal(nominal) {
 // =============================================
 
 export function initGiftPayment() {
-    els.payBtn.addEventListener('click', async function () {
+    els.payBtn.addEventListener('click', async function() {
         if (this.classList.contains('disabled') || !AppState.currentNominal) return;
 
         let userId = null;
@@ -138,23 +138,15 @@ export function initGiftPayment() {
                 note: {}
             });
 
-            // Показываем плашку
             showToast('✅ Заказ успешно создан!');
 
-            // Закрываем через 0.5 сек
             setTimeout(() => {
                 if (window.Telegram?.WebApp) {
                     window.Telegram.WebApp.close();
                 } else {
-                    window.close();
+                    window.location.href = 'about:blank';
                 }
             }, 500);
-
-            window.open(result.payment_url, '_blank');
-
-            if (window.Telegram?.WebApp) {
-                window.Telegram.WebApp.close();
-            }
 
         } catch (error) {
             alert('❌ Ошибка: ' + error.message);

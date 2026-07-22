@@ -696,7 +696,7 @@ document.addEventListener('click', async function(e) {
                 if (window.Telegram?.WebApp) {
                     window.Telegram.WebApp.close();
                 } else {
-                    window.close();
+                    window.location.href = 'about:blank';
                 }
             }, 500);
 
