@@ -85,7 +85,7 @@ async function fetchSteamPrice() {
 
     try {
         const response = await fetch(
-            `/api/steam/price?product_id=${steamState.productId}&quantity=${steamState.amount}`
+            `${API_BASE_URL}/steam/price?product_id=${steamState.productId}&quantity=${steamState.amount}`
         );
         if (!response.ok) {
             throw new Error('Ошибка получения цены');
@@ -110,6 +110,7 @@ function handleSteamLoginInput(e) {
     updateSteamInfo();
     updateSteamButton();
 }
+
 function handleSteamAmountInput(e) {
     const raw = e.target.value.replace(/[^0-9]/g, '');
     e.target.value = raw;
