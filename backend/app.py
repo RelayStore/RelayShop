@@ -71,6 +71,7 @@ init_db()
 
 @app.post("/api/orders/create", response_model=OrderResponse)
 async def create_order_endpoint(request: OrderCreateRequest, db: Session = Depends(get_db)):
+    logger.info(f"📥 Входящий запрос: {request.dict()}")
     order = create_order(db, request.dict())
     
     # Отправляем сообщение через Bot API с кнопкой
