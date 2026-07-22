@@ -103,7 +103,13 @@ async function fetchSteamPrice() {
         submitBtn.disabled = true;
     }
 }
-
+function handleSteamLoginInput(e) {
+    const value = e.target.value.replace(/[^a-zA-Z0-9_]/g, '');
+    e.target.value = value;
+    steamState.login = value;
+    updateSteamInfo();
+    updateSteamButton();
+}
 function handleSteamAmountInput(e) {
     const raw = e.target.value.replace(/[^0-9]/g, '');
     e.target.value = raw;
