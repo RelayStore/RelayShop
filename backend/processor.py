@@ -4,7 +4,7 @@ import logging
 import asyncio
 from sqlalchemy.orm import Session
 from datetime import datetime
-
+import json
 from database import SessionLocal
 from orders import get_order_by_id, update_status, save_foxreload_result, save_foxreload_error
 from foxreload import FoxReloadClient, FoxReloadError, BalanceNotEnoughError
@@ -70,11 +70,15 @@ async def process_order(order_id: int):
         
         note = {}
         if order.note:
-            import json
-            try:
-                note = json.loads(order.note)
-            except:
-                note = {}
+          try:
+           note_data = json.loads(order.note)
+           # Для Steam Direct оставляем только login
+           if order.product_slug == 'steam' and 'login' in note_data:
+              note = {"login": note_data["login"]}
+           else:
+              note = note_data
+          except:
+              note = {}
         
         fox_order = await fox.create_order(
             [{
