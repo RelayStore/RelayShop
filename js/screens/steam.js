@@ -355,30 +355,26 @@ async function handleSteamSubmit() {
     updateSteamButton();
 
     try {
-        console.log('Steam order data:', {
-            user_id: userId,
-            product_id: steamState.productId,
-            amount: Math.round(steamState.amount * 0.0141 * 100) / 100
-        });
-        // 1. Создаем заказ через единый эндпоинт
-        const result = await API.createOrder({
+        const orderData = {
             user_id: userId,
             product_id: steamState.productId,
             product_name: `Steam пополнение ${steamState.amount} ${steamState.currency}`,
             product_slug: 'steam',
             region_slug: 'direct',
-            quantity: 1,  // ← количество, а не сумма
-            amount: Math.round(steamState.amount * 0.0141 * 100) / 100, // ← цена в рублях
-            currency: 'rub',  // ← всегда rub
+            quantity: steamState.amount,  // ← СУММА, а не 1
+            amount: Math.round(steamState.amount * 0.0141 * 100) / 100,
+            currency: 'rub',
             note: { login: login, amount: steamState.amount, currency: steamState.currency }
-        });
+        };
+
+        console.log('📦 Steam order data:', orderData);
+
+        const result = await API.createOrder(orderData);
 
         console.log('✅ Steam заказ создан:', result);
 
-        // 2. Плашка
         showToast('✅ Заказ успешно создан!');
 
-        // 3. Закрытие через 0.5 сек
         setTimeout(() => {
             if (window.Telegram?.WebApp) {
                 window.Telegram.WebApp.close();
