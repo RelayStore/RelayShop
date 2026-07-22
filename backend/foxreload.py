@@ -220,6 +220,13 @@ class FoxReloadClient:
         """Закрыть HTTP клиент"""
         await self.client.aclose()
 
+    async def get_exchange_rates(self, to_currency: str = "usd") -> Dict:
+      """Получить курсы валют от FoxReload"""
+      return await self._request(
+        "GET",
+        f"/api/topups/rates/{to_currency}"
+      )    
+
 
 # =============================================
 # БЛОК: ИСКЛЮЧЕНИЯ FOXRELOAD

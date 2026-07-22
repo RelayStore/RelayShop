@@ -71,27 +71,28 @@ init_db()
 
 @app.post("/api/orders/create", response_model=OrderResponse)
 async def create_order_endpoint(request: OrderCreateRequest, db: Session = Depends(get_db)):
-    logger.info(f"📥 Входящий запрос: {request.dict()}")
+    # Для Steam цена будет получена при выполнении заказа
+    # Создаём заказ с amount = 0, позже обновим из FoxReload
     order = create_order(db, request.dict())
     
-    # Отправляем сообщение через Bot API с кнопкой
+    # Отправляем сообщение с кнопкой
     keyboard = {
-    "inline_keyboard": [[
-        {"text": "💳 Оплатить", "url": f"https://t.me/{config.BOT_USERNAME}?start=order_{order.id}"}
-    ]]
+        "inline_keyboard": [[
+            {"text": "💳 Оплатить", "url": f"https://t.me/{config.BOT_USERNAME}?start=order_{order.id}"}
+        ]]
     }
 
     async with httpx.AsyncClient() as client:
         await client.post(
-        f"https://api.telegram.org/bot{config.BOT_TOKEN}/sendMessage",
-        json={
-            "chat_id": request.user_id,
-            "text": f"🛒 Заказ #{order.id} создан!\n\n"
-                    f"Товар: {order.product_name}\n"
-                    f"Сумма: {order.amount} {order.currency}",
-            "reply_markup": keyboard
-        }
-    )
+            f"https://api.telegram.org/bot{config.BOT_TOKEN}/sendMessage",
+            json={
+                "chat_id": request.user_id,
+                "text": f"🛒 Заказ #{order.id} создан!\n\n"
+                        f"Товар: {order.product_name}\n"
+                        f"Сумма: {order.amount} {order.currency}",
+                "reply_markup": keyboard
+            }
+        )
     
     return OrderResponse(
         order_id=order.id,
@@ -99,6 +100,43 @@ async def create_order_endpoint(request: OrderCreateRequest, db: Session = Depen
         payment_url="",
         created_at=order.created_at
     )
+
+@app.get("/api/steam/price")
+async def get_steam_price(product_id: str, quantity: int):
+    """
+    Получить реальную цену Steam Direct от FoxReload.
+    Возвращает цену в рублях (пересчёт через курс FoxReload).
+    """
+    try:
+        # 1. Получаем цену товара от FoxReload (в USD)
+        product = await fox.get_product_details(product_id)
+        price_per_unit_usd = float(product.get("price", 0))
+        total_usd = price_per_unit_usd * quantity
+        
+        # 2. Получаем курс USD → RUB от FoxReload
+        rates = await fox.get_exchange_rates("usd")
+        usd_to_rub = None
+        for rate in rates.get("rates", []):
+            if rate.get("from") == "usd" and rate.get("to") == "rub":
+                usd_to_rub = float(rate.get("rate", 0))
+                break
+        
+        if not usd_to_rub:
+            raise HTTPException(status_code=500, detail="Не удалось получить курс")
+        
+        # 3. Пересчёт в рубли
+        total_rub = total_usd * usd_to_rub
+        
+        return {
+            "price_usd": total_usd,
+            "price_rub": round(total_rub, 2),
+            "currency": "rub",
+            "quantity": quantity
+        }
+        
+    except Exception as e:
+        logger.error(f"Ошибка получения цены Steam: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 # =============================================

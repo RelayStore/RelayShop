@@ -140,3 +140,12 @@ async def notify_status_update(user_id: int, order_id: int, status: str):
     )
     logger.info(f"📨 Уведомление: статус заказа #{order_id} → {status} для пользователя {user_id}")
     await send_telegram_message(user_id, text)
+
+async def notify_steam_completed(user_id: int, order_id: int, amount: int, currency: str):
+    text = (
+        f"✅ <b>Steam пополнение выполнено!</b>\n\n"
+        f"Заказ #{order_id}\n"
+        f"Сумма: {amount} {currency}\n\n"
+        f"Баланс Steam пополнен."
+    )
+    await send_telegram_message(user_id, text)

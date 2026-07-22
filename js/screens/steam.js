@@ -311,14 +311,12 @@ function toggleSteamInfo() {
 // =============================================
 
 async function handleSteamSubmit() {
-    // Проверяем логин (минимум 3 символа)
     const login = steamState.login.trim();
     if (login.length < 3) {
         alert('❌ Логин Steam должен содержать минимум 3 символа');
         return;
     }
 
-    // Проверяем сумму
     if (steamState.amount <= 0) {
         alert('❌ Введите сумму пополнения');
         return;
@@ -340,7 +338,6 @@ async function handleSteamSubmit() {
         return;
     }
 
-    // Получаем user_id
     let userId = null;
     if (window.Telegram?.WebApp?.initDataUnsafe?.user?.id) {
         userId = window.Telegram.WebApp.initDataUnsafe.user.id;
@@ -355,21 +352,18 @@ async function handleSteamSubmit() {
     updateSteamButton();
 
     try {
-        const orderData = {
+        // Создаем заказ — цена будет взята из ответа FoxReload на бэкенде
+        const result = await API.createOrder({
             user_id: userId,
             product_id: steamState.productId,
             product_name: `Steam пополнение ${steamState.amount} ${steamState.currency}`,
             product_slug: 'steam',
             region_slug: 'direct',
-            quantity: steamState.amount,  // ← СУММА, а не 1
-            amount: Math.round(steamState.amount * 0.0141 * 100) / 100,
+            quantity: steamState.amount,
+            amount: 0,  // Будет заполнено на бэкенде из FoxReload
             currency: 'rub',
-            note: { login: login, amount: steamState.amount, currency: steamState.currency }
-        };
-
-        console.log('📦 Steam order data:', orderData);
-
-        const result = await API.createOrder(orderData);
+            note: { login: login }
+        });
 
         console.log('✅ Steam заказ создан:', result);
 
@@ -390,6 +384,61 @@ async function handleSteamSubmit() {
         steamState.isProcessing = false;
         updateSteamButton();
     }
+}
+
+let priceTimeout = null;
+
+async function fetchSteamPrice() {
+    const currency = steamCurrencies[steamState.currency];
+    if (!currency || !steamState.productId || steamState.amount <= 0) return;
+
+    const submitBtn = document.getElementById('steam-submit-btn');
+    const textEl = document.getElementById('submit-text');
+    const originalText = textEl.textContent;
+    textEl.textContent = '⏳ Загрузка цены...';
+    submitBtn.disabled = true;
+
+    try {
+        const response = await fetch(
+            `/api/steam/price?product_id=${steamState.productId}&quantity=${steamState.amount}`
+        );
+        if (!response.ok) {
+            throw new Error('Ошибка получения цены');
+        }
+        const data = await response.json();
+        
+        // Обновляем отображение цены
+        document.getElementById('info-amount').textContent = `${data.price_rub} руб`;
+        textEl.textContent = `Продолжить — ${data.price_rub} руб`;
+        submitBtn.disabled = false;
+        submitBtn.classList.add('active');
+        
+    } catch (error) {
+        console.error('Ошибка получения цены:', error);
+        textEl.textContent = 'Ошибка загрузки цены';
+        submitBtn.disabled = true;
+    }
+}
+
+function handleSteamAmountInput(e) {
+    const raw = e.target.value.replace(/[^0-9]/g, '');
+    e.target.value = raw;
+
+    const num = Number(raw);
+    if (!isNaN(num) && num > 0) {
+        steamState.amount = num;
+    } else if (raw === '') {
+        steamState.amount = 0;
+    }
+
+    updateSteamInfo();
+    updateSteamButton();
+    updateSteamQuickButtons();
+
+    clearTimeout(priceTimeout);
+    priceTimeout = setTimeout(() => {
+        fetchSteamPrice();
+    }, 500);
 }
 
 export function openSteamScreen() {

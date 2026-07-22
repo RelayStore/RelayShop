@@ -4,11 +4,11 @@ import logging
 import asyncio
 from sqlalchemy.orm import Session
 from datetime import datetime
-import json
+
 from database import SessionLocal
 from orders import get_order_by_id, update_status, save_foxreload_result, save_foxreload_error
 from foxreload import FoxReloadClient, FoxReloadError, BalanceNotEnoughError
-from bot_client import notify_order_completed, notify_order_failed
+from bot_client import notify_order_completed, notify_order_failed, notify_steam_completed
 from config import config
 
 logger = logging.getLogger(__name__)
@@ -65,20 +65,20 @@ async def process_order(order_id: int):
         
         logger.info(f"✅ Баланс достаточен: {rub_balance} RUB >= {order.amount} RUB")
         
-        # 5. Создать заказ в FoxReload (с is_mock в зависимости от режима)
+        # 5. Создать заказ в FoxReload
         logger.info(f"📦 Создание заказа в FoxReload для заказа #{order_id}")
         
         note = {}
         if order.note:
-          try:
-           note_data = json.loads(order.note)
-           # Для Steam Direct оставляем только login
-           if order.product_slug == 'steam' and 'login' in note_data:
-              note = {"login": note_data["login"]}
-           else:
-              note = note_data
-          except:
-              note = {}
+            import json
+            try:
+                note_data = json.loads(order.note)
+                if order.product_slug == 'steam' and 'login' in note_data:
+                    note = {"login": note_data["login"]}
+                else:
+                    note = note_data
+            except:
+                note = {}
         
         fox_order = await fox.create_order(
             [{
@@ -86,15 +86,23 @@ async def process_order(order_id: int):
                 "quantity": order.quantity,
                 "note": note if note else {}
             }],
-            is_mock=config.TEST_MODE,  # ← КЛЮЧЕВОЕ ИЗМЕНЕНИЕ
+            is_mock=config.TEST_MODE,
             idempotency_key=f"relay_{order_id}_{datetime.utcnow().timestamp()}"
         )
         
         fox_order_id = fox_order.get("id")
         logger.info(f"   FoxReload заказ создан: {fox_order_id} (mock={config.TEST_MODE})")
         
+        # 5.1 ОБНОВЛЯЕМ ЦЕНУ ИЗ ОТВЕТА FOXRELOAD
+        fox_price = float(fox_order.get("price", 0))
+        fox_currency = fox_order.get("currency", "usd")
+        
+        order.amount = fox_price
+        order.currency = fox_currency
         order.foxreload_order_id = fox_order_id
         db.commit()
+        
+        logger.info(f"   Цена обновлена: {fox_price} {fox_currency}")
         
         # 6. Оплатить заказ в FoxReload
         logger.info(f"💳 Оплата заказа в FoxReload: {fox_order_id}")
@@ -112,7 +120,12 @@ async def process_order(order_id: int):
             
             update_status(db, order_id, "completed")
             save_foxreload_result(db, order_id, {"code": code, "foxreload_order_id": fox_order_id})
-            await notify_order_completed(user_id, order_id, {"code": code})
+            
+            # Отправляем уведомление в зависимости от типа заказа
+            if order.product_slug == 'steam':
+                await notify_steam_completed(user_id, order_id, order.quantity, order.currency)
+            else:
+                await notify_order_completed(user_id, order_id, {"code": code})
             
         else:
             error_msg = status.get("error", "Неизвестная ошибка FoxReload")
