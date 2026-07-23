@@ -168,7 +168,15 @@ function searchProducts(query, limit = 50) {
 function getSteamConfig() {
     return apiRequest('/steam/config');
 }
-
+/**
+ * Получить цену Steam Direct
+ * @param {string} productId - ID товара
+ * @param {number} quantity - сумма в валюте
+ * @returns {Promise<{price_rub: number, price_usd: number}>}
+ */
+function getSteamPrice(productId, quantity) {
+    return apiRequest(`/steam/price?product_id=${productId}&quantity=${quantity}`);
+}
 /**
  * Создать заказ на пополнение Steam
  * @param {string} currency - валюта (RUB, KZT, UAH, USD)
@@ -189,6 +197,7 @@ function createSteamOrder(currency, login, amount) {
 window.API = {
     getServices,
     getRegions,
+    getSteamPrice,
     getNominals,
     getNominalDetails,
     searchProducts,
