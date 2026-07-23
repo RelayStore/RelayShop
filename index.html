@@ -379,6 +379,7 @@
             <div class="steam-block-label">ЛОГИН STEAM</div>
             <button class="steam-toggle-btn" id="toggle-info">?</button>
           </div>
+          <!-- ИНФОБЛОК (над полем ввода) -->
           <div class="steam-info-block hidden" id="info-block">
             <p class="steam-info-text">
               Имя аккаунта для входа — не никнейм и не email.<br>
@@ -393,10 +394,11 @@
           <div class="steam-block-label">СУММА ПОПОЛНЕНИЯ</div>
           <div class="steam-amount-field">
             <span class="steam-currency-symbol" id="currency-symbol">₽</span>
-            <input type="text" class="steam-amount-input" id="steam-amount-input" placeholder="0" inputmode="numeric">
+            <input type="text" class="steam-amount-input" id="steam-amount-input" placeholder="1 000"
+              inputmode="numeric">
           </div>
-          <!-- ===== ДИАПАЗОН ЛИМИТОВ ===== -->
-          <div class="steam-range-hint" id="steam-range-hint">
+          <!-- ПОДСКАЗКА ДИАПАЗОНА (появляется при ошибке) -->
+          <div class="steam-range-hint hidden" id="steam-range-hint">
             Диапазон: <span id="range-min">50</span>–<span id="range-max">30000</span> <span
               id="range-currency">RUB</span>
           </div>
@@ -412,19 +414,28 @@
         <!-- ===== БЛОК: ИНФОРМАЦИЯ О ПОПОЛНЕНИИ ===== -->
         <div class="steam-block">
           <div class="steam-info-row">
+            <span class="steam-info-label">Зачисление</span>
+            <span class="steam-info-value" id="info-amount">—</span>
+          </div>
+          <div class="steam-info-row">
+            <span class="steam-info-label">Итого</span>
+            <span class="steam-info-value" id="info-total">—</span>
+          </div>
+          <div class="steam-info-row" id="steam-login-info-row">
             <span class="steam-info-label">Логин Steam</span>
             <span class="steam-info-value" id="info-login">—</span>
           </div>
-          <div class="steam-info-row">
-            <span class="steam-info-label">Зачисление</span>
-            <span class="steam-info-value" id="info-amount">₽ 0</span>
-          </div>
+        </div>
+
+        <!-- ===== КРАСНАЯ ПЛАШКА (между итогом и кнопкой) ===== -->
+        <div class="steam-error-banner hidden" id="steam-error-banner">
+          <span class="steam-error-icon">⚠</span>
+          <span class="steam-error-text" id="steam-error-text">Введите логин Steam</span>
         </div>
 
         <!-- ===== КНОПКА ===== -->
         <button class="steam-submit-btn" id="steam-submit-btn" disabled>
-          <span id="submit-text">Укажите логин Steam</span>
-          <span id="submit-limits" class="submit-limits"></span>
+          <span id="submit-text">→ Укажите логин Steam</span>
         </button>
 
       </div>
