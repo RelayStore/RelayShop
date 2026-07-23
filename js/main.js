@@ -17,9 +17,7 @@ import {
 } from './screens/gift-cards.js';
 import { 
     initSteam, 
-    openSteamScreen, 
-    steamState, 
-    steamEl 
+    openSteamScreen 
 } from './screens/steam.js';
 import { 
     openSubscription, 
