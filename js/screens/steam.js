@@ -1,21 +1,47 @@
 // frontend/js/screens/steam.js
 
 import { showScreen } from '../core/navigation.js';
-import { initScrollDrag } from '../components/scroll.js';
 
 // =============================================
-// БЛОК: STEAM ПОПОЛНЕНИЕ
+// 1. КОНФИГУРАЦИЯ (fallback, если API не ответит)
 // =============================================
 
-export let steamState = {
-    currency: 'RUB',
-    login: '',
-    amount: 1000,
-    productId: null,
-    isProcessing: false
+const DEFAULT_CURRENCIES = {
+    RUB: { code: 'RUB', label: 'RU', symbol: '₽', productId: 'product_01kjp6vtkme90ba0r0dpdvkapv', min: 50, max: 30000 },
+    KZT: { code: 'KZT', label: 'KZ', symbol: '₸', productId: 'product_01kjp6vtm9ez19ckmjwxdgy7ky', min: 250, max: 150000 },
+    UAH: { code: 'UAH', label: 'UA', symbol: '₴', productId: 'product_01kv84qc6tfxsbkn4t50etgbt4', min: 50, max: 13500 },
+    USD: { code: 'USD', label: 'US', symbol: '$', productId: 'product_01kjp6vtmjf8rbbxw88719wz3b', min: 1, max: 300 }
 };
 
-export const steamEl = {
+const QUICK_STEPS = [0.10, 0.25, 0.50, 0.75, 1.00];
+
+// =============================================
+// 2. СОСТОЯНИЕ
+// =============================================
+
+const state = {
+    currencies: {},
+    currency: 'RUB',
+    login: '',
+    amount: null,           // число (без пробелов), null = пусто
+    isValidLogin: false,
+    isValidAmount: false,
+    priceRub: null,         // цена в рублях (из API)
+    isPriceLoading: false,
+    bannerMessage: null,    // текст красной плашки
+    isProcessing: false,
+    infoBlockVisible: false,
+    isInitialized: false
+};
+
+let priceTimeout = null;
+let lastFetchedAmount = null;
+
+// =============================================
+// 3. DOM-ССЫЛКИ
+// =============================================
+
+const el = {
     currencyRow: document.getElementById('currency-row'),
     loginInput: document.getElementById('steam-login-input'),
     amountInput: document.getElementById('steam-amount-input'),
@@ -23,108 +49,118 @@ export const steamEl = {
     quickAmounts: document.getElementById('quick-amounts'),
     infoLogin: document.getElementById('info-login'),
     infoAmount: document.getElementById('info-amount'),
+    infoTotal: document.getElementById('info-total'),
     submitBtn: document.getElementById('steam-submit-btn'),
+    submitText: document.getElementById('submit-text'),
     toggleBtn: document.getElementById('toggle-info'),
-    infoBlock: document.getElementById('info-block')
+    infoBlock: document.getElementById('info-block'),
+    rangeHint: document.getElementById('steam-range-hint'),
+    rangeMin: document.getElementById('range-min'),
+    rangeMax: document.getElementById('range-max'),
+    rangeCurrency: document.getElementById('range-currency'),
+    errorBanner: document.getElementById('steam-error-banner'),
+    errorText: document.getElementById('steam-error-text'),
+    loginInfoRow: document.getElementById('steam-login-info-row')
 };
 
-let steamCurrencies = {};
-let priceTimeout = null;
+// =============================================
+// 4. ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
+// =============================================
 
-export async function initSteam() {
-    try {
-        const config = await API.getSteamConfig();
-
-        config.currencies.forEach(c => {
-            steamCurrencies[c.currency] = {
-                symbol: c.symbol,
-                min: c.min,
-                max: c.max,
-                amounts: c.amounts,
-                product_id: c.product_id || null
-            };
-        });
-
-        if (steamCurrencies[steamState.currency]) {
-            steamState.productId = steamCurrencies[steamState.currency].product_id;
-        }
-
-        renderSteamCurrencies();
-        renderSteamQuickAmounts();
-        updateSteamInfo();
-        updateSteamButton();
-        updateSteamLimits();
-        updateSubmitButtonLimits();
-        setSteamAmount(steamState.amount);
-
-        if (steamEl.infoBlock) {
-            steamEl.infoBlock.classList.add('hidden');
-            steamEl.toggleBtn.textContent = '?';
-        }
-
-        steamEl.loginInput.addEventListener('input', handleSteamLoginInput);
-        steamEl.amountInput.addEventListener('input', handleSteamAmountInput);
-        steamEl.toggleBtn.addEventListener('click', toggleSteamInfo);
-        steamEl.submitBtn.addEventListener('click', handleSteamSubmit);
-
-    } catch (error) {
-        console.error('Ошибка загрузки Steam конфигурации:', error);
-        alert('Не удалось загрузить конфигурацию Steam');
-    }
+function formatNumber(n) {
+    if (n === null || n === undefined || isNaN(n)) return '';
+    return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 }
 
-function renderSteamCurrencies() {
-    const row = steamEl.currencyRow;
+function unformatNumber(str) {
+    if (!str) return null;
+    const cleaned = str.replace(/\s/g, '');
+    const num = Number(cleaned);
+    return isNaN(num) ? null : num;
+}
+
+function validateLogin(login) {
+    if (!login || login.trim().length === 0) return false;
+    const trimmed = login.trim();
+    const regex = /^[A-Za-z0-9_]{3,64}$/;
+    return regex.test(trimmed);
+}
+
+function generateQuickAmounts(min, max) {
+    const range = max - min;
+    return QUICK_STEPS.map(step => {
+        let val = Math.round(min + range * step);
+        // Округляем до удобного числа
+        if (val < 100) {
+            val = Math.round(val / 5) * 5;
+        } else if (val < 1000) {
+            val = Math.round(val / 10) * 10;
+        } else if (val < 10000) {
+            val = Math.round(val / 50) * 50;
+        } else {
+            val = Math.round(val / 100) * 100;
+        }
+        // Гарантируем, что значение в пределах min-max
+        if (val < min) val = min;
+        if (val > max) val = max;
+        return val;
+    });
+}
+
+function getCurrency() {
+    return state.currencies[state.currency] || DEFAULT_CURRENCIES[state.currency];
+}
+
+function isAmountValid(amount, currency) {
+    if (amount === null || amount === undefined || isNaN(amount)) return false;
+    if (amount <= 0) return false;
+    if (amount < currency.min) return false;
+    if (amount > currency.max) return false;
+    return true;
+}
+
+// =============================================
+// 5. РЕНДЕРИНГ
+// =============================================
+
+function renderCurrencies() {
+    const row = el.currencyRow;
     row.innerHTML = '';
 
-    Object.keys(steamCurrencies).forEach(code => {
+    const currencyCodes = Object.keys(state.currencies);
+    if (currencyCodes.length === 0) {
+        // Используем дефолтные
+        Object.keys(DEFAULT_CURRENCIES).forEach(code => {
+            state.currencies[code] = DEFAULT_CURRENCIES[code];
+        });
+    }
+
+    Object.keys(state.currencies).forEach(code => {
         const btn = document.createElement('button');
-        btn.className = `steam-currency-btn${code === steamState.currency ? ' active' : ''}`;
+        btn.className = `steam-currency-btn${code === state.currency ? ' active' : ''}`;
         btn.textContent = code;
         btn.dataset.currency = code;
-        btn.addEventListener('click', () => changeSteamCurrency(code));
+        btn.addEventListener('click', () => handleCurrencyChange(code));
         row.appendChild(btn);
     });
 }
 
-function changeSteamCurrency(currencyCode) {
-    if (!steamCurrencies[currencyCode]) return;
-
-    steamState.currency = currencyCode;
-    steamState.productId = steamCurrencies[currencyCode].product_id;
-
-    renderSteamCurrencies();
-    renderSteamQuickAmounts();
-    updateSteamSymbol();
-    updateSteamInfo();
-    updateSteamButton();
-    updateSteamLimits();
-    updateSubmitButtonLimits();
-
-    const currency = steamCurrencies[currencyCode];
-    if (steamState.amount > currency.max) {
-        setSteamAmount(currency.max);
-    } else if (steamState.amount < currency.min) {
-        setSteamAmount(currency.min);
-    } else {
-        updateSteamAmountDisplay();
-    }
-}
-
-function renderSteamQuickAmounts() {
-    const container = steamEl.quickAmounts;
+function renderQuickAmounts() {
+    const container = el.quickAmounts;
     container.innerHTML = '';
 
-    const currency = steamCurrencies[steamState.currency];
+    const currency = getCurrency();
     if (!currency) return;
 
-    currency.amounts.forEach(amount => {
+    const amounts = generateQuickAmounts(currency.min, currency.max);
+
+    amounts.forEach(amount => {
         const btn = document.createElement('button');
-        btn.className = `steam-quick-btn${amount === steamState.amount ? ' active' : ''}`;
-        btn.textContent = amount;
+        btn.className = 'steam-quick-btn';
+        btn.textContent = formatNumber(amount);
         btn.dataset.amount = amount;
         btn.addEventListener('click', () => {
-            setSteamAmount(amount);
+            setAmount(amount);
             container.querySelectorAll('.steam-quick-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
         });
@@ -132,249 +168,429 @@ function renderSteamQuickAmounts() {
     });
 }
 
-function updateSteamSymbol() {
-    const currency = steamCurrencies[steamState.currency];
-    steamEl.currencySymbol.textContent = currency ? currency.symbol : '₽';
+// =============================================
+// 6. ОБНОВЛЕНИЕ UI
+// =============================================
+
+function updateSymbol() {
+    const currency = getCurrency();
+    el.currencySymbol.textContent = currency ? currency.symbol : '₽';
 }
 
-function updateSteamLimits() {
-    const currency = steamCurrencies[steamState.currency];
+function updateLimits() {
+    const currency = getCurrency();
     if (!currency) return;
 
-    const minEl = document.getElementById('range-min');
-    const maxEl = document.getElementById('range-max');
-    const currencyEl = document.getElementById('range-currency');
-    const rangeHint = document.getElementById('steam-range-hint');
+    el.rangeMin.textContent = formatNumber(currency.min);
+    el.rangeMax.textContent = formatNumber(currency.max);
+    el.rangeCurrency.textContent = currency.code;
 
-    if (minEl) minEl.textContent = currency.min;
-    if (maxEl) maxEl.textContent = currency.max;
-    if (currencyEl) currencyEl.textContent = steamState.currency;
+    // Проверяем, нужно ли показывать подсказку диапазона
+    const amount = state.amount;
+    const isValid = isAmountValid(amount, currency);
 
-    if (rangeHint) {
-        const hasAmount = steamState.amount > 0;
-        const isInRange = hasAmount &&
-            steamState.amount >= currency.min &&
-            steamState.amount <= currency.max;
+    if (amount !== null && !isNaN(amount) && amount > 0 && !isValid) {
+        el.rangeHint.classList.remove('hidden');
+        el.rangeHint.classList.add('error');
+    } else {
+        el.rangeHint.classList.add('hidden');
+        el.rangeHint.classList.remove('error');
+    }
+}
 
-        if (isInRange) {
-            rangeHint.classList.add('active');
-            rangeHint.style.color = 'rgba(255, 255, 255, 0.6)';
-        } else if (hasAmount) {
-            rangeHint.classList.remove('active');
-            rangeHint.style.color = 'rgba(255, 100, 100, 0.5)';
+function updateInfo() {
+    const currency = getCurrency();
+    const amount = state.amount;
+
+    // Зачисление
+    if (amount !== null && !isNaN(amount) && amount > 0) {
+        el.infoAmount.textContent = `${currency ? currency.symbol : '₽'} ${formatNumber(amount)}`;
+        el.infoAmount.className = 'steam-info-value';
+    } else {
+        el.infoAmount.textContent = '—';
+        el.infoAmount.className = 'steam-info-value placeholder';
+    }
+
+    // Итого (в рублях)
+    if (state.priceRub !== null && state.priceRub > 0) {
+        el.infoTotal.textContent = `${formatNumber(Math.round(state.priceRub))} ₽`;
+        el.infoTotal.className = 'steam-info-value price-rub';
+    } else if (state.isPriceLoading) {
+        el.infoTotal.textContent = '⏳ Загрузка...';
+        el.infoTotal.className = 'steam-info-value placeholder';
+    } else if (amount !== null && !isNaN(amount) && amount > 0) {
+        el.infoTotal.textContent = '—';
+        el.infoTotal.className = 'steam-info-value placeholder';
+    } else {
+        el.infoTotal.textContent = '—';
+        el.infoTotal.className = 'steam-info-value placeholder';
+    }
+
+    // Логин
+    if (state.isValidLogin) {
+        el.infoLogin.textContent = state.login;
+        el.infoLogin.className = 'steam-info-value';
+    } else {
+        el.infoLogin.textContent = '—';
+        el.infoLogin.className = 'steam-info-value placeholder';
+    }
+}
+
+function updateButtonState() {
+    const btn = el.submitBtn;
+    const text = el.submitText;
+
+    if (state.isProcessing) {
+        btn.classList.remove('active');
+        btn.disabled = true;
+        text.textContent = '⏳ Обработка...';
+        return;
+    }
+
+    // Состояние 1: логин невалиден
+    if (!state.isValidLogin) {
+        btn.classList.remove('active');
+        btn.disabled = true;
+        text.textContent = '→ Укажите логин Steam';
+        return;
+    }
+
+    // Состояние 2: логин валиден, сумма невалидна
+    const currency = getCurrency();
+    const amount = state.amount;
+    const isValidAmount = isAmountValid(amount, currency);
+
+    if (!isValidAmount) {
+        btn.classList.remove('active');
+        btn.disabled = true;
+        if (amount !== null && !isNaN(amount) && amount > 0) {
+            text.textContent = `→ Сумма: ${formatNumber(currency.min)}–${formatNumber(currency.max)} ${currency.code}`;
         } else {
-            rangeHint.classList.remove('active');
-            rangeHint.style.color = 'rgba(255, 255, 255, 0.35)';
+            text.textContent = `→ Сумма: ${formatNumber(currency.min)}–${formatNumber(currency.max)} ${currency.code}`;
         }
+        return;
     }
 
-    updateSteamButton();
+    // Состояние 3: всё валидно
+    btn.classList.add('active');
+    btn.disabled = false;
+    text.textContent = 'ПОПОЛНИТЬ';
 }
 
-function updateSubmitButtonLimits() {
-    const currency = steamCurrencies[steamState.currency];
-    const limitsEl = document.getElementById('submit-limits');
-    const submitBtn = document.getElementById('steam-submit-btn');
+function updateBanner() {
+    const banner = el.errorBanner;
+    const text = el.errorText;
 
-    if (!limitsEl || !currency) return;
-
-    if (submitBtn && submitBtn.disabled) {
-        limitsEl.textContent = `${currency.min}–${currency.max} ${steamState.currency}`;
-        limitsEl.style.display = 'block';
+    if (state.bannerMessage) {
+        banner.classList.remove('hidden');
+        text.textContent = state.bannerMessage;
     } else {
-        limitsEl.style.display = 'none';
+        banner.classList.add('hidden');
+        text.textContent = '';
     }
 }
 
-function setSteamAmount(value) {
-    const num = Number(value);
-    if (!isNaN(num) && num > 0) {
-        steamState.amount = num;
-    } else {
-        steamState.amount = 0;
-    }
-    updateSteamAmountDisplay();
-    updateSteamInfo();
-    updateSteamButton();
-    updateSteamQuickButtons();
-}
-
-function updateSteamAmountDisplay() {
-    const displayValue = steamState.amount > 0 ? steamState.amount : '';
-    steamEl.amountInput.value = displayValue;
-    updateSteamSymbol();
-}
-
-function updateSteamInfo() {
-    steamEl.infoLogin.textContent = steamState.login || '—';
-    const currency = steamCurrencies[steamState.currency];
-    const symbol = currency ? currency.symbol : '₽';
-    const amount = steamState.amount > 0 ? steamState.amount : 0;
-    steamEl.infoAmount.textContent = `${symbol} ${amount}`;
-}
-
-function updateSteamButton() {
-    const btn = steamEl.submitBtn;
-    const textEl = document.getElementById('submit-text');
-    const limitsEl = document.getElementById('submit-limits');
-
-    const hasLogin = steamState.login.trim().length >= 3;
-    const hasAmount = steamState.amount > 0;
-
-    const currency = steamCurrencies[steamState.currency];
-    const rangeText = currency ? `${currency.min}–${currency.max} ${steamState.currency}` : '';
-
-    let isAmountValid = false;
-    if (currency && hasAmount) {
-        if (steamState.amount >= currency.min && steamState.amount <= currency.max) {
-            isAmountValid = true;
-        }
-    }
-
-    if (steamState.isProcessing) {
-        btn.classList.remove('active');
-        btn.disabled = true;
-        if (textEl) textEl.textContent = '⏳ Обработка...';
-        if (limitsEl) limitsEl.style.display = 'none';
-        return;
-    }
-
-    if (!hasLogin) {
-        btn.classList.remove('active');
-        btn.disabled = true;
-        if (textEl) textEl.textContent = 'Укажите логин Steam';
-        if (limitsEl) limitsEl.style.display = 'none';
-        return;
-    }
-
-    if (!hasAmount) {
-        btn.classList.remove('active');
-        btn.disabled = true;
-        if (textEl) textEl.textContent = rangeText || 'Введите сумму';
-        if (limitsEl) limitsEl.style.display = 'none';
-        return;
-    }
-
-    if (isAmountValid) {
-        btn.classList.add('active');
-        btn.disabled = false;
-        if (textEl) textEl.textContent = 'Продолжить';
-        if (limitsEl) limitsEl.style.display = 'none';
-        return;
-    }
-
-    // Сумма вне допустимого диапазона
-    btn.classList.remove('active');
-    btn.disabled = true;
-    if (textEl) textEl.textContent = rangeText || 'Недопустимая сумма';
-    if (limitsEl) limitsEl.style.display = 'none';
-}
-
-function updateSteamQuickButtons() {
-    const btns = steamEl.quickAmounts.querySelectorAll('.steam-quick-btn');
+function updateQuickButtons() {
+    const btns = el.quickAmounts.querySelectorAll('.steam-quick-btn');
+    const currentAmount = state.amount;
     btns.forEach(btn => {
         const val = Number(btn.dataset.amount);
-        btn.classList.toggle('active', val === steamState.amount);
+        btn.classList.toggle('active', val === currentAmount);
     });
 }
 
-function handleSteamLoginInput(e) {
-    const value = e.target.value.replace(/[^a-zA-Z0-9_]/g, '');
-    e.target.value = value;
-    steamState.login = value;
-    updateSteamInfo();
-    updateSteamButton();
+function updateAll() {
+    updateSymbol();
+    updateLimits();
+    updateInfo();
+    updateButtonState();
+    updateBanner();
+    updateQuickButtons();
+
+    // Валидация поля ввода логина
+    if (state.isValidLogin) {
+        el.loginInput.classList.remove('invalid');
+        el.loginInput.classList.add('valid');
+    } else {
+        el.loginInput.classList.remove('valid');
+        if (state.login.length > 0) {
+            el.loginInput.classList.add('invalid');
+        } else {
+            el.loginInput.classList.remove('invalid');
+        }
+    }
 }
 
-function handleSteamAmountInput(e) {
-    const raw = e.target.value.replace(/[^0-9]/g, '');
-    e.target.value = raw;
+// =============================================
+// 7. УПРАВЛЕНИЕ СУММОЙ
+// =============================================
 
-    const num = Number(raw);
-    if (!isNaN(num) && num > 0) {
-        steamState.amount = num;
-    } else if (raw === '') {
-        steamState.amount = 0;
+function setAmount(value) {
+    const num = Number(value);
+    if (!isNaN(num) && num >= 0) {
+        state.amount = num > 0 ? num : null;
+    } else {
+        state.amount = null;
     }
 
-    updateSteamInfo();
-    updateSteamButton();
-    updateSteamQuickButtons();
+    // Обновляем поле ввода с форматированием
+    if (state.amount !== null) {
+        el.amountInput.value = formatNumber(state.amount);
+    } else {
+        el.amountInput.value = '';
+    }
 
+    // Проверяем валидность
+    const currency = getCurrency();
+    state.isValidAmount = isAmountValid(state.amount, currency);
+
+    // Сбрасываем баннер, если условие исправлено
+    if (state.isValidAmount && state.isValidLogin) {
+        state.bannerMessage = null;
+    }
+
+    // Запрашиваем цену
+    fetchPriceDebounced();
+
+    updateAll();
+}
+
+// =============================================
+// 8. ПОЛУЧЕНИЕ ЦЕНЫ
+// =============================================
+
+function fetchPriceDebounced() {
     clearTimeout(priceTimeout);
     priceTimeout = setTimeout(() => {
-        fetchSteamPrice();
-    }, 500);
+        fetchPrice();
+    }, 400);
 }
 
-function toggleSteamInfo() {
-    const isHidden = steamEl.infoBlock.classList.toggle('hidden');
-    steamEl.toggleBtn.textContent = isHidden ? '?' : '✕';
-}
+async function fetchPrice() {
+    const currency = getCurrency();
+    const amount = state.amount;
 
-// =============================================
-// ПОЛУЧЕНИЕ ЦЕНЫ ОТ FOXRELOAD
-// =============================================
+    // Не запрашиваем, если сумма невалидна или нет логина
+    if (!currency || amount === null || amount <= 0 || !state.isValidLogin) {
+        state.priceRub = null;
+        state.isPriceLoading = false;
+        updateAll();
+        return;
+    }
 
-async function fetchSteamPrice() {
-    const currency = steamCurrencies[steamState.currency];
-    if (!currency || !steamState.productId || steamState.amount <= 0) return;
+    // Проверяем, что сумма в пределах диапазона
+    if (amount < currency.min || amount > currency.max) {
+        state.priceRub = null;
+        state.isPriceLoading = false;
+        updateAll();
+        return;
+    }
 
-    const submitBtn = document.getElementById('steam-submit-btn');
-    const textEl = document.getElementById('submit-text');
-    textEl.textContent = '⏳ Загрузка цены...';
-    submitBtn.disabled = true;
+    // Не дублируем запросы
+    if (lastFetchedAmount === amount && state.priceRub !== null) {
+        return;
+    }
+
+    state.isPriceLoading = true;
+    updateAll();
 
     try {
         const response = await fetch(
-            `${API_BASE_URL}/steam/price?product_id=${steamState.productId}&quantity=${steamState.amount}`
+            `${API_BASE_URL}/steam/price?product_id=${currency.productId}&quantity=${amount}`
         );
+
         if (!response.ok) {
-            throw new Error('Ошибка получения цены');
+            throw new Error(`HTTP ${response.status}`);
         }
+
         const data = await response.json();
-        
-        document.getElementById('info-amount').textContent = `${data.price_rub} руб`;
-        textEl.textContent = `Продолжить — ${data.price_rub} руб`;
-        submitBtn.disabled = false;
-        submitBtn.classList.add('active');
-        
+        state.priceRub = data.price_rub;
+        lastFetchedAmount = amount;
+
+        // Если цена получена и всё валидно — убираем баннер
+        if (state.isValidLogin && state.isValidAmount) {
+            state.bannerMessage = null;
+        }
+
     } catch (error) {
         console.error('Ошибка получения цены:', error);
-        textEl.textContent = 'Ошибка загрузки цены';
-        submitBtn.disabled = true;
+        state.priceRub = null;
+        state.bannerMessage = 'Не удалось получить цену. Проверьте соединение.';
+    } finally {
+        state.isPriceLoading = false;
+        updateAll();
     }
 }
 
 // =============================================
-// ОСНОВНАЯ ФУНКЦИЯ ОПЛАТЫ STEAM
+// 9. ОБРАБОТЧИКИ
 // =============================================
 
-async function handleSteamSubmit() {
-    const login = steamState.login.trim();
-    if (login.length < 3) {
-        alert('❌ Логин Steam должен содержать минимум 3 символа');
+function handleLoginInput(e) {
+    let value = e.target.value;
+
+    // Автоматический trim
+    value = value.trim();
+
+    // Проверяем только допустимые символы (латиница, цифры, _)
+    const filtered = value.replace(/[^A-Za-z0-9_]/g, '');
+    if (filtered !== value) {
+        e.target.value = filtered;
+        value = filtered;
+    }
+
+    state.login = value;
+    state.isValidLogin = validateLogin(value);
+
+    // Если логин стал невалидным — сбрасываем баннер, если он был о логине
+    if (!state.isValidLogin) {
+        // Не сбрасываем баннер автоматически, он сбросится при нажатии
+    }
+
+    // Если логин стал валидным и сумма валидна — убираем баннер
+    if (state.isValidLogin && state.isValidAmount) {
+        state.bannerMessage = null;
+    }
+
+    // Если логин стал невалидным — убираем цену
+    if (!state.isValidLogin) {
+        state.priceRub = null;
+        lastFetchedAmount = null;
+    }
+
+    updateAll();
+
+    // Если логин стал валидным и есть сумма — запрашиваем цену
+    if (state.isValidLogin && state.amount !== null && state.amount > 0) {
+        fetchPriceDebounced();
+    }
+}
+
+function handleAmountInput(e) {
+    // Убираем всё, кроме цифр
+    const raw = e.target.value.replace(/[^0-9]/g, '');
+    const num = raw ? Number(raw) : null;
+
+    state.amount = (num !== null && num > 0) ? num : null;
+
+    const currency = getCurrency();
+    state.isValidAmount = isAmountValid(state.amount, currency);
+
+    // Если сумма стала валидной и логин валиден — убираем баннер
+    if (state.isValidAmount && state.isValidLogin) {
+        state.bannerMessage = null;
+    }
+
+    // Если сумма стала невалидной — убираем цену
+    if (!state.isValidAmount) {
+        state.priceRub = null;
+        lastFetchedAmount = null;
+    }
+
+    // Обновляем поле с форматированием
+    if (state.amount !== null) {
+        e.target.value = formatNumber(state.amount);
+    } else {
+        e.target.value = '';
+    }
+
+    updateAll();
+
+    // Запрашиваем цену, если сумма валидна и логин валиден
+    if (state.isValidAmount && state.isValidLogin) {
+        fetchPriceDebounced();
+    }
+}
+
+function handleCurrencyChange(currencyCode) {
+    if (currencyCode === state.currency) return;
+    if (!state.currencies[currencyCode]) return;
+
+    state.currency = currencyCode;
+    state.amount = null;
+    state.isValidAmount = false;
+    state.priceRub = null;
+    lastFetchedAmount = null;
+
+    // Сбрасываем баннер, если он был
+    state.bannerMessage = null;
+
+    // Очищаем поле ввода
+    el.amountInput.value = '';
+
+    // Перерисовываем быстрые кнопки
+    renderQuickAmounts();
+
+    updateAll();
+
+    // Снимаем активность со всех быстрых кнопок
+    el.quickAmounts.querySelectorAll('.steam-quick-btn').forEach(b => b.classList.remove('active'));
+}
+
+function handleToggleInfo() {
+    state.infoBlockVisible = !state.infoBlockVisible;
+
+    if (state.infoBlockVisible) {
+        el.infoBlock.classList.remove('hidden');
+        el.toggleBtn.textContent = '×';
+    } else {
+        el.infoBlock.classList.add('hidden');
+        el.toggleBtn.textContent = '?';
+    }
+}
+
+function handleSubmitClick() {
+    const btn = el.submitBtn;
+
+    // Если кнопка неактивна — показываем баннер
+    if (btn.disabled) {
+        const currency = getCurrency();
+
+        if (!state.isValidLogin) {
+            state.bannerMessage = 'Введите логин Steam';
+        } else if (!state.isValidAmount) {
+            const amount = state.amount;
+            if (amount !== null && !isNaN(amount) && amount > 0) {
+                state.bannerMessage = `Сумма: ${formatNumber(currency.min)}–${formatNumber(currency.max)} ${currency.code}`;
+            } else {
+                state.bannerMessage = `Сумма: ${formatNumber(currency.min)}–${formatNumber(currency.max)} ${currency.code}`;
+            }
+        } else {
+            state.bannerMessage = 'Заполните все поля';
+        }
+
+        updateAll();
         return;
     }
 
-    if (steamState.amount <= 0) {
-        alert('❌ Введите сумму пополнения');
+    // Если кнопка активна — запускаем оплату
+    handleSubmit();
+}
+
+// =============================================
+// 10. ОСНОВНАЯ ФУНКЦИЯ ОПЛАТЫ
+// =============================================
+
+async function handleSubmit() {
+    const login = state.login.trim();
+    if (!validateLogin(login)) {
+        state.bannerMessage = 'Введите корректный логин Steam';
+        updateAll();
         return;
     }
 
-    const currency = steamCurrencies[steamState.currency];
-    if (!currency) {
-        alert('❌ Ошибка: выберите валюту');
+    const currency = getCurrency();
+    const amount = state.amount;
+
+    if (amount === null || amount <= 0) {
+        state.bannerMessage = `Сумма: ${formatNumber(currency.min)}–${formatNumber(currency.max)} ${currency.code}`;
+        updateAll();
         return;
     }
 
-    if (steamState.amount < currency.min) {
-        alert(`❌ Минимальная сумма пополнения: ${currency.min} ${steamState.currency}`);
-        return;
-    }
-
-    if (steamState.amount > currency.max) {
-        alert(`❌ Максимальная сумма пополнения: ${currency.max} ${steamState.currency}`);
+    if (!isAmountValid(amount, currency)) {
+        state.bannerMessage = `Сумма: ${formatNumber(currency.min)}–${formatNumber(currency.max)} ${currency.code}`;
+        updateAll();
         return;
     }
 
@@ -388,25 +604,28 @@ async function handleSteamSubmit() {
         return;
     }
 
-    steamState.isProcessing = true;
-    updateSteamButton();
+    state.isProcessing = true;
+    updateAll();
 
     try {
         const result = await API.createOrder({
             user_id: userId,
-            product_id: steamState.productId,
-            product_name: `Steam пополнение ${steamState.amount} ${steamState.currency}`,
+            product_id: currency.productId,
+            product_name: `Steam пополнение ${formatNumber(amount)} ${currency.code}`,
             product_slug: 'steam',
             region_slug: 'direct',
-            quantity: steamState.amount,
-            amount: 0,
+            quantity: amount,
+            amount: state.priceRub || 0,
             currency: 'rub',
             note: { login: login }
         });
 
         console.log('✅ Steam заказ создан:', result);
 
-        showToast('✅ Заказ успешно создан!');
+        // Показываем уведомление
+        if (window.showToast) {
+            window.showToast('✅ Заказ успешно создан!');
+        }
 
         setTimeout(() => {
             if (window.Telegram?.WebApp) {
@@ -418,38 +637,130 @@ async function handleSteamSubmit() {
 
     } catch (error) {
         console.error('Ошибка Steam заказа:', error);
-        alert(`❌ Ошибка: ${error.message || 'Не удалось выполнить пополнение'}`);
+        state.bannerMessage = `❌ Ошибка: ${error.message || 'Не удалось выполнить пополнение'}`;
+        updateAll();
     } finally {
-        steamState.isProcessing = false;
-        updateSteamButton();
+        state.isProcessing = false;
+        updateAll();
     }
 }
 
+// =============================================
+// 11. ИНИЦИАЛИЗАЦИЯ
+// =============================================
+
+export async function initSteam() {
+    if (state.isInitialized) return;
+
+    try {
+        const config = await API.getSteamConfig();
+
+        // Заполняем валюты из API
+        if (config && config.currencies) {
+            config.currencies.forEach(c => {
+                state.currencies[c.currency] = {
+                    code: c.currency,
+                    label: c.currency,
+                    symbol: c.symbol || '₽',
+                    productId: c.product_id,
+                    min: c.min || 0,
+                    max: c.max || 0
+                };
+            });
+        }
+
+        // Если API не вернул данные — используем дефолтные
+        if (Object.keys(state.currencies).length === 0) {
+            state.currencies = { ...DEFAULT_CURRENCIES };
+        }
+
+        // Убеждаемся, что текущая валюта существует
+        if (!state.currencies[state.currency]) {
+            state.currency = Object.keys(state.currencies)[0] || 'RUB';
+        }
+
+        // Рендерим
+        renderCurrencies();
+        renderQuickAmounts();
+
+        // Начальное состояние
+        state.amount = null;
+        state.login = '';
+        state.isValidLogin = false;
+        state.isValidAmount = false;
+        state.priceRub = null;
+        state.bannerMessage = null;
+        state.isProcessing = false;
+
+        el.loginInput.value = '';
+        el.amountInput.value = '';
+
+        updateAll();
+
+        // Обработчики событий
+        el.loginInput.addEventListener('input', handleLoginInput);
+        el.amountInput.addEventListener('input', handleAmountInput);
+        el.toggleBtn.addEventListener('click', handleToggleInfo);
+        el.submitBtn.addEventListener('click', handleSubmitClick);
+
+        // Скрываем инфоблок по умолчанию
+        el.infoBlock.classList.add('hidden');
+        el.toggleBtn.textContent = '?';
+        state.infoBlockVisible = false;
+
+        state.isInitialized = true;
+        console.log('✅ Steam инициализирован');
+
+    } catch (error) {
+        console.error('Ошибка инициализации Steam:', error);
+        // Используем дефолтные валюты
+        state.currencies = { ...DEFAULT_CURRENCIES };
+        renderCurrencies();
+        renderQuickAmounts();
+        updateAll();
+        state.isInitialized = true;
+    }
+}
+
+// =============================================
+// 12. ОТКРЫТИЕ ЭКРАНА
+// =============================================
+
 export function openSteamScreen() {
-    steamState.currency = 'RUB';
-    steamState.login = '';
-    steamState.amount = 1000;
-    steamState.isProcessing = false;
+    // Сбрасываем состояние при открытии
+    state.currency = 'RUB';
+    state.login = '';
+    state.amount = null;
+    state.isValidLogin = false;
+    state.isValidAmount = false;
+    state.priceRub = null;
+    state.bannerMessage = null;
+    state.isProcessing = false;
+    state.infoBlockVisible = false;
+    lastFetchedAmount = null;
 
-    if (steamCurrencies[steamState.currency]) {
-        steamState.productId = steamCurrencies[steamState.currency].product_id;
+    el.loginInput.value = '';
+    el.amountInput.value = '';
+    el.infoBlock.classList.add('hidden');
+    el.toggleBtn.textContent = '?';
+    el.rangeHint.classList.add('hidden');
+
+    // Обновляем валюту, если текущей нет
+    if (!state.currencies[state.currency]) {
+        const keys = Object.keys(state.currencies);
+        state.currency = keys.length > 0 ? keys[0] : 'RUB';
     }
 
-    steamEl.loginInput.value = '';
-    setSteamAmount(1000);
-    renderSteamCurrencies();
-    renderSteamQuickAmounts();
-    updateSteamInfo();
-    updateSteamButton();
-    updateSteamLimits();
-
-    if (steamEl.infoBlock) {
-        steamEl.infoBlock.classList.add('hidden');
-        steamEl.toggleBtn.textContent = '?';
-    }
+    renderCurrencies();
+    renderQuickAmounts();
+    updateAll();
 
     showScreen('screen-steam');
 }
+
+// =============================================
+// 13. АВТОЗАПУСК
+// =============================================
 
 document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('screen-steam')) {
