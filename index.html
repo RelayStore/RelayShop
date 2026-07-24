@@ -349,7 +349,7 @@
 
     </div>
     <!-- ============================================= -->
-    <!-- ЭКРАН: STEAM ПОПОЛНЕНИЕ                       -->
+    <!-- ЭКРАН: STEAM ПОПОЛНЕНИЕ (НОВЫЙ ДИЗАЙН)       -->
     <!-- ============================================= -->
     <div id="screen-steam" class="screen">
 
@@ -357,14 +357,19 @@
       <div class="steam-header">
         <button class="back-btn" data-screen="screen-main">←</button>
         <div class="steam-header-content">
-          <h1 class="steam-title">Пополнение Steam</h1>
-          <p class="steam-subtitle">Прямое зачисление на кошелёк Steam</p>
+          <div class="steam-header-card">
+            <h1 class="steam-title">Пополнение Steam</h1>
+            <p class="steam-subtitle">Прямое зачисление на кошелёк Steam</p>
+            <div class="steam-header-logo-wrapper">
+              <img src="assets/icons/steam_logo.png" alt="Steam" class="steam-header-logo">
+            </div>
+          </div>
         </div>
       </div>
 
       <!-- ===== БЛОК: ВЫБОР ВАЛЮТЫ ===== -->
       <div class="steam-block">
-        <div class="steam-block-label">ВАЛЮТА КОШЕЛЬКА</div>
+        <div class="steam-block-label">Валюта кошелька</div>
         <div class="steam-currency-row" id="currency-row">
           <!-- Кнопки валют создаются через JS -->
         </div>
@@ -373,31 +378,33 @@
       <!-- ===== БЛОК: ЛОГИН STEAM ===== -->
       <div class="steam-block">
         <div class="steam-login-header">
-          <div class="steam-block-label">ЛОГИН STEAM</div>
+          <div class="steam-block-label">Логин Steam</div>
           <button class="steam-toggle-btn" id="toggle-info">?</button>
         </div>
-        <!-- ИНФОБЛОК (над полем ввода) -->
         <div class="steam-info-block hidden" id="info-block">
           <p class="steam-info-text">
             Имя аккаунта для входа — не никнейм и не email.<br>
             Steam → Настройки → Имя аккаунта.
           </p>
         </div>
-        <input type="text" class="steam-input" id="steam-login-input" placeholder="account_name" autocomplete="off">
+        <div class="steam-input-wrapper">
+          <input type="text" class="steam-input" id="steam-login-input" placeholder="account_name" autocomplete="off">
+        </div>
       </div>
 
       <!-- ===== БЛОК: СУММА ПОПОЛНЕНИЯ ===== -->
       <div class="steam-block">
-        <div class="steam-block-label">СУММА ПОПОЛНЕНИЯ</div>
-        <div class="steam-amount-field">
-          <span class="steam-currency-symbol" id="currency-symbol">₽</span>
-          <input type="text" class="steam-amount-input" id="steam-amount-input" placeholder="1 000 ₽"
-            inputmode="numeric">
-        </div>
-        <!-- ПОДСКАЗКА ДИАПАЗОНА (появляется при ошибке) -->
-        <div class="steam-range-hint hidden" id="steam-range-hint">
-          Диапазон: <span id="range-min">50</span>–<span id="range-max">30000</span> <span
-            id="range-currency">RUB</span>
+        <div class="steam-block-label">Сумма пополнения</div>
+        <div class="steam-amount-wrapper">
+          <div class="steam-amount-field">
+            <span class="steam-currency-symbol" id="currency-symbol">₽</span>
+            <input type="text" class="steam-amount-input" id="steam-amount-input" placeholder="1 000 ₽"
+              inputmode="numeric">
+          </div>
+          <div class="steam-range-hint hidden" id="steam-range-hint">
+            Диапазон: <span id="range-min">50</span>–<span id="range-max">30000</span> <span
+              id="range-currency">RUB</span>
+          </div>
         </div>
       </div>
 
@@ -408,28 +415,31 @@
         </div>
       </div>
 
-      <!-- ===== БЛОК: ЗАЧИСЛЕНИЕ (мелко) ===== -->
+      <!-- ===== БЛОК: ЗАЧИСЛЕНИЕ ===== -->
       <div class="steam-info-row">
         <span class="steam-info-label">Зачисление</span>
         <span class="steam-info-value" id="info-amount">—</span>
       </div>
 
-      <!-- ===== БЛОК: ИТОГО (крупно, отдельно) ===== -->
+      <!-- ===== БЛОК: ИТОГО (КРУПНЫЙ) ===== -->
       <div class="steam-total-block">
         <div class="steam-total-label">Итого к оплате</div>
         <div class="steam-total-value" id="info-total">—</div>
       </div>
 
-      <!-- ===== КРАСНАЯ ПЛАШКА (между итогом и кнопкой) ===== -->
+      <!-- ===== КРАСНАЯ ПЛАШКА ===== -->
       <div class="steam-error-banner hidden" id="steam-error-banner">
         <span class="steam-error-icon">⚠</span>
         <span class="steam-error-text" id="steam-error-text">Введите логин Steam</span>
       </div>
 
       <!-- ===== КНОПКА ===== -->
-      <button class="steam-submit-btn" id="steam-submit-btn" disabled>
-        <span id="submit-text">→ Укажите логин Steam</span>
-      </button>
+      <div class="steam-submit-wrapper">
+        <button class="steam-submit-btn" id="steam-submit-btn" disabled>
+          <span id="submit-text">→ Укажите логин Steam</span>
+          <img src="assets/icons/sbp.png" alt="SBP" class="steam-submit-logo">
+        </button>
+      </div>
 
     </div>
 
