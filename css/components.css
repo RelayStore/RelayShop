@@ -294,6 +294,7 @@
   align-items: center;
   justify-content: center;
 }
+
 /* ============================================= */
 /* БЛОК: STEAM DIRECT SECTION                   */
 /* ============================================= */
@@ -440,8 +441,9 @@
   text-transform: uppercase;
   pointer-events: none;
 }
+
 /* ============================================= */
-/* БЛОК: STEAM ПОПОЛНЕНИЕ (КАК НА ГЛАВНОЙ)      */
+/* БЛОК: STEAM ПОПОЛНЕНИЕ (НОВЫЙ ДИЗАЙН)        */
 /* ============================================= */
 
 #screen-steam {
@@ -456,7 +458,6 @@
   display: flex;
 }
 
-/* Все внутренние блоки — с max-width как на главной */
 #screen-steam .steam-header,
 #screen-steam .steam-block,
 #screen-steam .steam-info-row,
@@ -467,23 +468,37 @@
   max-width: 560px;
 }
 
-/* ===== HEADER ===== */
+/* ============================================= */
+/* HEADER — КАК В СПИСКЕ СЕРВИСОВ               */
+/* ============================================= */
+
 #screen-steam .steam-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
   margin-bottom: 24px;
 }
 
-#screen-steam .steam-header .back-btn {
+#screen-steam .steam-header-card {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 16px;
+  padding: 14px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  position: relative;
+  overflow: hidden;
+  min-height: 70px;
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#screen-steam .steam-header-card .back-btn {
   flex-shrink: 0;
   background: transparent;
   border: none;
   color: #FAF8F6;
   font-size: 24px;
   cursor: pointer;
-  padding: 8px 8px 8px 0;
-  min-width: 44px;
+  padding: 0;
+  min-width: 36px;
   min-height: 44px;
   display: flex;
   align-items: center;
@@ -493,11 +508,12 @@
 
 #screen-steam .steam-header-content {
   flex: 1;
+  min-width: 0;
 }
 
 #screen-steam .steam-title {
   color: #FAF8F6;
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 700;
   letter-spacing: -0.3px;
   line-height: 1.2;
@@ -505,12 +521,36 @@
 
 #screen-steam .steam-subtitle {
   color: rgba(255, 255, 255, 0.5);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 400;
   margin-top: 2px;
 }
 
-/* ===== ОБЩИЙ БЛОК ===== */
+#screen-steam .steam-header-logo-wrapper {
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-25deg);
+  z-index: 1;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0.33;
+}
+
+#screen-steam .steam-header-logo {
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+}
+
+/* ============================================= */
+/* ОБЩИЕ БЛОКИ                                  */
+/* ============================================= */
+
 #screen-steam .steam-block {
   display: flex;
   flex-direction: column;
@@ -526,7 +566,10 @@
   text-transform: uppercase;
 }
 
-/* ===== ВАЛЮТЫ ===== */
+/* ============================================= */
+/* ВАЛЮТЫ                                       */
+/* ============================================= */
+
 #screen-steam .steam-currency-row {
   display: flex;
   gap: 8px;
@@ -552,13 +595,16 @@
 }
 
 #screen-steam .steam-currency-btn.active {
-  background: rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.12);
   border-color: #FAF8F6;
   color: #FAF8F6;
-  box-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.06);
 }
 
-/* ===== ЛОГИН ===== */
+/* ============================================= */
+/* ЛОГИН                                        */
+/* ============================================= */
+
 #screen-steam .steam-login-header {
   display: flex;
   justify-content: space-between;
@@ -650,7 +696,10 @@
   border-color: rgba(76, 205, 196, 0.4);
 }
 
-/* ===== СУММА ===== */
+/* ============================================= */
+/* СУММА                                        */
+/* ============================================= */
+
 #screen-steam .steam-amount-wrapper {
   width: 100%;
 }
@@ -697,7 +746,10 @@
   color: rgba(255, 255, 255, 0.15);
 }
 
-/* ===== ПОДСКАЗКА ДИАПАЗОНА ===== */
+/* ============================================= */
+/* ПОДСКАЗКА ДИАПАЗОНА                          */
+/* ============================================= */
+
 #screen-steam .steam-range-hint {
   color: #f5b342;
   font-size: 13px;
@@ -720,29 +772,34 @@
   color: #ff6b6b;
 }
 
-/* ===== БЫСТРЫЕ СУММЫ ===== */
+/* ============================================= */
+/* БЫСТРЫЕ СУММЫ (чуть уже)                     */
+/* ============================================= */
+
 #screen-steam .steam-quick-amounts {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
   width: 100%;
 }
 
 #screen-steam .steam-quick-btn {
   flex: 1;
-  min-width: 56px;
-  padding: 10px 8px;
+  min-width: 50px;
+  max-width: 90px;
+  padding: 8px 4px;
   border-radius: 10px;
   border: 1.5px solid rgba(255, 255, 255, 0.06);
   background: rgba(255, 255, 255, 0.02);
   color: rgba(255, 255, 255, 0.5);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   font-variant-numeric: tabular-nums;
   transition: all 0.15s ease;
   text-align: center;
+  white-space: nowrap;
 }
 
 #screen-steam .steam-quick-btn.active {
@@ -751,7 +808,10 @@
   color: #FAF8F6;
 }
 
-/* ===== ЗАЧИСЛЕНИЕ ===== */
+/* ============================================= */
+/* ЗАЧИСЛЕНИЕ                                   */
+/* ============================================= */
+
 #screen-steam .steam-info-row {
   display: flex;
   justify-content: space-between;
@@ -779,7 +839,10 @@
   color: rgba(255, 255, 255, 0.2);
 }
 
-/* ===== ИТОГО (КРУПНЫЙ БЛОК) ===== */
+/* ============================================= */
+/* ИТОГО (КРУПНЫЙ БЛОК)                        */
+/* ============================================= */
+
 #screen-steam .steam-total-block {
   display: flex;
   justify-content: space-between;
@@ -810,7 +873,10 @@
   color: rgba(255, 255, 255, 0.25);
 }
 
-/* ===== КРАСНАЯ ПЛАШКА ===== */
+/* ============================================= */
+/* КРАСНАЯ ПЛАШКА                               */
+/* ============================================= */
+
 #screen-steam .steam-error-banner {
   display: flex;
   align-items: center;
@@ -819,7 +885,7 @@
   border: 1px solid rgba(255, 60, 60, 0.25);
   border-radius: 12px;
   padding: 10px 14px;
-  margin: 4px 0 12px 0;
+  margin: 4px 0 16px 0;
   transition: all 0.3s ease;
   min-height: 44px;
   box-sizing: border-box;
@@ -841,16 +907,20 @@
   font-weight: 500;
 }
 
-/* ===== КНОПКА ===== */
+/* ============================================= */
+/* КНОПКА                                       */
+/* ============================================= */
+
 #screen-steam .steam-submit-wrapper {
   display: flex;
   justify-content: center;
+  margin-top: 8px;
 }
 
 #screen-steam .steam-submit-btn {
   width: 100%;
-  max-width: 400px;
-  padding: 16px 32px;
+  max-width: 560px;
+  padding: 18px 24px;
   border-radius: 16px;
   border: none;
   background: rgba(255, 255, 255, 0.06);
@@ -859,29 +929,89 @@
   font-weight: 600;
   cursor: pointer;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
-  min-height: 52px;
+  gap: 12px;
+  min-height: 56px;
   -webkit-tap-highlight-color: transparent;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   box-sizing: border-box;
-}
-
-#screen-steam .steam-submit-btn.active {
-  background: #FAF8F6;
-  color: #0b0b0f;
-  box-shadow: 0 8px 32px rgba(255, 255, 255, 0.10);
-}
-
-#screen-steam .steam-submit-btn.active:hover {
-  background: #ffffff;
-  transform: scale(1.01);
+  position: relative;
+  overflow: hidden;
 }
 
 #screen-steam .steam-submit-btn:disabled {
   cursor: not-allowed;
+}
+
+/* ===== НЕАКТИВНАЯ КНОПКА ===== */
+#screen-steam .steam-submit-btn:disabled {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.3);
+}
+
+#screen-steam .steam-submit-btn:disabled .steam-submit-logo {
+  display: none;
+}
+
+/* ===== АКТИВНАЯ КНОПКА ===== */
+#screen-steam .steam-submit-btn.active {
+  background: linear-gradient(135deg, #906bf9, #5898f9, #0cdcec, #15c2f3, #0070fb);
+  background-size: 300% 300%;
+  animation: steamGradient 4s ease infinite;
+  color: #FFFFFF;
+  box-shadow: 0 8px 32px rgba(144, 107, 249, 0.30);
+  padding: 18px 24px;
+  min-height: 56px;
+}
+
+#screen-steam .steam-submit-btn.active:hover {
+  transform: scale(1.01);
+  box-shadow: 0 8px 40px rgba(144, 107, 249, 0.40);
+}
+
+#screen-steam .steam-submit-btn.active .steam-submit-logo {
+  display: block;
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%) scale(1.8);
+  opacity: 0.35;
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  pointer-events: none;
+  border-radius: 0;
+}
+
+#screen-steam .steam-submit-btn .steam-submit-logo {
+  display: none;
+}
+
+/* ===== АНИМАЦИЯ ГРАДИЕНТА ===== */
+@keyframes steamGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+#screen-steam .steam-submit-btn #submit-text {
+  position: relative;
+  z-index: 2;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+#screen-steam .steam-submit-btn.active #submit-text {
+  color: #FFFFFF;
 }
 
 /* ============================================= */
@@ -1979,9 +2109,11 @@
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }
@@ -1998,6 +2130,7 @@
 #screen-steam .steam-submit-btn.active #submit-text {
   color: #FFFFFF;
 }
+
 /* ============================================= */
 /* БЛОК: ПОДПИСКИ (ОТДЕЛЬНЫЙ ЭКРАН)             */
 /* ============================================= */
