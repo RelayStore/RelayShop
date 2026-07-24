@@ -1430,7 +1430,7 @@
 }
 
 /* ============================================= */
-/* БЛОК: STEAM ПОПОЛНЕНИЕ                       */
+/* БЛОК: STEAM ПОПОЛНЕНИЕ (НОВЫЙ ДИЗАЙН)        */
 /* ============================================= */
 
 #screen-steam {
@@ -1445,46 +1445,61 @@
   display: flex;
 }
 
-.steam-card {
+#screen-steam .steam-header,
+#screen-steam .steam-block,
+#screen-steam .steam-info-row,
+#screen-steam .steam-total-block,
+#screen-steam .steam-error-banner,
+#screen-steam .steam-submit-wrapper {
   width: 100%;
   max-width: 560px;
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 20px;
-  padding: 18px 18px 20px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(10px);
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
 }
 
-.steam-header {
+/* ============================================= */
+/* HEADER — КАК В СПИСКЕ СЕРВИСОВ               */
+/* ============================================= */
+
+#screen-steam .steam-header {
   display: flex;
-  align-items: center;
-  gap: 12px;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 24px;
 }
 
-.steam-header .back-btn {
+#screen-steam .steam-header .back-btn {
   flex-shrink: 0;
   background: transparent;
   border: none;
   color: #FAF8F6;
   font-size: 24px;
   cursor: pointer;
-  padding: 8px 12px;
+  padding: 8px 8px 8px 0;
   min-width: 44px;
   min-height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
   -webkit-tap-highlight-color: transparent;
+  margin-top: 4px;
 }
 
-.steam-header-content {
+#screen-steam .steam-header-content {
   flex: 1;
+  position: relative;
 }
 
-.steam-title {
+#screen-steam .steam-header-card {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 16px;
+  padding: 16px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  position: relative;
+  overflow: hidden;
+  min-height: 80px;
+  backdrop-filter: blur(10px);
+}
+
+#screen-steam .steam-title {
   color: #FAF8F6;
   font-size: 24px;
   font-weight: 700;
@@ -1492,68 +1507,105 @@
   line-height: 1.2;
 }
 
-.steam-subtitle {
+#screen-steam .steam-subtitle {
   color: rgba(255, 255, 255, 0.5);
   font-size: 14px;
   font-weight: 400;
   margin-top: 2px;
 }
 
-.steam-block {
+#screen-steam .steam-header-logo-wrapper {
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-25deg);
+  z-index: 1;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0.33;
+}
+
+#screen-steam .steam-header-logo {
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+}
+
+/* ============================================= */
+/* ОБЩИЕ БЛОКИ                                  */
+/* ============================================= */
+
+#screen-steam .steam-block {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  margin-bottom: 20px;
 }
 
-.steam-block-label {
+#screen-steam .steam-block-label {
   color: rgba(255, 255, 255, 0.6);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
 
-.steam-currency-row {
+/* ============================================= */
+/* ВАЛЮТЫ                                       */
+/* ============================================= */
+
+#screen-steam .steam-currency-row {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
+  width: 100%;
 }
 
-.steam-currency-btn {
+#screen-steam .steam-currency-btn {
   flex: 1;
-  min-width: 44px;
+  min-width: 56px;
   padding: 12px 0;
   border-radius: 12px;
   border: 2px solid rgba(255, 255, 255, 0.08);
   background: rgba(255, 255, 255, 0.03);
   color: rgba(255, 255, 255, 0.5);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
   text-align: center;
   -webkit-tap-highlight-color: transparent;
-  min-height: 40px;
+  min-height: 44px;
+  transition: all 0.2s ease;
 }
 
-.steam-currency-btn.active {
+#screen-steam .steam-currency-btn.active {
   background: rgba(255, 255, 255, 0.10);
   border-color: #FAF8F6;
   color: #FAF8F6;
   box-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
 }
 
-.steam-login-header {
+/* ============================================= */
+/* ЛОГИН                                        */
+/* ============================================= */
+
+#screen-steam .steam-login-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 }
 
-.steam-toggle-btn {
+#screen-steam .steam-toggle-btn {
   background: rgba(255, 255, 255, 0.06);
   border: none;
   color: rgba(255, 255, 255, 0.4);
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   font-size: 14px;
   font-weight: 600;
@@ -1562,9 +1614,14 @@
   align-items: center;
   justify-content: center;
   -webkit-tap-highlight-color: transparent;
+  transition: all 0.2s ease;
 }
 
-.steam-info-block {
+#screen-steam .steam-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.10);
+}
+
+#screen-steam .steam-info-block {
   background: rgba(255, 255, 255, 0.04);
   border-radius: 10px;
   padding: 10px 14px;
@@ -1572,25 +1629,31 @@
   overflow: hidden;
   max-height: 200px;
   opacity: 1;
-  transform-origin: top;
+  transition: all 0.25s ease;
+  margin-bottom: 6px;
+  width: 100%;
 }
 
-.steam-info-block.hidden {
+#screen-steam .steam-info-block.hidden {
   max-height: 0;
   padding: 0 14px;
   border: none;
   opacity: 0;
-  transform: scaleY(0);
   margin: 0;
 }
 
-.steam-info-text {
+#screen-steam .steam-info-text {
   color: rgba(255, 255, 255, 0.5);
   font-size: 13px;
   line-height: 1.6;
 }
 
-.steam-input {
+#screen-steam .steam-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+#screen-steam .steam-input {
   width: 100%;
   padding: 14px 16px;
   border-radius: 12px;
@@ -1600,43 +1663,60 @@
   font-size: 16px;
   font-weight: 500;
   outline: none;
-  position: relative;
-  z-index: 1;
   -webkit-appearance: none;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
 }
 
-.steam-input:focus {
+#screen-steam .steam-input:focus {
   border-color: rgba(255, 255, 255, 0.20);
 }
 
-.steam-input::placeholder {
+#screen-steam .steam-input::placeholder {
   color: rgba(255, 255, 255, 0.25);
 }
 
-.steam-amount-field {
+#screen-steam .steam-input.invalid {
+  border-color: rgba(255, 60, 60, 0.4);
+}
+
+#screen-steam .steam-input.valid {
+  border-color: rgba(76, 205, 196, 0.4);
+}
+
+/* ============================================= */
+/* СУММА                                        */
+/* ============================================= */
+
+#screen-steam .steam-amount-wrapper {
+  width: 100%;
+}
+
+#screen-steam .steam-amount-field {
   display: flex;
   align-items: center;
   background: rgba(255, 255, 255, 0.03);
   border-radius: 12px;
   border: 2px solid rgba(255, 255, 255, 0.08);
-  padding: 0 14px;
-  position: relative;
-  z-index: 1;
+  padding: 0 16px;
+  transition: border-color 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.steam-amount-field:focus-within {
+#screen-steam .steam-amount-field:focus-within {
   border-color: rgba(255, 255, 255, 0.20);
 }
 
-.steam-currency-symbol {
+#screen-steam .steam-currency-symbol {
   color: rgba(255, 255, 255, 0.5);
   font-size: 22px;
   font-weight: 600;
-  margin-right: 10px;
+  margin-right: 12px;
   flex-shrink: 0;
 }
 
-.steam-amount-input {
+#screen-steam .steam-amount-input {
   width: 100%;
   padding: 14px 0;
   background: transparent;
@@ -1646,71 +1726,187 @@
   font-weight: 600;
   outline: none;
   -webkit-appearance: none;
+  font-variant-numeric: tabular-nums;
+  box-sizing: border-box;
 }
 
-.steam-amount-input::placeholder {
+#screen-steam .steam-amount-input::placeholder {
   color: rgba(255, 255, 255, 0.15);
 }
 
-.steam-range-hint {
-  color: rgba(255, 255, 255, 0.35);
-  font-size: 12px;
-  margin-top: 4px;
+/* ============================================= */
+/* ПОДСКАЗКА ДИАПАЗОНА                          */
+/* ============================================= */
+
+#screen-steam .steam-range-hint {
+  color: #f5b342;
+  font-size: 13px;
+  margin-top: 6px;
   text-align: right;
   letter-spacing: 0.3px;
+  font-weight: 500;
+  transition: opacity 0.2s ease;
+  min-height: 20px;
 }
 
-.steam-quick-amounts {
+#screen-steam .steam-range-hint.hidden {
+  opacity: 0;
+  height: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+#screen-steam .steam-range-hint.error {
+  color: #ff6b6b;
+}
+
+/* ============================================= */
+/* БЫСТРЫЕ СУММЫ                                */
+/* ============================================= */
+
+#screen-steam .steam-quick-amounts {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
+  width: 100%;
 }
 
-.steam-quick-btn {
-  padding: 10px 14px;
-  border-radius: 12px;
+#screen-steam .steam-quick-btn {
+  flex: 1;
+  min-width: 56px;
+  padding: 10px 8px;
+  border-radius: 10px;
   border: 1.5px solid rgba(255, 255, 255, 0.06);
   background: rgba(255, 255, 255, 0.02);
   color: rgba(255, 255, 255, 0.5);
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  min-width: 44px;
-  min-height: 36px;
   -webkit-tap-highlight-color: transparent;
+  font-variant-numeric: tabular-nums;
+  transition: all 0.15s ease;
+  text-align: center;
 }
 
-.steam-quick-btn.active {
+#screen-steam .steam-quick-btn.active {
   background: rgba(255, 255, 255, 0.08);
   border-color: rgba(255, 255, 255, 0.20);
   color: #FAF8F6;
 }
 
-.steam-info-row {
+/* ============================================= */
+/* ЗАЧИСЛЕНИЕ                                   */
+/* ============================================= */
+
+#screen-steam .steam-info-row {
   display: flex;
   justify-content: space-between;
-  padding: 6px 0;
+  padding: 8px 4px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  margin-bottom: 4px;
 }
 
-.steam-info-row:last-child {
+#screen-steam .steam-info-row:last-child {
   border-bottom: none;
 }
 
-.steam-info-label {
+#screen-steam .steam-info-label {
   color: rgba(255, 255, 255, 0.4);
   font-size: 14px;
 }
 
-.steam-info-value {
+#screen-steam .steam-info-value {
   color: #FAF8F6;
   font-size: 14px;
   font-weight: 500;
 }
 
-.steam-submit-btn {
+#screen-steam .steam-info-value.placeholder {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+/* ============================================= */
+/* ИТОГО (КРУПНЫЙ БЛОК)                        */
+/* ============================================= */
+
+#screen-steam .steam-total-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 16px 20px;
+  margin: 12px 0 8px 0;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-sizing: border-box;
+}
+
+#screen-steam .steam-total-label {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+#screen-steam .steam-total-value {
+  color: #FAF8F6;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+#screen-steam .steam-total-value.placeholder {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+/* ============================================= */
+/* КРАСНАЯ ПЛАШКА                               */
+/* ============================================= */
+
+#screen-steam .steam-error-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 60, 60, 0.12);
+  border: 1px solid rgba(255, 60, 60, 0.25);
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin: 4px 0 16px 0;
+  transition: all 0.3s ease;
+  min-height: 44px;
+  box-sizing: border-box;
+}
+
+#screen-steam .steam-error-banner.hidden {
+  display: none;
+}
+
+#screen-steam .steam-error-icon {
+  color: #ff6b6b;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+#screen-steam .steam-error-text {
+  color: #ff6b6b;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+/* ============================================= */
+/* КНОПКА (НОВЫЙ ДИЗАЙН)                       */
+/* ============================================= */
+
+#screen-steam .steam-submit-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+#screen-steam .steam-submit-btn {
   width: 100%;
-  padding: 16px 0;
+  max-width: 560px;
+  padding: 18px 24px;
   border-radius: 16px;
   border: none;
   background: rgba(255, 255, 255, 0.06);
@@ -1719,32 +1915,89 @@
   font-weight: 600;
   cursor: pointer;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
-  min-height: 52px;
+  gap: 12px;
+  min-height: 56px;
   -webkit-tap-highlight-color: transparent;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
 }
 
-.steam-submit-btn.active {
-  background: #FAF8F6;
-  color: #0b0b0f;
-  box-shadow: 0 8px 32px rgba(255, 255, 255, 0.10);
+#screen-steam .steam-submit-btn:disabled {
+  cursor: not-allowed;
 }
 
-.submit-limits {
-  font-size: 12px;
-  font-weight: 400;
-  opacity: 0.5;
-  letter-spacing: 0.3px;
+/* ===== НЕАКТИВНАЯ КНОПКА (старые стили) ===== */
+#screen-steam .steam-submit-btn:disabled {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.3);
 }
 
-.steam-submit-btn.active .submit-limits {
-  opacity: 0.4;
-  color: #0b0b0f;
+#screen-steam .steam-submit-btn:disabled .steam-submit-logo {
+  display: none;
 }
 
+/* ===== АКТИВНАЯ КНОПКА (градиент + логотип) ===== */
+#screen-steam .steam-submit-btn.active {
+  background: linear-gradient(135deg, #906bf9, #5898f9, #0cdcec, #15c2f3, #0070fb);
+  background-size: 300% 300%;
+  animation: steamGradient 4s ease infinite;
+  color: #FFFFFF;
+  box-shadow: 0 8px 32px rgba(144, 107, 249, 0.30);
+  padding: 18px 24px;
+  min-height: 56px;
+}
+
+#screen-steam .steam-submit-btn.active:hover {
+  transform: scale(1.01);
+  box-shadow: 0 8px 40px rgba(144, 107, 249, 0.40);
+}
+
+#screen-steam .steam-submit-btn.active .steam-submit-logo {
+  display: block;
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%) scale(1.8);
+  opacity: 0.35;
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  pointer-events: none;
+  border-radius: 0;
+}
+
+#screen-steam .steam-submit-btn .steam-submit-logo {
+  display: none;
+}
+
+/* ===== АНИМАЦИЯ ГРАДИЕНТА ===== */
+@keyframes steamGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* ===== ТЕКСТ КНОПКИ ===== */
+#screen-steam .steam-submit-btn #submit-text {
+  position: relative;
+  z-index: 2;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+#screen-steam .steam-submit-btn.active #submit-text {
+  color: #FFFFFF;
+}
 /* ============================================= */
 /* БЛОК: ПОДПИСКИ (ОТДЕЛЬНЫЙ ЭКРАН)             */
 /* ============================================= */
