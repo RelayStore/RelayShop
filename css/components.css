@@ -294,152 +294,403 @@
   align-items: center;
   justify-content: center;
 }
-
 /* ============================================= */
-/* БЛОК: STEAM DIRECT SECTION                   */
+/* БЛОК: STEAM ПОПОЛНЕНИЕ (БЕЗ КАРТОЧКИ)        */
 /* ============================================= */
 
-.steam-direct-section {
+#screen-steam {
   width: 100%;
-  display: flex;
+  display: none;
   flex-direction: column;
-  align-items: center;
-  margin-top: 24px;
-  padding-top: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 0 0 20px 0;
 }
 
-.steam-direct-header {
+#screen-steam.active {
+  display: flex;
+}
+
+/* Убираем карточку — контент свободно на странице */
+#screen-steam .steam-header {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 4px;
-  justify-content: center;
-  width: 100%;
+  margin-bottom: 20px;
 }
 
-.steam-direct-icon {
-  width: 32px;
-  height: 32px;
-  object-fit: contain;
+#screen-steam .steam-header .back-btn {
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  color: #FAF8F6;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px 12px;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#screen-steam .steam-header-content {
+  flex: 1;
+}
+
+#screen-steam .steam-title {
+  color: #FAF8F6;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+}
+
+#screen-steam .steam-subtitle {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+  font-weight: 400;
+  margin-top: 2px;
+}
+
+#screen-steam .steam-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+#screen-steam .steam-block-label {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* ===== ВАЛЮТЫ ===== */
+#screen-steam .steam-currency-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+#screen-steam .steam-currency-btn {
+  flex: 1;
+  min-width: 44px;
+  padding: 12px 0;
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 40px;
+  transition: all 0.15s ease;
+}
+
+#screen-steam .steam-currency-btn.active {
+  background: rgba(255, 255, 255, 0.10);
+  border-color: #FAF8F6;
+  color: #FAF8F6;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
+}
+
+/* ===== ЛОГИН ===== */
+#screen-steam .steam-login-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#screen-steam .steam-toggle-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: none;
+  color: rgba(255, 255, 255, 0.4);
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#screen-steam .steam-info-block {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 10px;
+  padding: 10px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+  max-height: 200px;
+  opacity: 1;
+  transition: all 0.25s ease;
+  margin-bottom: 6px;
+}
+
+#screen-steam .steam-info-block.hidden {
+  max-height: 0;
+  padding: 0 14px;
+  border: none;
+  opacity: 0;
+  margin: 0;
+}
+
+#screen-steam .steam-info-text {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+#screen-steam .steam-input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: #FAF8F6;
+  font-size: 16px;
+  font-weight: 500;
+  outline: none;
+  -webkit-appearance: none;
+  transition: border-color 0.2s ease;
+}
+
+#screen-steam .steam-input:focus {
+  border-color: rgba(255, 255, 255, 0.20);
+}
+
+#screen-steam .steam-input::placeholder {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+#screen-steam .steam-input.invalid {
+  border-color: rgba(255, 60, 60, 0.3);
+}
+
+#screen-steam .steam-input.valid {
+  border-color: rgba(76, 205, 196, 0.3);
+}
+
+/* ===== СУММА ===== */
+#screen-steam .steam-amount-field {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  padding: 0 14px;
+  transition: border-color 0.2s ease;
+}
+
+#screen-steam .steam-amount-field:focus-within {
+  border-color: rgba(255, 255, 255, 0.20);
+}
+
+#screen-steam .steam-currency-symbol {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 22px;
+  font-weight: 600;
+  margin-right: 10px;
   flex-shrink: 0;
 }
 
-.steam-direct-title {
+#screen-steam .steam-amount-input {
+  width: 100%;
+  padding: 14px 0;
+  background: transparent;
+  border: none;
+  color: #FAF8F6;
+  font-size: 22px;
+  font-weight: 600;
+  outline: none;
+  -webkit-appearance: none;
+  font-variant-numeric: tabular-nums;
+}
+
+#screen-steam .steam-amount-input::placeholder {
+  color: rgba(255, 255, 255, 0.15);
+}
+
+/* ===== ПОДСКАЗКА ДИАПАЗОНА ===== */
+#screen-steam .steam-range-hint {
+  color: #f5b342;
+  font-size: 13px;
+  margin-top: 6px;
+  text-align: right;
+  letter-spacing: 0.3px;
+  font-weight: 500;
+  transition: opacity 0.2s ease;
+  min-height: 20px;
+}
+
+#screen-steam .steam-range-hint.hidden {
+  opacity: 0;
+  height: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+#screen-steam .steam-range-hint.error {
+  color: #ff6b6b;
+}
+
+/* ===== БЫСТРЫЕ СУММЫ ===== */
+#screen-steam .steam-quick-amounts {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+#screen-steam .steam-quick-btn {
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1.5px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  min-width: 44px;
+  min-height: 36px;
+  -webkit-tap-highlight-color: transparent;
+  font-variant-numeric: tabular-nums;
+  transition: all 0.15s ease;
+}
+
+#screen-steam .steam-quick-btn.active {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.20);
+  color: #FAF8F6;
+}
+
+/* ===== ЗАЧИСЛЕНИЕ (мелко) ===== */
+#screen-steam .steam-info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  margin-bottom: 4px;
+}
+
+#screen-steam .steam-info-row:last-child {
+  border-bottom: none;
+}
+
+#screen-steam .steam-info-label {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 14px;
+}
+
+#screen-steam .steam-info-value {
+  color: #FAF8F6;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+#screen-steam .steam-info-value.placeholder {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+/* ===== ИТОГО (крупно, отдельно) ===== */
+#screen-steam .steam-total-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 16px 20px;
+  margin: 8px 0 12px 0;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+#screen-steam .steam-total-label {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+#screen-steam .steam-total-value {
   color: #FAF8F6;
   font-size: 28px;
   font-weight: 700;
   letter-spacing: -0.5px;
-  line-height: 1.2;
-  text-align: center;
 }
 
-.steam-direct-subtitle {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 16px;
-  font-weight: 300;
-  text-align: center;
-  width: 100%;
-  margin-bottom: 16px;
-  letter-spacing: 0.2px;
+#screen-steam .steam-total-value.placeholder {
+  color: rgba(255, 255, 255, 0.25);
 }
 
-.steam-direct-card {
-  width: 100%;
-  max-width: 560px;
-  height: 120px;
-  position: relative;
-  overflow: hidden;
-  border-radius: 20px;
-  cursor: pointer;
-  margin: 0 auto;
-  background: linear-gradient(180deg, #0a1628 0%, #1a3a6a 30%, #2d6bb8 60%, #5ba0e0 85%, #89c4f4 100%);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 0 0 1.5px rgba(255, 255, 255, 0.12);
-}
-
-.steam-direct-overlay {
-  position: absolute;
-  inset: 3px;
-  border-radius: 17px;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.30) 0%, rgba(0, 0, 0, 0.40) 30%, rgba(0, 0, 0, 0.55) 60%, rgba(0, 0, 0, 0.75) 100%);
-  pointer-events: none;
-  z-index: 1;
-}
-
-.steam-direct-logo-wrapper {
-  position: absolute;
-  left: -10px;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 3;
-  width: 140px;
-  height: 140px;
+/* ===== КРАСНАЯ ПЛАШКА ===== */
+#screen-steam .steam-error-banner {
   display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 60, 60, 0.12);
+  border: 1px solid rgba(255, 60, 60, 0.25);
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin: 4px 0 8px 0;
+  transition: all 0.3s ease;
+  min-height: 44px;
+}
+
+#screen-steam .steam-error-banner.hidden {
+  display: none;
+}
+
+#screen-steam .steam-error-icon {
+  color: #ff6b6b;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+#screen-steam .steam-error-text {
+  color: #ff6b6b;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+/* ===== КНОПКА ===== */
+#screen-steam .steam-submit-btn {
+  width: 100%;
+  padding: 16px 0;
+  border-radius: 16px;
+  border: none;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  pointer-events: none;
+  gap: 2px;
+  min-height: 52px;
+  -webkit-tap-highlight-color: transparent;
+  transition: all 0.2s ease;
 }
 
-.steam-direct-logo {
-  width: 85%;
-  height: 85%;
-  object-fit: contain;
-  transform: scaleX(-1) translateZ(0);
-  opacity: 1;
+#screen-steam .steam-submit-btn.active {
+  background: #FAF8F6;
+  color: #0b0b0f;
+  box-shadow: 0 8px 32px rgba(255, 255, 255, 0.10);
 }
 
-.steam-direct-card-content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 5;
-  text-align: center;
-  width: 70%;
-  pointer-events: none;
+#screen-steam .steam-submit-btn.active:hover {
+  background: #ffffff;
+  transform: scale(1.01);
 }
 
-.steam-direct-card-title {
-  display: block;
-  color: #FFFFFF;
-  font-size: 28px;
-  font-weight: 800;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.4);
-  line-height: 1.1;
-  margin-bottom: 4px;
-}
-
-.steam-direct-card-commission {
-  display: block;
-  color: rgba(255, 255, 255, 0.90);
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.3);
-}
-
-.steam-direct-badge {
-  position: absolute;
-  bottom: 10px;
-  right: 12px;
-  z-index: 5;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  height: 22px;
-  padding: 0 10px;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(18px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #FFFFFF;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  pointer-events: none;
+#screen-steam .steam-submit-btn:disabled {
+  cursor: not-allowed;
 }
 
 /* ============================================= */
