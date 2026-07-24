@@ -349,20 +349,20 @@
 
     </div>
     <!-- ============================================= -->
-    <!-- ЭКРАН: STEAM ПОПОЛНЕНИЕ (НОВЫЙ ДИЗАЙН)       -->
+    <!-- ЭКРАН: STEAM ПОПОЛНЕНИЕ                       -->
     <!-- ============================================= -->
     <div id="screen-steam" class="screen">
 
       <!-- ===== HEADER ===== -->
       <div class="steam-header">
-        <button class="back-btn" data-screen="screen-main">←</button>
-        <div class="steam-header-content">
-          <div class="steam-header-card">
+        <div class="steam-header-card">
+          <button class="back-btn" data-screen="screen-main">←</button>
+          <div class="steam-header-content">
             <h1 class="steam-title">Пополнение Steam</h1>
             <p class="steam-subtitle">Прямое зачисление на кошелёк Steam</p>
-            <div class="steam-header-logo-wrapper">
-              <img src="assets/icons/steam_logo.png" alt="Steam" class="steam-header-logo">
-            </div>
+          </div>
+          <div class="steam-header-logo-wrapper">
+            <img src="assets/icons/steam_logo.png" alt="Steam" class="steam-header-logo">
           </div>
         </div>
       </div>
@@ -442,44 +442,42 @@
       </div>
 
     </div>
+    <!-- ============================================= -->
+    <!-- ЭКРАН: ПОДПИСКИ (ОТДЕЛЬНЫЙ)                  -->
+    <!-- ============================================= -->
+    <div id="screen-subscriptions" class="screen">
 
-  </div>
-  <!-- ============================================= -->
-  <!-- ЭКРАН: ПОДПИСКИ (ОТДЕЛЬНЫЙ)                  -->
-  <!-- ============================================= -->
-  <div id="screen-subscriptions" class="screen">
-
-    <!-- ===== ВЕРХНЯЯ ПАНЕЛЬ: 3 ИКОНКИ ===== -->
-    <div class="sub-header">
-      <button class="back-btn" data-screen="screen-main">←</button>
-      <div class="sub-header-icons" id="sub-header-icons">
-        <div class="sub-header-icon-wrapper" data-service="discord">
-          <img src="assets/icons/discord.png" alt="Discord" class="sub-header-icon">
-          <span class="sub-header-label">Discord</span>
+      <!-- ===== ВЕРХНЯЯ ПАНЕЛЬ: 3 ИКОНКИ ===== -->
+      <div class="sub-header">
+        <button class="back-btn" data-screen="screen-main">←</button>
+        <div class="sub-header-icons" id="sub-header-icons">
+          <div class="sub-header-icon-wrapper" data-service="discord">
+            <img src="assets/icons/discord.png" alt="Discord" class="sub-header-icon">
+            <span class="sub-header-label">Discord</span>
+          </div>
+          <div class="sub-header-icon-wrapper" data-service="netflix">
+            <img src="assets/icons/netflix.png" alt="Netflix" class="sub-header-icon">
+            <span class="sub-header-label">Netflix</span>
+          </div>
+          <div class="sub-header-icon-wrapper" data-service="spotify">
+            <img src="assets/icons/spotify.png" alt="Spotify" class="sub-header-icon">
+            <span class="sub-header-label">Spotify</span>
+          </div>
         </div>
-        <div class="sub-header-icon-wrapper" data-service="netflix">
-          <img src="assets/icons/netflix.png" alt="Netflix" class="sub-header-icon">
-          <span class="sub-header-label">Netflix</span>
-        </div>
-        <div class="sub-header-icon-wrapper" data-service="spotify">
-          <img src="assets/icons/spotify.png" alt="Spotify" class="sub-header-icon">
-          <span class="sub-header-label">Spotify</span>
-        </div>
+        <div class="sub-header-placeholder"></div>
       </div>
-      <div class="sub-header-placeholder"></div>
-    </div>
 
-    <!-- ===== КОНТЕНТ ===== -->
-    <div id="sub-content">
-      <!-- Сюда будет рендериться контент через JS -->
-    </div>
+      <!-- ===== КОНТЕНТ ===== -->
+      <div id="sub-content">
+        <!-- Сюда будет рендериться контент через JS -->
+      </div>
 
-  </div>
-  <!-- ============================================= -->
-  <!-- БЛОК: SCRIPTS                               -->
-  <!-- ============================================= -->
-  <script src="js/api.js"></script>
-  <script type="module" src="js/main.js"></script>
+    </div>
+    <!-- ============================================= -->
+    <!-- БЛОК: SCRIPTS                               -->
+    <!-- ============================================= -->
+    <script src="js/api.js"></script>
+    <script type="module" src="js/main.js"></script>
 </body>
 
 </html>
