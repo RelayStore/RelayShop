@@ -295,6 +295,152 @@
   justify-content: center;
 }
 /* ============================================= */
+/* БЛОК: STEAM DIRECT SECTION                   */
+/* ============================================= */
+
+.steam-direct-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.steam-direct-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
+  justify-content: center;
+  width: 100%;
+}
+
+.steam-direct-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.steam-direct-title {
+  color: #FAF8F6;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.steam-direct-subtitle {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 16px;
+  font-weight: 300;
+  text-align: center;
+  width: 100%;
+  margin-bottom: 16px;
+  letter-spacing: 0.2px;
+}
+
+.steam-direct-card {
+  width: 100%;
+  max-width: 560px;
+  height: 120px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  cursor: pointer;
+  margin: 0 auto;
+  background: linear-gradient(180deg, #0a1628 0%, #1a3a6a 30%, #2d6bb8 60%, #5ba0e0 85%, #89c4f4 100%);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 0 0 1.5px rgba(255, 255, 255, 0.12);
+}
+
+.steam-direct-overlay {
+  position: absolute;
+  inset: 3px;
+  border-radius: 17px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.30) 0%, rgba(0, 0, 0, 0.40) 30%, rgba(0, 0, 0, 0.55) 60%, rgba(0, 0, 0, 0.75) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.steam-direct-logo-wrapper {
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 140px;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.steam-direct-logo {
+  width: 85%;
+  height: 85%;
+  object-fit: contain;
+  transform: scaleX(-1) translateZ(0);
+  opacity: 1;
+}
+
+.steam-direct-card-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  text-align: center;
+  width: 70%;
+  pointer-events: none;
+}
+
+.steam-direct-card-title {
+  display: block;
+  color: #FFFFFF;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.4);
+  line-height: 1.1;
+  margin-bottom: 4px;
+}
+
+.steam-direct-card-commission {
+  display: block;
+  color: rgba(255, 255, 255, 0.90);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.3);
+}
+
+.steam-direct-badge {
+  position: absolute;
+  bottom: 10px;
+  right: 12px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 22px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #FFFFFF;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+/* ============================================= */
 /* БЛОК: STEAM ПОПОЛНЕНИЕ (БЕЗ КАРТОЧКИ)        */
 /* ============================================= */
 
