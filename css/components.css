@@ -473,6 +473,8 @@
 /* ============================================= */
 
 #screen-steam .steam-header {
+  width: 100%;
+  max-width: 560px;
   margin-bottom: 24px;
 }
 
@@ -488,6 +490,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  width: 100%;
 }
 
 #screen-steam .steam-header-card .back-btn {
@@ -528,22 +531,22 @@
 
 #screen-steam .steam-header-logo-wrapper {
   position: absolute;
-  right: -20px;
+  right: -10px;
   top: 50%;
-  transform: translateY(-50%) rotate(-25deg);
+  transform: translateY(-50%);
   z-index: 1;
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
   pointer-events: none;
-  opacity: 0.33;
+  opacity: 0.25;
 }
 
 #screen-steam .steam-header-logo {
-  width: 90%;
-  height: 90%;
+  width: 85%;
+  height: 85%;
   object-fit: contain;
 }
 
