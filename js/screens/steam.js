@@ -129,6 +129,10 @@ function isAmountValid(amount, currency) {
 // 5. РЕНДЕРИНГ
 // =============================================
 
+// =============================================
+// РЕНДЕРИНГ ВАЛЮТ
+// =============================================
+
 function renderCurrencies() {
     const row = el.currencyRow;
     row.innerHTML = '';
@@ -142,6 +146,7 @@ function renderCurrencies() {
 
     Object.keys(state.currencies).forEach(code => {
         const btn = document.createElement('button');
+        // Активная кнопка — если код совпадает с state.currency
         btn.className = `steam-currency-btn${code === state.currency ? ' active' : ''}`;
         btn.textContent = code;
         btn.dataset.currency = code;
@@ -412,11 +417,21 @@ function handleAmountInput(e) {
     updateAll();
 }
 
+// =============================================
+// СМЕНА ВАЛЮТЫ
+// =============================================
+
 function handleCurrencyChange(currencyCode) {
+    // Если выбрана та же валюта — ничего не делаем
     if (currencyCode === state.currency) return;
+
+    // Проверяем, что валюта существует
     if (!state.currencies[currencyCode]) return;
 
+    // Меняем валюту
     state.currency = currencyCode;
+
+    // Сбрасываем сумму
     state.amount = null;
     state.isValidAmount = false;
     state.bannerMessage = null;
@@ -424,9 +439,13 @@ function handleCurrencyChange(currencyCode) {
     // Очищаем поле ввода
     el.amountInput.value = '';
 
-    // Перерисовываем быстрые кнопки
+    // Перерисовываем кнопки валют (обновляем active)
+    renderCurrencies();
+
+    // Перерисовываем быстрые кнопки для новой валюты
     renderQuickAmounts();
 
+    // Обновляем весь UI
     updateAll();
 
     // Снимаем активность со всех быстрых кнопок
