@@ -3,17 +3,51 @@
 import { showScreen } from '../core/navigation.js';
 
 // =============================================
-// 1. КОНФИГУРАЦИЯ (fallback, если API не ответит)
+// 1. КОНФИГУРАЦИЯ
 // =============================================
 
 const DEFAULT_CURRENCIES = {
-    RUB: { code: 'RUB', label: 'RU', symbol: '₽', productId: 'product_01kjp6vtkme90ba0r0dpdvkapv', min: 50, max: 30000 },
-    KZT: { code: 'KZT', label: 'KZ', symbol: '₸', productId: 'product_01kjp6vtm9ez19ckmjwxdgy7ky', min: 250, max: 150000 },
-    UAH: { code: 'UAH', label: 'UA', symbol: '₴', productId: 'product_01kv84qc6tfxsbkn4t50etgbt4', min: 50, max: 13500 },
-    USD: { code: 'USD', label: 'US', symbol: '$', productId: 'product_01kjp6vtmjf8rbbxw88719wz3b', min: 1, max: 300 }
+    RUB: {
+        code: 'RUB',
+        label: 'RU',
+        symbol: '₽',
+        productId: 'product_01kjp6vtkme90ba0r0dpdvkapv',
+        min: 50,
+        max: 30000,
+        quickAmounts: [500, 1000, 2000, 5000, 15000],
+        placeholder: '1 000 ₽'
+    },
+    KZT: {
+        code: 'KZT',
+        label: 'KZ',
+        symbol: '₸',
+        productId: 'product_01kjp6vtm9ez19ckmjwxdgy7ky',
+        min: 250,
+        max: 150000,
+        quickAmounts: [1000, 5000, 10000, 25000, 50000],
+        placeholder: '5 000 ₸'
+    },
+    UAH: {
+        code: 'UAH',
+        label: 'UA',
+        symbol: '₴',
+        productId: 'product_01kv84qc6tfxsbkn4t50etgbt4',
+        min: 50,
+        max: 13500,
+        quickAmounts: [100, 300, 500, 1000, 2000],
+        placeholder: '300 ₴'
+    },
+    USD: {
+        code: 'USD',
+        label: 'US',
+        symbol: '$',
+        productId: 'product_01kjp6vtmjf8rbbxw88719wz3b',
+        min: 1,
+        max: 300,
+        quickAmounts: [5, 10, 25, 50, 100],
+        placeholder: '10 $'
+    }
 };
-
-const QUICK_STEPS = [0.10, 0.25, 0.50, 0.75, 1.00];
 
 // =============================================
 // 2. СОСТОЯНИЕ
@@ -26,16 +60,11 @@ const state = {
     amount: null,           // число (без пробелов), null = пусто
     isValidLogin: false,
     isValidAmount: false,
-    priceRub: null,         // цена в рублях (из API)
-    isPriceLoading: false,
     bannerMessage: null,    // текст красной плашки
     isProcessing: false,
     infoBlockVisible: false,
     isInitialized: false
 };
-
-let priceTimeout = null;
-let lastFetchedAmount = null;
 
 // =============================================
 // 3. DOM-ССЫЛКИ
@@ -47,7 +76,6 @@ const el = {
     amountInput: document.getElementById('steam-amount-input'),
     currencySymbol: document.getElementById('currency-symbol'),
     quickAmounts: document.getElementById('quick-amounts'),
-    infoLogin: document.getElementById('info-login'),
     infoAmount: document.getElementById('info-amount'),
     infoTotal: document.getElementById('info-total'),
     submitBtn: document.getElementById('steam-submit-btn'),
@@ -59,8 +87,7 @@ const el = {
     rangeMax: document.getElementById('range-max'),
     rangeCurrency: document.getElementById('range-currency'),
     errorBanner: document.getElementById('steam-error-banner'),
-    errorText: document.getElementById('steam-error-text'),
-    loginInfoRow: document.getElementById('steam-login-info-row')
+    errorText: document.getElementById('steam-error-text')
 };
 
 // =============================================
@@ -86,27 +113,6 @@ function validateLogin(login) {
     return regex.test(trimmed);
 }
 
-function generateQuickAmounts(min, max) {
-    const range = max - min;
-    return QUICK_STEPS.map(step => {
-        let val = Math.round(min + range * step);
-        // Округляем до удобного числа
-        if (val < 100) {
-            val = Math.round(val / 5) * 5;
-        } else if (val < 1000) {
-            val = Math.round(val / 10) * 10;
-        } else if (val < 10000) {
-            val = Math.round(val / 50) * 50;
-        } else {
-            val = Math.round(val / 100) * 100;
-        }
-        // Гарантируем, что значение в пределах min-max
-        if (val < min) val = min;
-        if (val > max) val = max;
-        return val;
-    });
-}
-
 function getCurrency() {
     return state.currencies[state.currency] || DEFAULT_CURRENCIES[state.currency];
 }
@@ -129,9 +135,8 @@ function renderCurrencies() {
 
     const currencyCodes = Object.keys(state.currencies);
     if (currencyCodes.length === 0) {
-        // Используем дефолтные
         Object.keys(DEFAULT_CURRENCIES).forEach(code => {
-            state.currencies[code] = DEFAULT_CURRENCIES[code];
+            state.currencies[code] = { ...DEFAULT_CURRENCIES[code] };
         });
     }
 
@@ -152,12 +157,10 @@ function renderQuickAmounts() {
     const currency = getCurrency();
     if (!currency) return;
 
-    const amounts = generateQuickAmounts(currency.min, currency.max);
-
-    amounts.forEach(amount => {
+    currency.quickAmounts.forEach(amount => {
         const btn = document.createElement('button');
         btn.className = 'steam-quick-btn';
-        btn.textContent = formatNumber(amount);
+        btn.textContent = `${formatNumber(amount)}${currency.symbol}`;
         btn.dataset.amount = amount;
         btn.addEventListener('click', () => {
             setAmount(amount);
@@ -177,6 +180,11 @@ function updateSymbol() {
     el.currencySymbol.textContent = currency ? currency.symbol : '₽';
 }
 
+function updatePlaceholder() {
+    const currency = getCurrency();
+    el.amountInput.placeholder = currency ? currency.placeholder : '1 000 ₽';
+}
+
 function updateLimits() {
     const currency = getCurrency();
     if (!currency) return;
@@ -185,7 +193,6 @@ function updateLimits() {
     el.rangeMax.textContent = formatNumber(currency.max);
     el.rangeCurrency.textContent = currency.code;
 
-    // Проверяем, нужно ли показывать подсказку диапазона
     const amount = state.amount;
     const isValid = isAmountValid(amount, currency);
 
@@ -201,38 +208,24 @@ function updateLimits() {
 function updateInfo() {
     const currency = getCurrency();
     const amount = state.amount;
+    const symbol = currency ? currency.symbol : '₽';
 
-    // Зачисление
+    // Зачисление — всегда показываем, если есть сумма
     if (amount !== null && !isNaN(amount) && amount > 0) {
-        el.infoAmount.textContent = `${currency ? currency.symbol : '₽'} ${formatNumber(amount)}`;
+        el.infoAmount.textContent = `${symbol} ${formatNumber(amount)}`;
         el.infoAmount.className = 'steam-info-value';
     } else {
         el.infoAmount.textContent = '—';
         el.infoAmount.className = 'steam-info-value placeholder';
     }
 
-    // Итого (в рублях)
-    if (state.priceRub !== null && state.priceRub > 0) {
-        el.infoTotal.textContent = `${formatNumber(Math.round(state.priceRub))} ₽`;
-        el.infoTotal.className = 'steam-info-value price-rub';
-    } else if (state.isPriceLoading) {
-        el.infoTotal.textContent = '⏳ Загрузка...';
-        el.infoTotal.className = 'steam-info-value placeholder';
-    } else if (amount !== null && !isNaN(amount) && amount > 0) {
-        el.infoTotal.textContent = '—';
-        el.infoTotal.className = 'steam-info-value placeholder';
+    // Итого — всегда показываем ту же сумму, если есть сумма
+    if (amount !== null && !isNaN(amount) && amount > 0) {
+        el.infoTotal.textContent = `${symbol} ${formatNumber(amount)}`;
+        el.infoTotal.className = 'steam-total-value';
     } else {
         el.infoTotal.textContent = '—';
-        el.infoTotal.className = 'steam-info-value placeholder';
-    }
-
-    // Логин
-    if (state.isValidLogin) {
-        el.infoLogin.textContent = state.login;
-        el.infoLogin.className = 'steam-info-value';
-    } else {
-        el.infoLogin.textContent = '—';
-        el.infoLogin.className = 'steam-info-value placeholder';
+        el.infoTotal.className = 'steam-total-value placeholder';
     }
 }
 
@@ -263,11 +256,7 @@ function updateButtonState() {
     if (!isValidAmount) {
         btn.classList.remove('active');
         btn.disabled = true;
-        if (amount !== null && !isNaN(amount) && amount > 0) {
-            text.textContent = `→ Сумма: ${formatNumber(currency.min)}–${formatNumber(currency.max)} ${currency.code}`;
-        } else {
-            text.textContent = `→ Сумма: ${formatNumber(currency.min)}–${formatNumber(currency.max)} ${currency.code}`;
-        }
+        text.textContent = `→ Сумма: ${formatNumber(currency.min)}–${formatNumber(currency.max)} ${currency.code}`;
         return;
     }
 
@@ -299,15 +288,7 @@ function updateQuickButtons() {
     });
 }
 
-function updateAll() {
-    updateSymbol();
-    updateLimits();
-    updateInfo();
-    updateButtonState();
-    updateBanner();
-    updateQuickButtons();
-
-    // Валидация поля ввода логина
+function updateLoginInput() {
     if (state.isValidLogin) {
         el.loginInput.classList.remove('invalid');
         el.loginInput.classList.add('valid');
@@ -319,6 +300,17 @@ function updateAll() {
             el.loginInput.classList.remove('invalid');
         }
     }
+}
+
+function updateAll() {
+    updateSymbol();
+    updatePlaceholder();
+    updateLimits();
+    updateInfo();
+    updateButtonState();
+    updateBanner();
+    updateQuickButtons();
+    updateLoginInput();
 }
 
 // =============================================
@@ -344,86 +336,16 @@ function setAmount(value) {
     const currency = getCurrency();
     state.isValidAmount = isAmountValid(state.amount, currency);
 
-    // Сбрасываем баннер, если условие исправлено
+    // Если сумма стала валидной — убираем баннер (если он был про сумму)
     if (state.isValidAmount && state.isValidLogin) {
         state.bannerMessage = null;
     }
 
-    // Запрашиваем цену
-    fetchPriceDebounced();
-
     updateAll();
 }
 
 // =============================================
-// 8. ПОЛУЧЕНИЕ ЦЕНЫ
-// =============================================
-
-function fetchPriceDebounced() {
-    clearTimeout(priceTimeout);
-    priceTimeout = setTimeout(() => {
-        fetchPrice();
-    }, 400);
-}
-
-async function fetchPrice() {
-    const currency = getCurrency();
-    const amount = state.amount;
-
-    // Не запрашиваем, если сумма невалидна или нет логина
-    if (!currency || amount === null || amount <= 0 || !state.isValidLogin) {
-        state.priceRub = null;
-        state.isPriceLoading = false;
-        updateAll();
-        return;
-    }
-
-    // Проверяем, что сумма в пределах диапазона
-    if (amount < currency.min || amount > currency.max) {
-        state.priceRub = null;
-        state.isPriceLoading = false;
-        updateAll();
-        return;
-    }
-
-    // Не дублируем запросы
-    if (lastFetchedAmount === amount && state.priceRub !== null) {
-        return;
-    }
-
-    state.isPriceLoading = true;
-    updateAll();
-
-    try {
-        const response = await fetch(
-            `${API_BASE_URL}/steam/price?product_id=${currency.productId}&quantity=${amount}`
-        );
-
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`);
-        }
-
-        const data = await response.json();
-        state.priceRub = data.price_rub;
-        lastFetchedAmount = amount;
-
-        // Если цена получена и всё валидно — убираем баннер
-        if (state.isValidLogin && state.isValidAmount) {
-            state.bannerMessage = null;
-        }
-
-    } catch (error) {
-        console.error('Ошибка получения цены:', error);
-        state.priceRub = null;
-        state.bannerMessage = 'Не удалось получить цену. Проверьте соединение.';
-    } finally {
-        state.isPriceLoading = false;
-        updateAll();
-    }
-}
-
-// =============================================
-// 9. ОБРАБОТЧИКИ
+// 8. ОБРАБОТЧИКИ
 // =============================================
 
 function handleLoginInput(e) {
@@ -442,27 +364,21 @@ function handleLoginInput(e) {
     state.login = value;
     state.isValidLogin = validateLogin(value);
 
-    // Если логин стал невалидным — сбрасываем баннер, если он был о логине
-    if (!state.isValidLogin) {
-        // Не сбрасываем баннер автоматически, он сбросится при нажатии
-    }
-
     // Если логин стал валидным и сумма валидна — убираем баннер
     if (state.isValidLogin && state.isValidAmount) {
         state.bannerMessage = null;
     }
 
-    // Если логин стал невалидным — убираем цену
-    if (!state.isValidLogin) {
-        state.priceRub = null;
-        lastFetchedAmount = null;
+    // Если логин стал невалидным — убираем баннер, если он был про логин
+    if (!state.isValidLogin && state.bannerMessage === 'Введите логин Steam') {
+        state.bannerMessage = null;
     }
 
     updateAll();
 
-    // Если логин стал валидным и есть сумма — запрашиваем цену
+    // Если логин стал валидным и есть сумма — обновляем кнопку
     if (state.isValidLogin && state.amount !== null && state.amount > 0) {
-        fetchPriceDebounced();
+        updateAll();
     }
 }
 
@@ -481,10 +397,9 @@ function handleAmountInput(e) {
         state.bannerMessage = null;
     }
 
-    // Если сумма стала невалидной — убираем цену
-    if (!state.isValidAmount) {
-        state.priceRub = null;
-        lastFetchedAmount = null;
+    // Если сумма невалидна — убираем баннер, если он был про сумму
+    if (!state.isValidAmount && state.bannerMessage && state.bannerMessage.includes('Сумма:')) {
+        state.bannerMessage = null;
     }
 
     // Обновляем поле с форматированием
@@ -495,11 +410,6 @@ function handleAmountInput(e) {
     }
 
     updateAll();
-
-    // Запрашиваем цену, если сумма валидна и логин валиден
-    if (state.isValidAmount && state.isValidLogin) {
-        fetchPriceDebounced();
-    }
 }
 
 function handleCurrencyChange(currencyCode) {
@@ -509,10 +419,6 @@ function handleCurrencyChange(currencyCode) {
     state.currency = currencyCode;
     state.amount = null;
     state.isValidAmount = false;
-    state.priceRub = null;
-    lastFetchedAmount = null;
-
-    // Сбрасываем баннер, если он был
     state.bannerMessage = null;
 
     // Очищаем поле ввода
@@ -568,7 +474,7 @@ function handleSubmitClick() {
 }
 
 // =============================================
-// 10. ОСНОВНАЯ ФУНКЦИЯ ОПЛАТЫ
+// 9. ОСНОВНАЯ ФУНКЦИЯ ОПЛАТЫ
 // =============================================
 
 async function handleSubmit() {
@@ -615,14 +521,13 @@ async function handleSubmit() {
             product_slug: 'steam',
             region_slug: 'direct',
             quantity: amount,
-            amount: state.priceRub || 0,
-            currency: 'rub',
+            amount: amount,
+            currency: currency.code.toLowerCase(),
             note: { login: login }
         });
 
         console.log('✅ Steam заказ создан:', result);
 
-        // Показываем уведомление
         if (window.showToast) {
             window.showToast('✅ Заказ успешно создан!');
         }
@@ -646,7 +551,7 @@ async function handleSubmit() {
 }
 
 // =============================================
-// 11. ИНИЦИАЛИЗАЦИЯ
+// 10. ИНИЦИАЛИЗАЦИЯ
 // =============================================
 
 export async function initSteam() {
@@ -655,40 +560,39 @@ export async function initSteam() {
     try {
         const config = await API.getSteamConfig();
 
-        // Заполняем валюты из API
         if (config && config.currencies) {
             config.currencies.forEach(c => {
+                const defaultData = DEFAULT_CURRENCIES[c.currency];
                 state.currencies[c.currency] = {
                     code: c.currency,
                     label: c.currency,
-                    symbol: c.symbol || '₽',
-                    productId: c.product_id,
-                    min: c.min || 0,
-                    max: c.max || 0
+                    symbol: c.symbol || defaultData?.symbol || '₽',
+                    productId: c.product_id || defaultData?.productId,
+                    min: c.min || defaultData?.min || 0,
+                    max: c.max || defaultData?.max || 0,
+                    quickAmounts: defaultData?.quickAmounts || [100, 500, 1000, 2000, 5000],
+                    placeholder: defaultData?.placeholder || '1000 ₽'
                 };
             });
         }
 
-        // Если API не вернул данные — используем дефолтные
         if (Object.keys(state.currencies).length === 0) {
-            state.currencies = { ...DEFAULT_CURRENCIES };
+            Object.keys(DEFAULT_CURRENCIES).forEach(code => {
+                state.currencies[code] = { ...DEFAULT_CURRENCIES[code] };
+            });
         }
 
-        // Убеждаемся, что текущая валюта существует
         if (!state.currencies[state.currency]) {
             state.currency = Object.keys(state.currencies)[0] || 'RUB';
         }
 
-        // Рендерим
         renderCurrencies();
         renderQuickAmounts();
 
-        // Начальное состояние
         state.amount = null;
         state.login = '';
         state.isValidLogin = false;
         state.isValidAmount = false;
-        state.priceRub = null;
         state.bannerMessage = null;
         state.isProcessing = false;
 
@@ -697,13 +601,11 @@ export async function initSteam() {
 
         updateAll();
 
-        // Обработчики событий
         el.loginInput.addEventListener('input', handleLoginInput);
         el.amountInput.addEventListener('input', handleAmountInput);
         el.toggleBtn.addEventListener('click', handleToggleInfo);
         el.submitBtn.addEventListener('click', handleSubmitClick);
 
-        // Скрываем инфоблок по умолчанию
         el.infoBlock.classList.add('hidden');
         el.toggleBtn.textContent = '?';
         state.infoBlockVisible = false;
@@ -713,8 +615,9 @@ export async function initSteam() {
 
     } catch (error) {
         console.error('Ошибка инициализации Steam:', error);
-        // Используем дефолтные валюты
-        state.currencies = { ...DEFAULT_CURRENCIES };
+        Object.keys(DEFAULT_CURRENCIES).forEach(code => {
+            state.currencies[code] = { ...DEFAULT_CURRENCIES[code] };
+        });
         renderCurrencies();
         renderQuickAmounts();
         updateAll();
@@ -723,29 +626,24 @@ export async function initSteam() {
 }
 
 // =============================================
-// 12. ОТКРЫТИЕ ЭКРАНА
+// 11. ОТКРЫТИЕ ЭКРАНА
 // =============================================
 
 export function openSteamScreen() {
-    // Сбрасываем состояние при открытии
     state.currency = 'RUB';
     state.login = '';
     state.amount = null;
     state.isValidLogin = false;
     state.isValidAmount = false;
-    state.priceRub = null;
     state.bannerMessage = null;
     state.isProcessing = false;
     state.infoBlockVisible = false;
-    lastFetchedAmount = null;
 
     el.loginInput.value = '';
     el.amountInput.value = '';
     el.infoBlock.classList.add('hidden');
     el.toggleBtn.textContent = '?';
-    el.rangeHint.classList.add('hidden');
 
-    // Обновляем валюту, если текущей нет
     if (!state.currencies[state.currency]) {
         const keys = Object.keys(state.currencies);
         state.currency = keys.length > 0 ? keys[0] : 'RUB';
@@ -759,7 +657,7 @@ export function openSteamScreen() {
 }
 
 // =============================================
-// 13. АВТОЗАПУСК
+// 12. АВТОЗАПУСК
 // =============================================
 
 document.addEventListener('DOMContentLoaded', () => {
